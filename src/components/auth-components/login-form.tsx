@@ -63,7 +63,46 @@ export function LoginForm() {
                 redirectTo: "http://localhost:3000/auth/callback"
             }
         });
-    }
+    };
+
+    const handleEmailPassLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        setLoading(true);
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: formData.email,
+            password: formData.password,
+
+            // will do this captcha later ...
+            // options: {
+            //     captchaToken: ""
+            // }
+        })
+
+        setLoading(false);
+
+        if (error) {
+            console.error(error);
+            // setErrors(error.message)
+
+            if (error.message.includes("Email not confirmed")) {
+                alert("Please confirm your email before logging in.")
+                return
+            }
+
+            setErrors({ general: error.message })
+            return
+            return;
+        }
+
+        if (data.weakPassword) {
+            console.log(data.weakPassword);
+            alert(data.weakPassword.message);
+            return;
+        }
+
+        console.log("Logged in user:", data.user)
+    };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">

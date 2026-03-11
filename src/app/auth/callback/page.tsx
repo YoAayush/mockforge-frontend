@@ -10,9 +10,9 @@ export default function Callback() {
     useEffect(() => {
         const getSession = async () => {
             const { data } = await supabase.auth.getSession();
-            
+
             if (data.session) {
-                router.push("/");
+                router.push(`/dashboard/${data.session.user.id}`);
             } else {
                 router.push("/auth/login");
             }

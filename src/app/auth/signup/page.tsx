@@ -1,4 +1,4 @@
-import { SignupForm } from '@/components/signup-form'
+import { SignupForm } from '@/components/auth-components/signup-form'
 
 export const metadata = {
     title: 'Sign up - MockForge',

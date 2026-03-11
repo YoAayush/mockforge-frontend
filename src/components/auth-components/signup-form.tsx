@@ -69,6 +69,35 @@ export function SignupForm() {
         });
     }
 
+    const handleSignUpEmailPass = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        setLoading(true);
+        const { data, error } = await supabase.auth.signUp({
+            email: "",
+            password: "",
+            options: {
+                emailRedirectTo: "http://localhost:3000/auth/callback"
+            }
+        })
+
+        setLoading(false);
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        // Email confirmation enabled
+        if (!data.session) {
+            alert("Signup successful. Please check your email to verify your account.")
+            return
+        }
+
+        // If email confirmation disabled, session exists
+        console.log("User created:", data.user);
+    };
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="text-center">
