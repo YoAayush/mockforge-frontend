@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Github } from 'lucide-react'
+import { supabase } from '@/lib/supabaseClient'
 
 export function LoginForm() {
     const [formData, setFormData] = useState({
@@ -54,6 +56,15 @@ export function LoginForm() {
         }
     }
 
+    const handleGithubLogin = async () => {
+        await supabase.auth.signInWithOAuth({
+            provider: "github",
+            options: {
+                redirectTo: "http://localhost:3000/auth/callback"
+            }
+        });
+    }
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="text-center">
@@ -62,6 +73,24 @@ export function LoginForm() {
                 </div>
                 <h1 className="text-xl font-semibold text-white mb-1">Welcome back</h1>
                 <p className="text-sm text-slate-400">Sign in to your account</p>
+            </div>
+
+            <Button
+                type="button"
+                onClick={handleGithubLogin}
+                className="w-full bg-slate-800 text-white hover:bg-slate-700 border border-slate-700 font-semibold flex items-center justify-center gap-2"
+            >
+                <Github size={18} />
+                Continue with GitHub
+            </Button>
+
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-700"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-slate-900 text-slate-400">Or</span>
+                </div>
             </div>
 
             <div className="space-y-4">
