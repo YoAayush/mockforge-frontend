@@ -4,9 +4,13 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Moon, Sun } from 'lucide-react'
 import { useState } from 'react'
+import { UserContext } from '../userProvider'
+import { useContext } from 'react'
 
 export function Header() {
-    const [isDark, setIsDark] = useState(true)
+    const [isDark, setIsDark] = useState(true);
+    const data = useContext(UserContext);
+    console.log(data);
 
     const toggleTheme = () => {
         setIsDark(!isDark)
@@ -29,20 +33,37 @@ export function Header() {
                         {isDark ? <Sun size={20} /> : <Moon size={20} />}
                     </button>
 
-                    <Link href="/auth/login">
-                        <Button
-                            variant="ghost"
-                            className="text-white hover:bg-slate-800"
-                        >
-                            Login
-                        </Button>
-                    </Link>
+                    {
+                        data.user ? (
+                            <>
+                                <Link href={`/dashboard/${data.user.id}`}>
+                                    <Button
+                                        variant="ghost"
+                                        className="bg-white text-black hover:bg-gray-200"
+                                    >
+                                        Dashboard
+                                    </Button>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/auth/login">
+                                    <Button
+                                        variant="ghost"
+                                        className="text-white hover:bg-slate-800"
+                                    >
+                                        Login
+                                    </Button>
+                                </Link>
 
-                    <Link href="/auth/signup">
-                        <Button className="bg-white text-black hover:bg-gray-200">
-                            Get Started
-                        </Button>
-                    </Link>
+                                <Link href="/auth/signup">
+                                    <Button className="bg-white text-black hover:bg-gray-200">
+                                        Get Started
+                                    </Button>
+                                </Link>
+                            </>
+                        )
+                    }
                 </div>
             </div>
         </header>

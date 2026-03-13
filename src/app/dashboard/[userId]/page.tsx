@@ -2,8 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-// import { useContext } from "react";
-// import { UserContext } from "@/components/userProvider";
 import { useParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/components/userProvider";
@@ -11,15 +9,23 @@ import { UserContext } from "@/components/userProvider";
 export default function Dashboard() {
     const router = useRouter();
     const { userId } = useParams();
-    console.log(userId);
+    // console.log(userId);
 
     // const { data: {user} } = await supabase.auth.getUser();
     // console.log(user)
 
-    const { session } = useContext(UserContext);
+    const { session, loading } = useContext(UserContext);
     useEffect(() => {
         console.log("Session changed:", session)
     }, [session])
+
+    useEffect(() => {
+        if (!loading && !session) {
+            router.replace("/");
+        }
+    }, [session, loading, router]);
+
+    if (loading) return <p>Loading...</p>;
 
     // now i can use {session.access_token} directly in my backend api request as a bearer token ...
     // console.log(session);
@@ -34,7 +40,8 @@ export default function Dashboard() {
             return;
         }
 
-        router.push("/");
+        // router.push("/auth/callback");
+        router.replace("/");
     };
 
     return (

@@ -9,17 +9,22 @@ export default function Callback() {
 
     useEffect(() => {
         const getSession = async () => {
-            const { data } = await supabase.auth.getSession();
+            const { data, error } = await supabase.auth.getSession();
+
+            // if (error) {
+            //     router.replace("/");
+            //     return;
+            // }
 
             if (data.session) {
-                router.push(`/dashboard/${data.session.user.id}`);
+                router.replace(`/dashboard/${data.session.user.id}`);
             } else {
-                router.push("/auth/login");
+                router.replace("/");
             }
         };
 
         getSession();
-    }, []);
+    }, [router]);
 
     return <p>Signing you in...</p>;
 }

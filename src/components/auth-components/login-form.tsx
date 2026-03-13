@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,7 +13,7 @@ export function LoginForm() {
         email: '',
         password: '',
     })
-    const [errors, setErrors] = useState<Record<string, string>>({})
+    const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false)
 
     const validateForm = () => {
@@ -32,21 +32,21 @@ export function LoginForm() {
         return Object.keys(newErrors).length === 0
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault()
 
-        if (!validateForm()) {
-            return
-        }
+    //     if (!validateForm()) {
+    //         return
+    //     }
 
-        setLoading(true)
-        // Simulate API call
-        setTimeout(() => {
-            setLoading(false)
-            // In a real app, you would handle login here
-            console.log('Login:', formData)
-        }, 1000)
-    }
+    //     setLoading(true)
+    //     // Simulate API call
+    //     setTimeout(() => {
+    //         setLoading(false)
+    //         // In a real app, you would handle login here
+    //         console.log('Login:', formData)
+    //     }, 1000)
+    // }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -65,10 +65,14 @@ export function LoginForm() {
         });
     };
 
-    const handleEmailPassLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleEmailPassLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (!validateForm()) {
+            return;
+        }
         setLoading(true);
+
         const { data, error } = await supabase.auth.signInWithPassword({
             email: formData.email,
             password: formData.password,
@@ -81,17 +85,19 @@ export function LoginForm() {
 
         setLoading(false);
 
+        // console.log(data, error);
+
         if (error) {
             console.error(error);
             // setErrors(error.message)
 
             if (error.message.includes("Email not confirmed")) {
                 alert("Please confirm your email before logging in.")
-                return
+                return;
             }
 
-            setErrors({ general: error.message })
-            return
+            alert(error.message);
+            setErrors({ general: error.message });
             return;
         }
 
@@ -104,8 +110,17 @@ export function LoginForm() {
         console.log("Logged in user:", data.user)
     };
 
+    console.log(errors);
+    console.log(formData.email, formData.password);
+
+    // useEffect(() => {
+    //     if (errors) {
+    //         alert(errors);
+    //     }
+    // }, [errors])
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={(e) => handleEmailPassLogin(e)} className="space-y-6">
             <div className="text-center">
                 <div className="text-2xl font-semibold text-white mb-2">
                     <span className="text-blue-400">&lt;/&gt;</span> MockForge

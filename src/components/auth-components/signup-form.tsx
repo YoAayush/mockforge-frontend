@@ -39,22 +39,6 @@ export function SignupForm() {
         return Object.keys(newErrors).length === 0
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-
-        if (!validateForm()) {
-            return
-        }
-
-        setLoading(true)
-        // Simulate API call
-        setTimeout(() => {
-            setLoading(false)
-            // In a real app, you would handle signup here
-            console.log('Signup:', formData)
-        }, 1000)
-    }
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
@@ -69,13 +53,15 @@ export function SignupForm() {
         });
     }
 
-    const handleSignUpEmailPass = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSignUpEmailPass = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!validateForm()) return;
 
         setLoading(true);
         const { data, error } = await supabase.auth.signUp({
-            email: "",
-            password: "",
+            email: formData.email,
+            password: formData.password,
             options: {
                 emailRedirectTo: "http://localhost:3000/auth/callback"
             }
@@ -98,8 +84,25 @@ export function SignupForm() {
         console.log("User created:", data.user);
     };
 
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault()
+
+    //     if (!validateForm()) {
+    //         return
+    //     }
+
+    //     setLoading(true)
+
+    //     // Simulate API call
+    //     setTimeout(() => {
+    //         setLoading(false)
+    //         // In a real app, you would handle signup here
+    //         console.log('Signup:', formData)
+    //     }, 1000)
+    // }
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={(e) => handleSignUpEmailPass(e)} className="space-y-6">
             <div className="text-center">
                 <div className="text-2xl font-semibold text-white mb-2">
                     <span className="text-blue-400">&lt;/&gt;</span> MockForge

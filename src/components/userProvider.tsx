@@ -3,6 +3,7 @@
 import { useState, useEffect, createContext, ReactNode } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Session, User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 
 type UserContextType = {
     session: Session | null;
@@ -17,6 +18,7 @@ export const UserContext = createContext<UserContextType>({
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+    const router = useRouter();
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User | null>(null);
@@ -28,6 +30,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             setSession(data.session);
             setUser(data.session?.user ?? null);
             setLoading(false);
+
+            // if no session → redirect
+            if (!data.session) {
+                router.replace("/");
+            }
         };
 
         getSession();
