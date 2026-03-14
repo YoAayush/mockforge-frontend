@@ -9,23 +9,22 @@ import { UserContext } from "@/components/userProvider";
 export default function Dashboard() {
     const router = useRouter();
     const { userId } = useParams();
-    // console.log(userId);
+    console.log(userId);
 
     // const { data: {user} } = await supabase.auth.getUser();
     // console.log(user)
 
-    const { session, loading } = useContext(UserContext);
-    useEffect(() => {
-        console.log("Session changed:", session)
-    }, [session])
+    const { user } = useContext(UserContext);
+    console.log(user);
+    
+    // useEffect(() => {
+    //     if (!loading && !session) {
+    //         router.replace("/");
+    //     }
+    // }, [loading, session, router]);
 
-    useEffect(() => {
-        if (!loading && !session) {
-            router.replace("/");
-        }
-    }, [session, loading, router]);
-
-    if (loading) return <p>Loading...</p>;
+    // if (loading) return <p>Loading...</p>;
+    // if (!session) return null;
 
     // now i can use {session.access_token} directly in my backend api request as a bearer token ...
     // console.log(session);

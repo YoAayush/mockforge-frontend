@@ -3,7 +3,7 @@
 import { useState, useEffect, createContext, ReactNode } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Session, User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 type UserContextType = {
     session: Session | null;
@@ -18,7 +18,7 @@ export const UserContext = createContext<UserContextType>({
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const router = useRouter();
+    // const router = useRouter();
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User | null>(null);
@@ -32,9 +32,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             setLoading(false);
 
             // if no session → redirect
-            if (!data.session) {
-                router.replace("/");
-            }
+            // if (!data.session) {
+            //     console.log("no session provided");
+            //     router.replace("/");
+            // }
         };
 
         getSession();
@@ -43,6 +44,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             data: { subscription },
         } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
+            setUser(session?.user ?? null);
         });
 
         return () => {

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Github } from 'lucide-react'
-
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 
 export function SignupForm() {
@@ -16,7 +16,8 @@ export function SignupForm() {
         password: '',
     })
     const [errors, setErrors] = useState<Record<string, string>>({})
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {}
@@ -104,7 +105,9 @@ export function SignupForm() {
     return (
         <form onSubmit={(e) => handleSignUpEmailPass(e)} className="space-y-6">
             <div className="text-center">
-                <div className="text-2xl font-semibold text-white mb-2">
+                <div className="text-2xl font-semibold text-white mb-2 cursor-pointer" onClick={() => {
+                    router.replace("/");
+                }}>
                     <span className="text-blue-400">&lt;/&gt;</span> MockForge
                 </div>
                 <h1 className="text-xl font-semibold text-white mb-1">Create your account</h1>

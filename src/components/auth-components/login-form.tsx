@@ -1,12 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Github } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
+import { useRouter } from 'next/navigation';
+import { UserContext } from '../userProvider'
 
 export function LoginForm() {
     const [formData, setFormData] = useState({
@@ -14,7 +16,15 @@ export function LoginForm() {
         password: '',
     })
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [loading, setLoading] = useState(false)
+    const [PageLoading, setLoading] = useState(false)
+    const router = useRouter();
+    const { session, loading } = useContext(UserContext);
+
+    useEffect(() => {
+        if (!loading && session) {
+            router.replace(`/dashboard/${session.user.id}`);
+        }
+    }, [session, loading]);
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {}
@@ -108,6 +118,7 @@ export function LoginForm() {
         }
 
         console.log("Logged in user:", data.user)
+        // router.push(`/dashboard/${data.user.id}`);
     };
 
     console.log(errors);
@@ -122,7 +133,9 @@ export function LoginForm() {
     return (
         <form onSubmit={(e) => handleEmailPassLogin(e)} className="space-y-6">
             <div className="text-center">
-                <div className="text-2xl font-semibold text-white mb-2">
+                <div className="text-2xl font-semibold text-white mb-2 cursor-pointer" onClick={() => {
+                    router.replace("/");
+                }}>
                     <span className="text-blue-400">&lt;/&gt;</span> MockForge
                 </div>
                 <h1 className="text-xl font-semibold text-white mb-1">Welcome back</h1>
@@ -195,7 +208,7 @@ export function LoginForm() {
 
             <Button
                 type="submit"
-                disabled={loading}
+                disabled={PageLoading}
                 className="w-full bg-white text-slate-900 hover:bg-slate-100 font-semibold"
             >
                 {loading ? 'Signing in...' : 'Sign in'}
