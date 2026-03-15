@@ -224,9 +224,15 @@ export function LoginForm() {
                 </Link>
             </p>
 
-            <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-700">
+            {
+                PageLoading && (
+                    <p>Logging In please wait...</p>
+                )
+            }
+
+            {/* <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-700">
                 Made with Vercel
-            </div>
+            </div> */}
         </form>
     )
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/components/userProvider";
+import { useContext } from "react";
 
 export default function DashboardLayout({
     children,
@@ -13,15 +14,28 @@ export default function DashboardLayout({
     const router = useRouter();
     const { session, loading } = useContext(UserContext);
 
-    useEffect(() => {
-        if (!loading && !session) {
-            router.replace("/");
-        }
-    }, [session, loading, router]);
+    // useEffect(() => {
+    //     if (!loading && !session) {
+    //         router.replace("/");
+    //     }
+    // }, [session, loading, router]);
 
-    // will make a good looking loader
+
+    useEffect(() => {
+        const session = localStorage.getItem("sb-spxrnaigyqpejdrnbtrn-auth-token");
+
+        if (!session) {
+            router.replace("/auth/login");
+        }
+    }, []);
+
+    // // will make a good looking loader
     if (loading) return <p>Loading...</p>;
     if (!session) return null;
 
-    return <>{children}</>;
+    return (
+        <>
+            {children}
+        </>
+    )
 }

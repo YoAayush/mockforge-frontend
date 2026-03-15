@@ -16,8 +16,11 @@ export default function Callback() {
             //     return;
             // }
 
-            if (data.session) {
-                router.replace(`/dashboard/${data.session.user.id}`);
+            if (data?.session) {
+                router.replace(`/dashboard/${data.session.user?.id}`);
+            } else if (error) {
+                router.replace("/");
+                return;
             } else {
                 router.replace("/");
             }
