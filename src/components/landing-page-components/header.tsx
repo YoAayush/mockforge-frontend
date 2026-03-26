@@ -10,7 +10,7 @@ import { useContext } from 'react'
 export function Header() {
     const [isDark, setIsDark] = useState(true);
     const data = useContext(UserContext);
-    console.log(data);
+    // console.log(data);
 
     const toggleTheme = () => {
         setIsDark(!isDark)

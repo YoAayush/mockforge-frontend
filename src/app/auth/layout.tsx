@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext } from "react"
 import { UserContext } from "@/components/userProvider"
 import { useRouter } from "next/navigation"
@@ -9,18 +11,17 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
 
-  const { user, loading } = useContext(UserContext);
+  const { user, session, loading } = useContext(UserContext);
+  // console.log(user,loading)
   const router = useRouter();
 
   useEffect(() => {
-    const session = localStorage.getItem("sb-spxrnaigyqpejdrnbtrn-auth-token");
-
-    if (session) {
+    if (!loading && session && user) {
       router.replace(`/dashboard/${user?.id}`);
     }
-  }, []);
+  }, [loading, session, user, router]);
 
-  if (!loading) return <p>Navigating you to dashboard !!!</p>
+  if (loading) return <p>Loading !!!</p>
 
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">

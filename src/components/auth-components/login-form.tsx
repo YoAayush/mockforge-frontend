@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useContext } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Github } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation';
-import { UserContext } from '../userProvider'
+// import { UserContext } from '../userProvider'
 
 export function LoginForm() {
     const [formData, setFormData] = useState({
@@ -16,15 +16,8 @@ export function LoginForm() {
         password: '',
     })
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [PageLoading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const router = useRouter();
-    const { session, loading } = useContext(UserContext);
-
-    useEffect(() => {
-        if (!loading && session) {
-            router.replace(`/dashboard/${session.user.id}`);
-        }
-    }, [session, loading]);
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {}
@@ -70,7 +63,7 @@ export function LoginForm() {
         await supabase.auth.signInWithOAuth({
             provider: "github",
             options: {
-                redirectTo: "http://localhost:3000/auth/callback"
+                redirectTo: "http://localhost:4000/auth/callback"
             }
         });
     };
@@ -208,7 +201,7 @@ export function LoginForm() {
 
             <Button
                 type="submit"
-                disabled={PageLoading}
+                disabled={loading}
                 className="w-full bg-white text-slate-900 hover:bg-slate-100 font-semibold"
             >
                 {loading ? 'Signing in...' : 'Sign in'}
@@ -225,7 +218,7 @@ export function LoginForm() {
             </p>
 
             {
-                PageLoading && (
+                loading && (
                     <p>Logging In please wait...</p>
                 )
             }

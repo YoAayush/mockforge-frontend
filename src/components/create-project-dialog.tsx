@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 // import { useMockForge } from "@/lib/context";
+import axios from "axios";
+import { UserContext } from "./userProvider";
+import { useContext } from "react";
 
 interface CreateProjectDialogProps {
     open: boolean;
@@ -24,12 +27,23 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const { session } = useContext(UserContext);
 
     const handleSubmit = async () => {
         if (!name.trim()) return;
         setIsLoading(true);
         try {
             // addProject(name, description, false);
+            const response = await axios.post("http://localhost:3000/api/v1/projects/create", {
+                name, description
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.access_token}`
+                    }
+                }
+            )
+            console.log(response);
             setName("");
             setDescription("");
             onOpenChange(false);

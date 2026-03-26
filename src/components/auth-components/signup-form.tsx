@@ -51,6 +51,9 @@ export function SignupForm() {
     const handleGithubLogin = async () => {
         await supabase.auth.signInWithOAuth({
             provider: "github",
+            options: {
+                redirectTo: "http://localhost:4000/auth/callback"
+            }
         });
     }
 
@@ -64,7 +67,10 @@ export function SignupForm() {
             email: formData.email,
             password: formData.password,
             options: {
-                emailRedirectTo: "http://localhost:3000/auth/callback"
+                data: {
+                    full_name: formData.fullName,
+                },
+                emailRedirectTo: "http://localhost:4000/auth/callback"
             }
         })
 
@@ -74,6 +80,7 @@ export function SignupForm() {
             console.log(error);
             return;
         }
+        console.log(data);
 
         // Email confirmation enabled
         if (!data.session) {
@@ -81,26 +88,9 @@ export function SignupForm() {
             return
         }
 
-        // If email confirmation disabled, session exists
+        // Only runs if email confirmation disabled OR already verified
         console.log("User created:", data.user);
     };
-
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault()
-
-    //     if (!validateForm()) {
-    //         return
-    //     }
-
-    //     setLoading(true)
-
-    //     // Simulate API call
-    //     setTimeout(() => {
-    //         setLoading(false)
-    //         // In a real app, you would handle signup here
-    //         console.log('Signup:', formData)
-    //     }, 1000)
-    // }
 
     return (
         <form onSubmit={(e) => handleSignUpEmailPass(e)} className="space-y-6">

@@ -11,6 +11,7 @@ import { CreateProjectDialog } from "@/components/create-project-dialog";
 import { Header } from "@/components/user-header";
 import { ProjectCard } from "@/components/project-card";
 import { Project } from "@/lib/types";
+import axios from "axios";
 // import { Empty } from "@/components/ui/empty";
 
 export default function Dashboard() {
@@ -24,23 +25,32 @@ export default function Dashboard() {
     // const { data: {user} } = await supabase.auth.getUser();
     // console.log(user)
 
-    const { user } = useContext(UserContext);
+    const { user, session } = useContext(UserContext);
     console.log(user);
 
-    const title = "";
-    const subtitle = ""
+    useEffect(() => {
+        const fetchProject = async () => {
+            try {
+                if (!session?.access_token) return;
 
-    // useEffect(() => {
-    //     if (!loading && !session) {
-    //         router.replace("/");
-    //     }
-    // }, [loading, session, router]);
+                const res = await axios.get(
+                    "http://localhost:3000/api/v1/projects/",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${session.access_token}`,
+                        },
+                    }
+                );
 
-    // if (loading) return <p>Loading...</p>;
-    // if (!session) return null;
+                console.log(res);
+                setProjects(res.data.projects);
+            } catch (error) {
+                console.error("Error fetching project:", error);
+            }
+        };
 
-    // now i can use {session.access_token} directly in my backend api request as a bearer token ...
-    // console.log(session);
+        fetchProject();
+    }, [session]);
 
     const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
