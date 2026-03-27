@@ -36,7 +36,7 @@ export function Header() {
                     {
                         data.user ? (
                             <>
-                                <Link href={`/dashboard/${data.user.id}`}>
+                                <Link href={`/${data.user.id}`}>
                                     <Button
                                         variant="ghost"
                                         className="bg-white text-black hover:bg-gray-200"

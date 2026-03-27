@@ -124,7 +124,7 @@ export function LoginForm() {
     // }, [errors])
 
     return (
-        <form onSubmit={(e) => handleEmailPassLogin(e)} className="space-y-6">
+        <form onSubmit={(e) => handleEmailPassLogin(e)} className="min-w-md space-y-6">
             <div className="text-center">
                 <div className="text-2xl font-semibold text-white mb-2 cursor-pointer" onClick={() => {
                     router.replace("/");

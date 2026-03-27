@@ -17,7 +17,7 @@ import axios from "axios";
 export default function Dashboard() {
     const router = useRouter();
     const { userId } = useParams();
-    console.log(userId);
+    // console.log(userId);
 
     const [projects, setProjects] = useState<Project[]>([]);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function Dashboard() {
     // console.log(user)
 
     const { user, session } = useContext(UserContext);
-    console.log(user);
+    // console.log(user);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -75,12 +75,13 @@ export default function Dashboard() {
                     label: "+ New Project",
                     onClick: () => setDialogOpen(true),
                 }}
+                userName={`${user?.user_metadata?.full_name}`}
                 logout={logout}
             />
 
             <div className="px-8 py-12">
                 {projects.length === 0 ? (
-                    <div className="max-w-md">
+                    <div className="max-w-md text-white">
                         {/* <Empty
                             title="No projects yet"
                             aria-description="Create your first mock API project to get started"
@@ -91,7 +92,7 @@ export default function Dashboard() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {projects.map((project) => (
-                            <ProjectCard key={project.id} project={project} />
+                            <ProjectCard key={project.id} project={project} userId={userId as string} />
                         ))}
                     </div>
                 )}

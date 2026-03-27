@@ -12,7 +12,7 @@ export default function Callback() {
         const getSession = async () => {
             const { data, error } = await supabase.auth.getSession();
             console.log(data);
-            
+
             // if (error) {
             //     router.replace("/");
             //     return;
@@ -20,6 +20,8 @@ export default function Callback() {
 
             // const user = data.session?.user;
             // console.log(user);
+
+            if (!data.session?.user) return;
 
             try {
                 await axios.post(
@@ -37,21 +39,38 @@ export default function Callback() {
                     }
                 );
             } catch (err) {
-                console.error(err);
+                console.log("Register skipped:", err);
             }
 
-            if (data?.session) {
-                router.replace(`/dashboard/${data.session.user?.id}`);
-            } else if (error) {
-                router.replace("/");
-                return;
-            } else {
-                router.replace("/");
-            }
+            setTimeout(() => {
+                if (data?.session) {
+                    router.replace(`/${data.session.user?.id}`);
+                } else if (error) {
+                    router.replace("/login");
+                    return;
+                } else {
+                    router.replace("/");
+                }
+            }, 3000);
         };
 
         getSession();
     }, [router]);
 
-    return <p>Signing you in...</p>;
+    return (
+        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-[#0a192f] via-[#020617] to-[#000] text-blue-100 px-4">
+            <div className="flex flex-col items-center justify-center gap-6 text-center">
+                {/* Spinner */}
+                <div className="relative h-12 w-12 sm:h-14 sm:w-14">
+                    <div className="absolute inset-0 animate-spin rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-transparent"></div>
+                    <div className="absolute inset-1 rounded-full bg-gradient-to-br from-[#0a192f] via-[#020617] to-[#000]"></div>
+                </div>
+
+                {/* Text */}
+                <p className="text-base sm:text-lg md:text-xl font-medium tracking-wide animate-pulse">
+                    Signing you in...
+                </p>
+            </div>
+        </div>
+    );
 }

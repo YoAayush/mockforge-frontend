@@ -11,10 +11,11 @@ interface HeaderProps {
         label: string;
         onClick: MouseEventHandler<HTMLButtonElement>;
     };
+    userName: string;
     logout: MouseEventHandler<HTMLButtonElement>;
 }
 
-export function Header({ title, subtitle, action, logout }: HeaderProps) {
+export function Header({ title, subtitle, action, userName, logout }: HeaderProps) {
     return (
         <div className="border-b border-neutral-800 bg-neutral-950">
             <div className="flex items-center justify-between px-8 py-6">
@@ -23,7 +24,7 @@ export function Header({ title, subtitle, action, logout }: HeaderProps) {
                     <span className="text-lg font-semibold text-white">MockForge</span>
                 </Link>
                 <div className="flex items-center gap-4">
-                    <span className="text-sm text-neutral-400">asdigaksl</span>
+                    <span className="text-sm text-neutral-400">{userName}</span>
                     <Button variant="ghost" size="sm" className="text-neutral-400" onClick={logout}>
                         Logout
                     </Button>

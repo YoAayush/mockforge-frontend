@@ -80,7 +80,7 @@ export function SignupForm() {
             console.log(error);
             return;
         }
-        console.log(data);
+        // console.log(data);
 
         // Email confirmation enabled
         if (!data.session) {
@@ -89,11 +89,11 @@ export function SignupForm() {
         }
 
         // Only runs if email confirmation disabled OR already verified
-        console.log("User created:", data.user);
+        // console.log("User created:", data.user);
     };
 
     return (
-        <form onSubmit={(e) => handleSignUpEmailPass(e)} className="space-y-6">
+        <form onSubmit={(e) => handleSignUpEmailPass(e)} className="min-w-md space-y-6">
             <div className="text-center">
                 <div className="text-2xl font-semibold text-white mb-2 cursor-pointer" onClick={() => {
                     router.replace("/");
