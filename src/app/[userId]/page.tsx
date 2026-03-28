@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/components/userProvider";
+import { UserContext } from "@/lib/userProvider";
 // import { Button } from "@/components/ui/button";
 // import Link from "next/link";
 import { CreateProjectDialog } from "@/components/create-project-dialog";
@@ -21,11 +21,12 @@ export default function Dashboard() {
 
     const [projects, setProjects] = useState<Project[]>([]);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [projectsList, setprojectsList] = useState(false);
 
     // const { data: {user} } = await supabase.auth.getUser();
     // console.log(user)
 
-    const { user, session } = useContext(UserContext);
+    const { user, session } = useContext(UserContext); // userContext
     // console.log(user);
 
     useEffect(() => {
@@ -52,6 +53,10 @@ export default function Dashboard() {
         fetchProject();
     }, [session]);
 
+    setTimeout(() => {
+        setprojectsList(true);
+    }, 3000);
+
     const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -67,7 +72,7 @@ export default function Dashboard() {
     };
 
     return (
-        <main className="min-h-screen bg-slate-900">
+        <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
             <Header
                 title="My Projects"
                 subtitle="Create and manage your mock API projects"
@@ -79,23 +84,28 @@ export default function Dashboard() {
                 logout={logout}
             />
 
-            <div className="px-8 py-12">
-                {projects.length === 0 ? (
-                    <div className="max-w-md text-white">
-                        {/* <Empty
-                            title="No projects yet"
-                            aria-description="Create your first mock API project to get started"
-                        /> */}
+            <div className="px-12 py-4">
+                {
+                    !projectsList ? (
+                        <div className="flex flex-col items-center justify-center gap-6 text-center">
+                            <div className="relative h-12 w-12 sm:h-14 sm:w-14">
+                                <div className="absolute inset-0 animate-spin rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-transparent"></div>
+                                <div className="absolute inset-1 rounded-full bg-gradient-to-br from-[#0a192f] via-[#020617] to-[#000]"></div>
+                            </div>
+                        </div>
+                    ) : projects.length === 0 ? (
+                        <div className="max-w-md text-white">
 
-                        No Projects Available
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {projects.map((project) => (
-                            <ProjectCard key={project.id} project={project} userId={userId as string} />
-                        ))}
-                    </div>
-                )}
+                            No Projects Available
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {projects.map((project) => (
+                                <ProjectCard key={project.id} project={project} userId={userId as string} />
+                            ))}
+                        </div>
+                    )
+                }
             </div>
 
             <CreateProjectDialog

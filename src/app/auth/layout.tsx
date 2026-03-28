@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react"
-import { UserContext } from "@/components/userProvider"
+import { UserContext } from "@/lib/userProvider"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
@@ -17,7 +17,7 @@ export default function AuthLayout({
 
   useEffect(() => {
     if (!loading && session && user) {
-      router.replace(`/dashboard/${user?.id}`);
+      router.replace(`/${user?.id}`);
     }
   }, [loading, session, user, router]);
 

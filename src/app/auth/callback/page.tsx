@@ -11,7 +11,7 @@ export default function Callback() {
     useEffect(() => {
         const getSession = async () => {
             const { data, error } = await supabase.auth.getSession();
-            console.log(data);
+            // console.log(data);
 
             // if (error) {
             //     router.replace("/");
@@ -68,7 +68,7 @@ export default function Callback() {
 
                 {/* Text */}
                 <p className="text-base sm:text-lg md:text-xl font-medium tracking-wide animate-pulse">
-                    Signing you in...
+                    Loading...
                 </p>
             </div>
         </div>

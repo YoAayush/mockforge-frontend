@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { useState, useEffect, createContext, ReactNode, useContext } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Session, User } from "@supabase/supabase-js";
 // import { useRouter } from "next/navigation";
@@ -57,4 +57,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             {children}
         </UserContext.Provider>
     );
+};
+
+export const useUser = () => {
+    const context = useContext(UserContext);
+
+    if (!context) {
+        throw new Error("useProject must be used within ProjectProvider");
+    }
+
+    return context; // { session, user, loading }
 };

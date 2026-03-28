@@ -15,12 +15,24 @@ export function ProjectCard({ project, userId }: ProjectCardProps) {
 
     return (
         <Link href={`/${userId}/${project.id}`}>
-            <Card className="bg-neutral-900 border-neutral-800 hover:border-neutral-700 transition-colors cursor-pointer p-6">
-                <h3 className="text-lg font-semibold text-white mb-1">{project.name}</h3>
-                <p className="text-sm text-neutral-500 mb-4">{project.description || "No description"}</p>
-                <div className="flex items-center justify-between text-xs text-neutral-500">
-                    {/* <span>{project.schemas.length} schema{project.schemas.length !== 1 ? 's' : ''}</span> */}
-                    <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+            <Card className="group relative bg-slate-900/50 hover:bg-slate-800/50 border-2 border-slate-800/50 hover:border-slate-700 rounded-xl p-6 transition-all duration-300 cursor-pointer overflow-hidden">
+                {/* Gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10">
+                    <h3 className="text-xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">
+                        {project.name}
+                    </h3>
+
+                    <div className="space-y-3 mb-4">
+                        <div>
+                            <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">API ID</p>
+                            <p className="font-mono text-sm text-slate-300 break-all">{project.id}</p>
+                        </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-slate-700/50">
+                        <p className="text-xs text-slate-500">Created {new Date(project.createdAt).getDate()}/{new Date(project.createdAt).getMonth()}/{new Date(project.createdAt).getFullYear()}</p>
+                    </div>
                 </div>
             </Card>
         </Link>

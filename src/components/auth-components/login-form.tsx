@@ -111,7 +111,7 @@ export function LoginForm() {
         }
 
         console.log("Logged in user:", data.user)
-        // router.push(`/dashboard/${data.user.id}`);
+        // router.push(`/${data.user.id}`);
     };
 
     console.log(errors);

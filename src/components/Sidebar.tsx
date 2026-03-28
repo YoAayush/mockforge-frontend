@@ -3,44 +3,47 @@
 import { ChevronLeft, Database, Zap, Code, Gamepad2, Settings as SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useContext } from 'react'
-import { UserContext } from './userProvider'
-import axios from 'axios'
-import { Project } from '@/lib/types'
+// import { useEffect, useState } from 'react'
+// import { useContext } from 'react'
+// import { UserContext } from '../lib/userProvider'
+// import axios from 'axios'
+// import { Project } from '@/lib/types'
+import { useProject } from '@/lib/projectProvider'
 
 export function Sidebar() {
     const pathname = usePathname()
     const { userId, projectId } = useParams();
-    const [project, setProject] = useState<Project>();
+    const { projectData } = useProject();
+    // const [project, setProject] = useState<Project>();
 
-    const { session } = useContext(UserContext);
+    // const { session } = useContext(UserContext);
 
-    useEffect(() => {
-        const fetchProject = async () => {
-            try {
-                if (!session?.access_token) return;
+    // useEffect(() => {
+    //     const fetchProject = async () => {
+    //         try {
+    //             if (!session?.access_token) return;
 
-                const res = await axios.get(
-                    `http://localhost:3000/api/v1/projects/${projectId}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${session?.access_token}`,
-                        },
-                    }
-                );
+    //             const res = await axios.get(
+    //                 `http://localhost:3000/api/v1/projects/${projectId}`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${session?.access_token}`,
+    //                     },
+    //                 }
+    //             );
 
-                console.log(res);
-                setProject(res.data.project);
-            } catch (error) {
-                console.error("Error fetching project:", error);
-            }
-        };
+    //             console.log(res);
+    //             setProject(res.data.project);
+    //         } catch (error) {
+    //             console.error("Error fetching project:", error);
+    //         }
+    //     };
 
-        fetchProject();
-    }, [session]);
+    //     fetchProject();
+    // }, [session]);
 
     const navItems = [
+        { label: 'Dashboard', icon: Database, href: `/${userId}/${projectId}` },
         { label: 'Schemas', icon: Database, href: `/${userId}/${projectId}/schemas` },
         { label: 'API Endpoints', icon: Zap, href: `/${userId}/${projectId}/api-endpoints` },
         { label: 'Mock Data', icon: Code, href: `/${userId}/${projectId}/mock-data` },
@@ -58,8 +61,8 @@ export function Sidebar() {
                         <h1 className="text-xl font-bold text-white">MockForge</h1>
                     </div>
                 </Link>
-                <p className="text-sm text-slate-400">{project?.name}</p>
-                <p className="text-xs text-slate-500">{project?.description}</p>
+                <p className="text-sm text-slate-400">{projectData?.name}</p>
+                <p className="text-xs text-slate-500">{projectData?.description}</p>
             </div>
 
             {/* Navigation */}
@@ -86,11 +89,11 @@ export function Sidebar() {
             {/* Footer */}
             <div className="p-4 border-t border-slate-800">
                 <Link
-                    href={`/${userId}/${projectId}`}
+                    href={`/${userId}`}
                     className="flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors text-sm"
                 >
                     <ChevronLeft className="w-4 h-4" />
-                    <span>Back to Dashboard</span>
+                    <span>Back to Projects List</span>
                 </Link>
             </div>
         </div>

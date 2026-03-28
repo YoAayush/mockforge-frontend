@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 // import { useMockForge } from "@/lib/context";
 import axios from "axios";
-import { UserContext } from "./userProvider";
+import { UserContext } from "../lib/userProvider";
 import { useContext } from "react";
 
 interface CreateProjectDialogProps {

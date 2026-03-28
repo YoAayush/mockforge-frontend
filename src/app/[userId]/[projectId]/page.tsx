@@ -3,8 +3,70 @@
 import { BarChart3, Code, Zap, Database } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 // import { useParams } from 'next/navigation';
+import axios from 'axios';
+import { useState } from 'react';
+// import { UserContext } from '@/lib/userProvider';
+// import { Project } from '@/lib/types';
+// import { useParams } from 'next/navigation';
+import { useProject } from '@/lib/projectProvider';
 
 export default function DashboardPage() {
+
+    const { projectData } = useProject();
+    // const [project, setProject] = useState<Project>();
+    const [showProject, setShowProject] = useState(false);
+
+    // const { session } = useContext(UserContext);
+    // const { projectId } = useParams();
+    // console.log(user);
+
+    // useEffect(() => {
+    //     const fetchProject = async () => {
+    //         try {
+    //             if (!session?.access_token) return;
+
+    //             const res = await axios.get(
+    //                 `http://localhost:3000/api/v1/projects/${projectId as string}`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${session.access_token}`,
+    //                     },
+    //                 }
+    //             );
+
+    //             console.log(res);
+    //             setProject(res.data.project);
+    //         } catch (error) {
+    //             console.error("Error fetching project:", error);
+    //         }
+    //     };
+
+    //     fetchProject();
+    // }, [session]);
+
+    setTimeout(() => {
+        setShowProject(true);
+    }, 2000);
+
+    if (!showProject) {
+        return (
+            <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-[#0a192f] via-[#020617] to-[#000] text-blue-100 px-4">
+                <div className="flex flex-col items-center justify-center gap-6 text-center">
+                    {/* Spinner */}
+                    <div className="relative h-12 w-12 sm:h-14 sm:w-14">
+                        <div className="absolute inset-0 animate-spin rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-transparent"></div>
+                        <div className="absolute inset-1 rounded-full bg-gradient-to-br from-[#0a192f] via-[#020617] to-[#000]"></div>
+                    </div>
+
+                    {/* Text */}
+                    <p className="text-base sm:text-lg md:text-xl font-medium tracking-wide animate-pulse">
+                        Loading Your Project ...
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
             {/* Header */}
