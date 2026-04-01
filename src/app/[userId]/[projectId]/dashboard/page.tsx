@@ -3,7 +3,7 @@
 import { BarChart3, Code, Zap, Database } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 // import { useParams } from 'next/navigation';
-import axios from 'axios';
+// import axios from 'axios';
 import { useState } from 'react';
 // import { UserContext } from '@/lib/userProvider';
 // import { Project } from '@/lib/types';
@@ -12,7 +12,8 @@ import { useProject } from '@/lib/projectProvider';
 
 export default function DashboardPage() {
 
-    const { projectData } = useProject();
+    const { projectData, projectSchemas } = useProject();
+    console.log(projectData, projectSchemas);
     // const [project, setProject] = useState<Project>();
     const [showProject, setShowProject] = useState(false);
 
@@ -84,7 +85,7 @@ export default function DashboardPage() {
                             <h3 className="text-slate-300 text-sm font-medium">Total Schemas</h3>
                             <Database className="w-5 h-5 text-blue-400" />
                         </div>
-                        <p className="text-3xl font-bold">5</p>
+                        <p className="text-3xl font-bold">{projectSchemas?.length}</p>
                         <p className="text-xs text-slate-500 mt-2">Active data models</p>
                     </div>
 
@@ -93,7 +94,7 @@ export default function DashboardPage() {
                             <h3 className="text-slate-300 text-sm font-medium">API Endpoints</h3>
                             <Zap className="w-5 h-5 text-green-400" />
                         </div>
-                        <p className="text-3xl font-bold">12</p>
+                        <p className="text-3xl font-bold">{Number(projectSchemas?.length) * 5}</p>
                         <p className="text-xs text-slate-500 mt-2">Generated endpoints</p>
                     </div>
 
@@ -106,14 +107,14 @@ export default function DashboardPage() {
                         <p className="text-xs text-slate-500 mt-2">Mock records generated</p>
                     </div>
 
-                    <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-slate-600 transition-colors">
+                    {/* <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-slate-600 transition-colors">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-slate-300 text-sm font-medium">Requests Today</h3>
                             <BarChart3 className="w-5 h-5 text-orange-400" />
                         </div>
                         <p className="text-3xl font-bold">1.2k</p>
                         <p className="text-xs text-slate-500 mt-2">API requests made</p>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Quick Actions */}
@@ -123,10 +124,10 @@ export default function DashboardPage() {
                         <Button className="bg-blue-600 hover:bg-blue-700">
                             Create New Schema
                         </Button>
-                        <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+                        <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
                             View API Endpoints
                         </Button>
-                        <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+                        <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
                             Open API Playground
                         </Button>
                     </div>

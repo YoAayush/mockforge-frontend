@@ -55,7 +55,7 @@ export default function Dashboard() {
 
     setTimeout(() => {
         setprojectsList(true);
-    }, 3000);
+    }, 2000);
 
     const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

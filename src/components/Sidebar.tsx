@@ -43,10 +43,10 @@ export function Sidebar() {
     // }, [session]);
 
     const navItems = [
-        { label: 'Dashboard', icon: Database, href: `/${userId}/${projectId}` },
+        { label: 'Dashboard', icon: Database, href: `/${userId}/${projectId}/dashboard` },
         { label: 'Schemas', icon: Database, href: `/${userId}/${projectId}/schemas` },
         { label: 'API Endpoints', icon: Zap, href: `/${userId}/${projectId}/api-endpoints` },
-        { label: 'Mock Data', icon: Code, href: `/${userId}/${projectId}/mock-data` },
+        // { label: 'Mock Data', icon: Code, href: `/${userId}/${projectId}/mock-data` },
         { label: 'API Playground', icon: Gamepad2, href: `/${userId}/${projectId}/api-playground` },
         { label: 'Settings', icon: SettingsIcon, href: `/${userId}/${projectId}/settings` },
     ]
@@ -69,7 +69,7 @@ export function Sidebar() {
             <nav className="flex-1 overflow-y-auto p-4 space-y-2">
                 {navItems.map((item) => {
                     const Icon = item.icon
-                    const isActive = pathname === item.href
+                    const isActive = pathname === item.href || pathname.includes(item.href + '/');
                     return (
                         <Link
                             key={item.href}

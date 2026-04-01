@@ -1,29 +1,76 @@
 'use client'
 
-import { Plus, Edit2, Trash2 } from 'lucide-react'
+import { useContext, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { Plus, Edit2, Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useParams } from 'next/navigation'
+import { Schema } from '@/lib/types'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
+import { UserContext } from '@/lib/userProvider'
+import Loader from '@/components/Loader'
+import { useProject } from '@/lib/projectProvider'
 
 export default function SchemasPage() {
-    const schemas = [
-        {
-            id: 1,
-            name: 'User',
-            fields: 2,
-            created: '2/2/2026',
-        },
-        {
-            id: 2,
-            name: 'Product',
-            fields: 5,
-            created: '2/1/2026',
-        },
-        {
-            id: 3,
-            name: 'Order',
-            fields: 4,
-            created: '1/28/2026',
-        },
-    ]
+    const { userId, projectId }: { userId: string, projectId: string } = useParams()
+    const [schemas, setSchemas] = useState<Schema[]>([]);
+    const router = useRouter();
+    const { session } = useContext(UserContext);
+    const { projectSchemas } = useProject();
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editName, setEditName] = useState('');
+    const [editFields, setEditFields] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function FetchSchema() {
+            try {
+                setLoading(true);
+                // const response = await axios.get(`http://localhost:3000/api/v1/schemas/all/${projectId}`, {
+                //     headers: {
+                //         Authorization: `Bearer ${session?.access_token}`,
+                //     },
+                // });
+                // console.log('Fetched schemas:', response.data);
+                setSchemas(projectSchemas || []);
+            } catch (error) {
+                console.error('Error fetching schemas:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        FetchSchema();
+    }, [projectId, session?.access_token]);
+
+    const handleNewSchema = () => {
+        router.push(`/${userId}/${projectId}/schemas/new`)
+    }
+
+    const handleDeleteSchema = (id: string) => {
+        setSchemas(schemas.filter(s => Number(s.id) !== Number(id)))
+    }
+
+    const handleEditSchema = (schema: typeof schemas[0]) => {
+        setEditingId(schema.id)
+        setEditName(schema.name)
+        // setEditFields(schema.fields)
+    }
+
+    const handleSaveEdit = () => {
+        setSchemas(schemas.map(s =>
+            s.id === editingId
+                ? { ...s, name: editName, fields: s.fields.slice(0, editFields) }
+                : s
+        ))
+        setEditingId(null)
+    }
+
+    const handleCancelEdit = () => {
+        setEditingId(null)
+    }
+
+    if (loading) return <Loader />;
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
@@ -33,7 +80,7 @@ export default function SchemasPage() {
                     <h1 className="text-3xl font-bold mb-2">Schemas</h1>
                     <p className="text-slate-400">Define data models for your mock APIs</p>
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700 flex gap-2">
+                <Button onClick={handleNewSchema} className="bg-blue-600 hover:bg-blue-700 flex gap-2">
                     <Plus className="w-4 h-4" />
                     New Schema
                 </Button>
@@ -52,17 +99,17 @@ export default function SchemasPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-700">
-                            {schemas.map((schema) => (
+                            {schemas?.map((schema) => (
                                 <tr key={schema.id} className="hover:bg-slate-900/50 transition-colors">
                                     <td className="px-6 py-4 text-sm text-slate-200">{schema.name}</td>
-                                    <td className="px-6 py-4 text-sm text-slate-400">{schema.fields} fields</td>
-                                    <td className="px-6 py-4 text-sm text-slate-400">{schema.created}</td>
+                                    <td className="px-6 py-4 text-sm text-slate-400">{schema.fields.length} fields</td>
+                                    <td className="px-6 py-4 text-sm text-slate-400">{schema.createdAt}</td>
                                     <td className="px-6 py-4 text-sm">
                                         <div className="flex gap-2">
-                                            <button className="p-2 hover:bg-slate-700 rounded text-blue-400 hover:text-blue-300 transition-colors">
+                                            <Link href={`/${userId}/${projectId}/schemas/${schema.id}`} className="p-2 hover:bg-slate-700 rounded text-blue-400 hover:text-blue-300 transition-colors">
                                                 <Edit2 className="w-4 h-4" />
-                                            </button>
-                                            <button className="p-2 hover:bg-slate-700 rounded text-red-400 hover:text-red-300 transition-colors">
+                                            </Link>
+                                            <button onClick={() => handleDeleteSchema(schema.id)} className="p-2 hover:bg-slate-700 rounded text-red-400 hover:text-red-300 transition-colors">
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
@@ -73,6 +120,61 @@ export default function SchemasPage() {
                     </table>
                 </div>
             </div>
+
+            {/* Edit Modal */}
+            {editingId !== null && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 w-full max-w-md">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-semibold text-white">Edit Schema</h2>
+                            <button
+                                onClick={handleCancelEdit}
+                                className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-slate-200 transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">Schema Name</label>
+                                <input
+                                    type="text"
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">Number of Fields</label>
+                                <input
+                                    type="number"
+                                    value={editFields}
+                                    onChange={(e) => setEditFields(parseInt(e.target.value) || 0)}
+                                    className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+
+                            <div className="flex gap-3 pt-2">
+                                <Button
+                                    onClick={handleSaveEdit}
+                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                >
+                                    Save Changes
+                                </Button>
+                                <Button
+                                    onClick={handleCancelEdit}
+                                    variant="outline"
+                                    className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

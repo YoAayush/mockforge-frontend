@@ -14,7 +14,7 @@ export function ProjectCard({ project, userId }: ProjectCardProps) {
     // if (!userId) return new Error("Project ID is missing !!!");
 
     return (
-        <Link href={`/${userId}/${project.id}`}>
+        <Link href={`/${userId}/${project.id}/dashboard`}>
             <Card className="group relative bg-slate-900/50 hover:bg-slate-800/50 border-2 border-slate-800/50 hover:border-slate-700 rounded-xl p-6 transition-all duration-300 cursor-pointer overflow-hidden">
                 {/* Gradient overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
