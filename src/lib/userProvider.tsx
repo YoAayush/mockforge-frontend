@@ -6,20 +6,20 @@ import { Session, User } from "@supabase/supabase-js";
 // import { useRouter } from "next/navigation";
 
 type UserContextType = {
-    session: Session | null;
+    session: Session | null | undefined;
     user: User | null;
     loading: Boolean
 };
 
 export const UserContext = createContext<UserContextType>({
-    session: null,
+    session: undefined,
     user: null,
     loading: true
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     // const router = useRouter();
-    const [session, setSession] = useState<Session | null>(null);
+    const [session, setSession] = useState<Session | null | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User | null>(null);
     // console.log(session);

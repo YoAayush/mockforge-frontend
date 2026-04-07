@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
 import Loader from "@/components/Loader";
@@ -47,8 +47,7 @@ export default function Callback() {
                 if (data?.session) {
                     router.replace(`/${data.session.user?.id}`);
                 } else if (error) {
-                    router.replace("/login");
-                    return;
+                    redirect("/login");
                 } else {
                     router.replace("/");
                 }

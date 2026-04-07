@@ -78,6 +78,10 @@ export interface Schema {
   // relations
   fields: SchemaField[];
   records: RecordType[];
+
+  _count: {
+    records: number;
+  };
 }
 
 // =========================

@@ -39,7 +39,7 @@ export default function ProjectLayout({
 
     useEffect(() => {
         if (!userId || !projectId) {
-            router.replace("/login");
+            router.replace("/auth/login");
         }
     }, [userId, projectId, router]);
 

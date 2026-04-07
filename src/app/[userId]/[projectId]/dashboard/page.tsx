@@ -4,18 +4,32 @@ import { BarChart3, Code, Zap, Database } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 // import { useParams } from 'next/navigation';
 // import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { UserContext } from '@/lib/userProvider';
 // import { Project } from '@/lib/types';
 // import { useParams } from 'next/navigation';
 import { useProject } from '@/lib/projectProvider';
+import { useUser } from '@/lib/userProvider';
+import Link from 'next/link';
 
 export default function DashboardPage() {
-
+    const { user } = useUser();
     const { projectData, projectSchemas } = useProject();
-    console.log(projectData, projectSchemas);
-    // const [project, setProject] = useState<Project>();
     const [showProject, setShowProject] = useState(false);
+    const [recordsCount, setrecordsCount] = useState<number>(0);
+
+    // console.log(projectData, projectSchemas);
+
+    useEffect(() => {
+        const RecordsCount: number = projectSchemas?.reduce((total, schema) => total + (schema?._count.records || 0), 0) || 0;
+        // console.log("Total Records:", RecordsCount);
+        setrecordsCount(RecordsCount);
+        // projectSchemas?.forEach((schema) => {
+        //     console.log(schema._count.records);
+        // });
+    }, [projectData, projectSchemas]);
+
+    // const [project, setProject] = useState<Project>();
 
     // const { session } = useContext(UserContext);
     // const { projectId } = useParams();
@@ -103,7 +117,7 @@ export default function DashboardPage() {
                             <h3 className="text-slate-300 text-sm font-medium">Mock Data</h3>
                             <Code className="w-5 h-5 text-purple-400" />
                         </div>
-                        <p className="text-3xl font-bold">245</p>
+                        <p className="text-3xl font-bold">{recordsCount ? recordsCount : 0}</p>
                         <p className="text-xs text-slate-500 mt-2">Mock records generated</p>
                     </div>
 
@@ -121,15 +135,21 @@ export default function DashboardPage() {
                 <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-8">
                     <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
                     <div className="flex gap-3 flex-wrap">
-                        <Button className="bg-blue-600 hover:bg-blue-700">
-                            Create New Schema
-                        </Button>
-                        <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
-                            View API Endpoints
-                        </Button>
-                        <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
-                            Open API Playground
-                        </Button>
+                        <Link href={`/${user?.id}/${projectData?.id}/schemas/new`}>
+                            <Button className="bg-blue-600 hover:bg-blue-700">
+                                Create New Schema
+                            </Button>
+                        </Link>
+                        <Link href={`/${user?.id}/${projectData?.id}/api-endpoints`}>
+                            <Button className="bg-green-600 hover:bg-green-700">
+                                View API Endpoints
+                            </Button>
+                        </Link>
+                        <Link href={`/${user?.id}/${projectData?.id}/api-playground`}>
+                            <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
+                                Open API Playground
+                            </Button>
+                        </Link>
                     </div>
                 </div>
 

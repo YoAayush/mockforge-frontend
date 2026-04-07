@@ -47,8 +47,8 @@ export const ProjectProvider = ({
                         },
                     }
                 );
-                console.log(res1.data.project);
-                console.log(res2.data.schemas);
+                // console.log(res1.data.project);
+                // console.log(res2.data.schemas);
                 setProject(res1.data.project);
                 setProjectSchemas(res2.data.schemas);
             } catch (error) {

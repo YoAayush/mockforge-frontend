@@ -1,8 +1,7 @@
 "use client";
 
-import { useContext } from "react"
-import { UserContext } from "@/lib/userProvider"
-import { useRouter } from "next/navigation"
+import { useUser } from "@/lib/userProvider"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 export default function AuthLayout({
@@ -11,15 +10,19 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
 
-  const { user, session, loading } = useContext(UserContext);
+  const { user, session, loading } = useUser();
   // console.log(user,loading)
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && session && user) {
+    if (loading) return; // or a loading spinner
+    // if (!pathname.startsWith("/auth")) return;
+
+    if (pathname.startsWith("/auth") && session && user) {
       router.replace(`/${user?.id}`);
     }
-  }, [loading, session, user, router]);
+  }, [loading, session, user, pathname]);
 
   // if (loading) return <p>Loading !!!</p>
 

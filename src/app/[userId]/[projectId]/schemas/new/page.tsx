@@ -18,7 +18,7 @@ export default function EditSchemaPage() {
     const router = useRouter();
     const { session } = useContext(UserContext);
     const pathname = usePathname();
-    console.log('Current path:', pathname);
+    // console.log('Current path:', pathname);
 
     function generateJSON() {
         return JSON.stringify(

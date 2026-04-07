@@ -25,9 +25,12 @@ export default function UserLayout({
     // }, [session, loading, router]);
 
     useEffect(() => {
+        // Wait until session is resolved
+        if (session === undefined) return;
+
         const validateUser = async () => {
             try {
-                if (!session?.access_token) {
+                if (session === null || !session?.access_token) {
                     router.replace("/auth/login");
                     return;
                 }
@@ -59,8 +62,18 @@ export default function UserLayout({
     // }, []);
 
     // // will make a good looking loader
-    if (loading) return <Loader />;
-    if (!session) return null;
+    // if (loading) return <Loader />;
+    // if (!session) return null;
+
+    // still loading session
+    if (session === undefined || loading) {
+        return <Loader />;
+    }
+
+    if (session === null) {
+        router.replace("/auth/login");
+        return null;
+    }
 
     return (
         <>
