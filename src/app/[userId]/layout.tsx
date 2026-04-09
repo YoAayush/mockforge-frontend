@@ -70,10 +70,10 @@ export default function UserLayout({
         return <Loader />;
     }
 
-    if (session === null) {
-        router.replace("/auth/login");
-        return null;
-    }
+    // if (session === null) {
+    //     router.replace("/auth/login");
+    //     return null;
+    // }
 
     return (
         <>

@@ -2,8 +2,41 @@
 
 import { Save, Shield, Bell, Key } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useProject } from '@/lib/projectProvider'
+import { useUser } from '@/lib/userProvider'
+import axios from 'axios'
+import { useState } from 'react'
 
 export default function SettingsPage() {
+
+    const { projectData } = useProject();
+    const { session } = useUser();
+
+    const [projectName, setProjectName] = useState(projectData?.name || "");
+    const [projectDescription, setProjectDescription] = useState(projectData?.description || "");
+
+    const UpdateSettings = async () => {
+        try {
+            const res = await axios.patch(`http://localhost:3000/api/v1/projects/${projectData?.id}`, {
+                name: projectName,
+                description: projectDescription,
+                visibility: projectData?.visibility
+            }, {
+                headers: {
+                    Authorization: `Bearer ${session?.access_token}`
+                }
+            });
+
+            if (res.status === 200) {
+                alert("Project settings updated successfully!");
+            } else {
+                alert("Failed to update project settings. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error updating project:", error);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
             {/* Header */}
@@ -25,22 +58,24 @@ export default function SettingsPage() {
                             <label className="block text-sm font-medium text-slate-300 mb-2">Project Name</label>
                             <input
                                 type="text"
-                                defaultValue="MockForge"
+                                defaultValue={`${projectName}`}
+                                onChange={(e) => setProjectName(e.target.value)}
                                 className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">Project ID</label>
                             <div className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-400 text-sm font-mono">
-                                c5a67c10-6109-464f-9f5e-9d1d782786dc
+                                {`${projectData?.id}`}
                             </div>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
                             <textarea
-                                defaultValue="MockForge is your go-to solution for generating mock APIs."
+                                defaultValue={`${projectDescription}`}
                                 className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm"
                                 rows={3}
+                                onChange={(e) => setProjectDescription(e.target.value)}
                             />
                         </div>
                     </div>
@@ -58,7 +93,7 @@ export default function SettingsPage() {
                                 <p className="text-sm font-medium text-slate-200">Production Key</p>
                                 <p className="text-xs text-slate-500 font-mono">sk_live_••••••••••••••••</p>
                             </div>
-                            <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700 text-xs">
+                            <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
                                 Regenerate
                             </Button>
                         </div>
@@ -67,15 +102,15 @@ export default function SettingsPage() {
                                 <p className="text-sm font-medium text-slate-200">Development Key</p>
                                 <p className="text-xs text-slate-500 font-mono">sk_test_••••••••••••••••</p>
                             </div>
-                            <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700 text-xs">
+                            <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
                                 Regenerate
                             </Button>
                         </div>
                     </div>
                 </div>
 
-                {/* Notifications */}
-                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
+                {/* Notifications - later implementation */}
+                {/* <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
                     <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                         <Bell className="w-5 h-5" />
                         Notifications
@@ -94,10 +129,10 @@ export default function SettingsPage() {
                             <span className="text-sm text-slate-300">New feature announcements</span>
                         </label>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Save Button */}
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 flex gap-2 justify-center">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 flex gap-2 justify-center" onClick={UpdateSettings}>
                     <Save className="w-4 h-4" />
                     Save Settings
                 </Button>
