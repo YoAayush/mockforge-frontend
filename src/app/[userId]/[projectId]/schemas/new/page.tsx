@@ -172,7 +172,7 @@ export default function EditSchemaPage() {
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
             {/* Header */}
             <div className="border-b border-slate-800 px-8 py-6 flex items-center gap-4">
-                <Link href="/(admin)/schemas" className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                <Link href={`/${userId}/${projectId}/dashboard`} className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     Dashboard
                 </Link>

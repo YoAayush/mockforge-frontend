@@ -1,6 +1,6 @@
 'use client'
 
-import { Save, Shield, Bell, Key } from 'lucide-react'
+import { Save, Shield, Bell, Key, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useProject } from '@/lib/projectProvider'
 import { useUser } from '@/lib/userProvider'
@@ -37,6 +37,37 @@ export default function SettingsPage() {
         }
     };
 
+    function copyToClipboard(text: string | undefined) {
+        if (text) {
+            navigator.clipboard.writeText(text)
+        }
+    }
+
+    function maskApiKey(
+        key: string | undefined,
+        options?: {
+            prefixLength?: number;
+            suffixLength?: number;
+            maskChar?: string;
+        }
+    ) {
+        if (!key) return "";
+
+        const prefixLength = options?.prefixLength ?? 4; // e.g. "sk_live"
+        const suffixLength = options?.suffixLength ?? 2;
+        const maskChar = options?.maskChar ?? "•";
+
+        if (key.length <= prefixLength + suffixLength) {
+            return key; // too short to mask properly
+        }
+
+        const prefix = key.slice(0, prefixLength);
+        const suffix = key.slice(-suffixLength);
+        const masked = maskChar.repeat(12); // fixed length for UI consistency
+
+        return `${prefix}_${masked}${suffix}`;
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
             {/* Header */}
@@ -65,8 +96,18 @@ export default function SettingsPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">Project ID</label>
-                            <div className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-400 text-sm font-mono">
+                            <div className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-400 text-sm font-mono flex items-center justify-between gap-4">
                                 {`${projectData?.id}`}
+
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white flex gap-2 shrink-0"
+                                    onClick={() => copyToClipboard(projectData?.id)}
+                                >
+                                    <Copy className="w-4 h-4" />
+                                    Copy ID
+                                </Button>
                             </div>
                         </div>
                         <div>
@@ -90,14 +131,20 @@ export default function SettingsPage() {
                     <div className="space-y-3">
                         <div className="bg-slate-900/50 p-4 rounded border border-slate-700 flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-slate-200">Production Key</p>
-                                <p className="text-xs text-slate-500 font-mono">sk_live_••••••••••••••••</p>
+                                <p className="text-sm font-medium text-slate-200">Authorization Bearer Key</p>
+                                <p className="text-xs text-slate-500 font-mono">{maskApiKey(session?.access_token)}</p>
                             </div>
-                            <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
-                                Regenerate
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white flex gap-2 shrink-0"
+                                onClick={() => copyToClipboard(session?.access_token)}
+                            >
+                                <Copy className="w-4 h-4" />
+                                Copy Key
                             </Button>
                         </div>
-                        <div className="bg-slate-900/50 p-4 rounded border border-slate-700 flex items-center justify-between">
+                        {/* <div className="bg-slate-900/50 p-4 rounded border border-slate-700 flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium text-slate-200">Development Key</p>
                                 <p className="text-xs text-slate-500 font-mono">sk_test_••••••••••••••••</p>
@@ -105,7 +152,7 @@ export default function SettingsPage() {
                             <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
                                 Regenerate
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

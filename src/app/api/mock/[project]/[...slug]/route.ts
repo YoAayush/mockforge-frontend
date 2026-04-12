@@ -4,6 +4,12 @@ import axios from "axios";
 // const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const BASE_URL = "http://localhost:3000/api/v1";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export async function mainHandler(
   req: Request,
   context: { params: Promise<{ project: string; slug: string[] }> },
@@ -62,12 +68,20 @@ export async function mainHandler(
   }
 }
 
+// ✅ Handle Preflight Request (VERY IMPORTANT)
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
+
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
-  return NextResponse.json({ data });
+  return NextResponse.json({ data }, { headers: corsHeaders });
 }
 
 export async function POST(
@@ -75,7 +89,7 @@ export async function POST(
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
-  return NextResponse.json({ data });
+  return NextResponse.json({ data }, { headers: corsHeaders });
 }
 
 export async function PATCH(
@@ -83,7 +97,7 @@ export async function PATCH(
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
-  return NextResponse.json({ data });
+  return NextResponse.json({ data }, { headers: corsHeaders });
 }
 
 export async function DELETE(
@@ -91,5 +105,5 @@ export async function DELETE(
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
-  return NextResponse.json({ data });
+  return NextResponse.json({ data }, { headers: corsHeaders });
 }

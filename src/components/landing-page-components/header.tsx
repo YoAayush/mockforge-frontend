@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun } from 'lucide-react'
+import { BookOpen, HelpCircle, Moon, Sun } from 'lucide-react'
 import { useState } from 'react'
 import { UserContext } from '../../lib/userProvider'
 import { useContext } from 'react'
@@ -32,6 +32,16 @@ export function Header() {
                     >
                         {isDark ? <Sun size={20} /> : <Moon size={20} />}
                     </button>
+
+                    <Link href="/usage" className="text-slate-400 hover:text-slate-200 transition-colors text-sm flex items-center gap-1.5">
+                        <BookOpen className="h-4 w-4" />
+                        Usage
+                    </Link>
+                    
+                    <Link href="/documentation" className="text-slate-400 hover:text-slate-200 transition-colors text-sm flex items-center gap-1.5">
+                        <HelpCircle className="h-4 w-4" />
+                        Documentation
+                    </Link>
 
                     {
                         data.user ? (
