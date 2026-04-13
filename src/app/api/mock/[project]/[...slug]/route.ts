@@ -14,8 +14,15 @@ export async function mainHandler(
   req: Request,
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
+  // console.log(req.headers.get("authorization"));
   const { project, slug } = await context.params;
   console.log("Received request for project:", project, "slug:", slug);
+
+  const BearerToken = req.headers.get("authorization");
+
+  if (!BearerToken) {
+    return { error: "Missing Authorization header" };
+  }
 
   const method = req.method;
   console.log("HTTP method:", method);
@@ -36,24 +43,40 @@ export async function mainHandler(
   try {
     switch (method) {
       case "GET": {
-        const res = await axios.get(url);
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: BearerToken,
+          },
+        });
         return res.data;
       }
 
       case "POST": {
         const body = await req.json();
-        const res = await axios.post(url, body);
+        const res = await axios.post(url, body, {
+          headers: {
+            Authorization: BearerToken,
+          },
+        });
         return res.data;
       }
 
       case "PATCH": {
         const body = await req.json();
-        const res = await axios.patch(url, body);
+        const res = await axios.patch(url, body, {
+          headers: {
+            Authorization: BearerToken,
+          },
+        });
         return res.data;
       }
 
       case "DELETE": {
-        const res = await axios.delete(url);
+        const res = await axios.delete(url, {
+          headers: {
+            Authorization: BearerToken,
+          },
+        });
         return res.data;
       }
 
