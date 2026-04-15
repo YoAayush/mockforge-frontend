@@ -20,9 +20,9 @@ const features = [
 
 export function Features() {
     return (
-        <section className="bg-slate-950 py-20 px-6 border-t border-slate-800">
+        <section className="py-20 px-6 border-t border-default">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-4xl font-bold text-white text-center mb-16">
+                <h2 className="text-4xl font-bold text-primary text-center mb-16">
                     Why MockForge?
                 </h2>
 
@@ -32,13 +32,15 @@ export function Features() {
                         return (
                             <div
                                 key={feature.title}
-                                className="p-6 rounded-lg border border-slate-800 bg-slate-900/50 hover:border-slate-700 transition-colors"
+                                className="p-6 rounded-lg border border-default bg-secondary hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
                             >
-                                <Icon className="text-blue-400 mb-4" size={32} />
-                                <h3 className="text-xl font-semibold text-white mb-3">
+                                <Icon className="text-accent mb-4" size={32} />
+
+                                <h3 className="text-xl font-semibold text-primary mb-3">
                                     {feature.title}
                                 </h3>
-                                <p className="text-slate-400">
+
+                                <p className="text-secondary">
                                     {feature.description}
                                 </p>
                             </div>

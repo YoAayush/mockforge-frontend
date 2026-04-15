@@ -87,23 +87,28 @@ export default function APIEndpointsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <div className="min-h-screen bg-primary text-primary">
+
             {/* Header */}
-            <div className="border-b border-slate-800 px-8 py-6">
+            <div className="border-b border-default px-8 py-6 bg-secondary">
                 <h1 className="text-3xl font-bold mb-2">API Endpoints</h1>
-                <p className="text-slate-400">Auto-generated REST endpoints for your schemas</p>
+                <p className="text-secondary">
+                    Auto-generated REST endpoints for your schemas
+                </p>
             </div>
 
+            {/* Schema Select */}
             <div className="ml-6 mt-4 max-w-md">
-                <label className="block text-sm font-semibold text-slate-300 mb-3">
+                <label className="block text-sm font-semibold text-secondary mb-3">
                     Select Schema
                 </label>
 
                 <Select value={selectedSchemaId} onValueChange={setSelectedSchemaId}>
-                    <SelectTrigger className="bg-slate-900/50 border-slate-700 text-white hover:bg-slate-800/50 focus:ring-blue-500">
+                    <SelectTrigger className="bg-secondary border border-default text-primary hover:bg-tertiary focus:ring-[rgb(var(--accent))]">
                         <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-900 border-slate-700" defaultChecked={true} defaultValue={selectedSchemaId}>
+
+                    <SelectContent className="bg-secondary border border-default">
                         {schemas.map((schema) => (
                             <SelectItem key={schema.id} value={schema.id}>
                                 {schema.name}
@@ -119,22 +124,34 @@ export default function APIEndpointsPage() {
                     {endpoints.map((endpoint) => (
                         <div
                             key={endpoint.id}
-                            className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-slate-600 transition-colors"
+                            className="bg-secondary border border-default rounded-lg p-6 hover:bg-tertiary transition-colors"
                         >
                             <div className="flex items-start justify-between gap-4">
+
                                 <div className="flex items-start gap-8 flex-1">
-                                    <span className={`w-22 py-1 rounded font-mono text-xs text-center font-semibold ${endpoint.color}`}>
+
+                                    {/* Method Badge */}
+                                    <span className="w-22 py-1 rounded font-mono text-xs text-center font-semibold text-accent">
                                         {endpoint.method}
                                     </span>
+
+                                    {/* Endpoint Info */}
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-mono text-sm text-slate-200 break-all">{endpoint.path}</p>
-                                        <p className="text-sm text-slate-400 mt-1">{endpoint.description}</p>
+                                        <p className="font-mono text-sm text-primary break-all">
+                                            {endpoint.path}
+                                        </p>
+
+                                        <p className="text-sm text-secondary mt-1">
+                                            {endpoint.description}
+                                        </p>
                                     </div>
                                 </div>
+
+                                {/* Copy Button */}
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white flex gap-2 shrink-0"
+                                    className="border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
                                     onClick={() => copyToClipboard(endpoint.path)}
                                 >
                                     <Copy className="w-4 h-4" />

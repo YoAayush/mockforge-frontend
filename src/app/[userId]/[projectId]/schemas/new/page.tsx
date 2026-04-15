@@ -169,32 +169,37 @@ export default function EditSchemaPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <div className="min-h-screen">
             {/* Header */}
-            <div className="border-b border-slate-800 px-8 py-6 flex items-center gap-4">
-                <Link href={`/${userId}/${projectId}/dashboard`} className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+            <div className="border-b border-default px-8 py-6 flex items-center gap-4 bg-secondary">
+                <Link
+                    href={`/${userId}/${projectId}/dashboard`}
+                    className="flex items-center gap-2 text-accent hover:text-primary transition-colors"
+                >
                     <ArrowLeft className="w-5 h-5" />
                     Dashboard
                 </Link>
-                <h1 className="text-3xl font-bold">Edit Schema</h1>
+
+                <h1 className="text-3xl font-bold text-primary">Edit Schema</h1>
             </div>
 
             {/* Tabs */}
-            <div className="border-b border-slate-800 px-8 py-4 flex gap-4">
+            <div className="border-b border-default px-8 py-4 flex gap-4 bg-primary">
                 <button
                     onClick={() => setActiveTab('form')}
                     className={`px-4 py-2 rounded font-medium transition-colors ${activeTab === 'form'
-                        ? 'bg-slate-700 text-white'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-tertiary text-primary'
+                        : 'text-secondary hover:text-primary hover:bg-tertiary'
                         }`}
                 >
                     Form Builder
                 </button>
+
                 <button
                     onClick={() => setActiveTab('json')}
                     className={`px-4 py-2 rounded font-medium flex items-center gap-2 transition-colors ${activeTab === 'json'
-                        ? 'bg-slate-700 text-white border border-slate-600'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-tertiary text-primary border border-default'
+                        : 'text-secondary hover:text-primary hover:bg-tertiary'
                         }`}
                 >
                     <span className="text-xs">&lt;&gt;</span>
@@ -207,8 +212,8 @@ export default function EditSchemaPage() {
                 {activeTab === 'form' ? (
                     <div className="space-y-6">
                         {/* Schema Name */}
-                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
-                            <label className="block text-sm font-medium text-slate-300 mb-3">Schema Name</label>
+                        <div className="bg-secondary border border-border rounded-lg p-6">
+                            <label className="block text-sm font-medium text-secondary mb-3">Schema Name</label>
                             <input
                                 type="text"
                                 value={schemaName}
@@ -232,12 +237,12 @@ export default function EditSchemaPage() {
                                     )
                                     setJsonContent(updatedJson)
                                 }}
-                                className="w-full bg-slate-900 border border-slate-600 rounded px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500"
+                                className="w-full bg-primary border border-default rounded px-4 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                             />
                         </div>
 
                         {/* Fields */}
-                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                        <div className="bg-secondary border border-border rounded-lg p-6">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-lg font-semibold">Fields</h2>
                                 <button
@@ -251,14 +256,14 @@ export default function EditSchemaPage() {
 
                             <div className="space-y-4">
                                 {fields.map((field) => (
-                                    <div key={field.id} className="flex gap-4 items-end p-4 bg-slate-900/50 rounded border border-slate-700">
+                                    <div key={field.id} className="flex gap-4 items-end p-4 bg-tertiary rounded border border-border">
                                         <div className="flex-1">
                                             <label className="block text-xs font-medium text-slate-400 mb-1">Field Name</label>
                                             <input
                                                 type="text"
                                                 value={field.name}
                                                 onChange={(e) => handleFieldChange(field.id, 'name', e.target.value)}
-                                                className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-primary border border-default rounded px-4 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                                             />
                                         </div>
                                         <div className="flex-1">
@@ -266,7 +271,7 @@ export default function EditSchemaPage() {
                                             <select
                                                 value={field.type}
                                                 onChange={(e) => handleFieldChange(field.id, 'type', e.target.value)}
-                                                className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-primary border border-default rounded px-4 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                                             >
                                                 <option>string</option>
                                                 <option>email</option>
@@ -280,7 +285,7 @@ export default function EditSchemaPage() {
                                             <select
                                                 value={field.faker ?? 'None'}
                                                 onChange={(e) => handleFieldChange(field.id, 'faker', e.target.value || null)}
-                                                className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-primary border border-default rounded px-4 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                                             >
                                                 <option value="">None</option>
                                                 <option value="person.fullName">Full Name</option>
@@ -291,7 +296,7 @@ export default function EditSchemaPage() {
                                         </div>
                                         <button
                                             onClick={() => handleDeleteField(field.id)}
-                                            className="p-2 hover:bg-slate-700 rounded text-red-400 hover:text-red-300 transition-colors"
+                                            className="p-2 rounded text-secondary hover:bg-tertiary hover:text-red-500 transition-colors"
                                         >
                                             <Trash2 className="w-5 h-5" />
                                         </button>
@@ -302,16 +307,21 @@ export default function EditSchemaPage() {
 
                         {/* Actions */}
                         <div className="flex justify-end gap-3">
-                            <button className="px-6 py-2 rounded border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors font-medium">
+                            <button className="px-6 py-2 rounded border border-default text-secondary hover:bg-tertiary transition-colors font-medium">
                                 Cancel
                             </button>
+
                             <button
                                 onClick={handleSyncToJSON}
-                                className="px-6 py-2 rounded bg-slate-700 text-slate-200 hover:bg-slate-600 transition-colors font-medium"
+                                className="px-6 py-2 rounded bg-tertiary text-primary hover:bg-secondary transition-colors font-medium"
                             >
                                 Sync to JSON
                             </button>
-                            <button className="px-6 py-2 rounded bg-white text-slate-900 hover:bg-slate-100 transition-colors font-semibold" onClick={handleSubmitSchema}>
+
+                            <button
+                                className="px-6 py-2 rounded bg-[rgb(var(--accent))] text-white hover:opacity-90 transition-colors font-semibold"
+                                onClick={handleSubmitSchema}
+                            >
                                 Submit Schema
                             </button>
                         </div>
@@ -319,23 +329,23 @@ export default function EditSchemaPage() {
                 ) : (
                     <div className="space-y-6">
                         {/* JSON Editor */}
-                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
-                            <label className="block text-sm font-medium text-slate-300 mb-3">JSON Schema Definition</label>
+                        <div className="bg-secondary border border-border rounded-lg p-6">
+                            <label className="block text-sm font-medium text-primary mb-3">JSON Schema Definition</label>
                             <textarea
                                 value={jsonContent}
                                 onChange={(e) => setJsonContent(e.target.value)}
-                                className="w-full bg-slate-900 border border-slate-600 rounded px-4 py-3 text-slate-200 font-mono text-sm focus:outline-none focus:border-blue-500 h-96 resize-none"
+                                className="w-full bg-tertiary border border-default rounded px-4 py-3 text-primary font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))] h-96 resize-none"
                             />
                         </div>
 
                         {/* Actions */}
                         <div className="flex justify-end gap-3">
-                            <button className="px-6 py-2 rounded border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors font-medium">
+                            <button className="px-6 py-2 rounded border border-border text-secondary hover:bg-[rgb(var(--bg-tertiary))] transition-colors font-medium">
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSyncFromJSON}
-                                className="px-6 py-2 rounded bg-white text-slate-900 hover:bg-slate-100 transition-colors font-semibold"
+                                className="px-6 py-2 rounded border border-border text-primary hover:bg-[rgb(var(--bg-tertiary))] transition-colors font-semibold"
                             >
                                 Sync from JSON
                             </button>

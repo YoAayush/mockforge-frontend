@@ -3,6 +3,7 @@
 import { Copy, Check, ChevronRight, Code2, Database, Zap, Shield, Layers } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
+import { Header } from './landing-page-components/header'
 
 export function DocumentationPage() {
     const [copiedCode, setCopiedCode] = useState<string | null>(null)
@@ -15,19 +16,20 @@ export function DocumentationPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <div className="min-h-screen bg-background">
+            <Header />
             {/* Header */}
-            <div className="px-8 py-12 border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950">
+            <div className="px-8 py-12 border-b border-slate-800 from-slate-900 to-slate-950">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex items-center gap-2 mb-4">
                         <Link href="/usage" className="text-slate-400 hover:text-slate-300 flex items-center gap-1">
                             Usage Guide
                         </Link>
                         <ChevronRight className="w-4 h-4 text-slate-600" />
-                        <span className="text-blue-400">Documentation</span>
+                        <span className="text-primary">Documentation</span>
                     </div>
-                    <h1 className="text-4xl font-bold mb-3 text-white">Documentation</h1>
-                    <p className="text-slate-400 text-lg">Complete guide to using MockForge API and features</p>
+                    <h1 className="text-4xl font-bold mb-3 text-primary">Documentation</h1>
+                    <p className="text-secondary text-lg">Complete guide to using MockForge API and features</p>
                 </div>
             </div>
 
@@ -37,7 +39,7 @@ export function DocumentationPage() {
                     {/* Sidebar Navigation */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-8 space-y-2">
-                            <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Documentation</h3>
+                            <h3 className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">Documentation</h3>
                             {[
                                 { id: 'schemas', label: 'Schemas', icon: Database },
                                 { id: 'endpoints', label: 'API Endpoints', icon: Zap },
@@ -52,7 +54,7 @@ export function DocumentationPage() {
                                         onClick={() => setExpandedSection(expandedSection === item.id ? null : item.id)}
                                         className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 ${expandedSection === item.id
                                             ? 'bg-blue-600 text-white'
-                                            : 'text-slate-400 hover:text-slate-300 hover:bg-slate-800/50'
+                                            : 'text-secondary hover:text-slate-300 hover:bg-slate-800/50'
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
@@ -69,14 +71,14 @@ export function DocumentationPage() {
                         {expandedSection === 'schemas' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-3xl font-bold mb-4 text-white">Schemas</h2>
-                                    <p className="text-slate-400 mb-6">
+                                    <h2 className="text-3xl font-bold mb-4 text-primary">Schemas</h2>
+                                    <p className="text-secondary mb-6">
                                         Schemas define the structure of your data. Each schema represents a data model with fields that define the properties of your resources.
                                     </p>
 
-                                    <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 space-y-4">
-                                        <h3 className="font-semibold text-white">Creating a Schema</h3>
-                                        <ol className="space-y-3 text-slate-300 list-decimal list-inside">
+                                    <div className="bg-tertiary border border-border rounded-lg p-6 space-y-4">
+                                        <h3 className="font-semibold text-primary">Creating a Schema</h3>
+                                        <ol className="space-y-3 text-secondary list-decimal list-inside">
                                             <li>Navigate to the Schemas section from the sidebar</li>
                                             <li>Click the "New Schema" button</li>
                                             <li>Enter your schema name (e.g., "User", "Product")</li>
@@ -86,10 +88,10 @@ export function DocumentationPage() {
                                         </ol>
                                     </div>
 
-                                    <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 mt-6">
-                                        <h3 className="font-semibold text-white mb-4">Example Schema Definition</h3>
-                                        <div className="bg-slate-950 rounded p-4 overflow-x-auto">
-                                            <pre className="font-mono text-sm text-slate-300">
+                                    <div className="bg-tertiary border border-border rounded-lg p-6 mt-6">
+                                        <h3 className="font-semibold text-primary mb-4">Example Schema Definition</h3>
+                                        <div className="bg-secondary rounded p-4 overflow-x-auto">
+                                            <pre className="font-mono text-sm text-secondary">
                                                 {`{
   "name": "User",
   "version": 1,
@@ -118,8 +120,8 @@ export function DocumentationPage() {
                         {expandedSection === 'endpoints' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-3xl font-bold mb-4 text-white">API Endpoints</h2>
-                                    <p className="text-slate-400 mb-6">
+                                    <h2 className="text-3xl font-bold mb-4 text-primary">API Endpoints</h2>
+                                    <p className="text-secondary mb-6">
                                         MockForge automatically generates REST API endpoints for your schemas. Each schema gets a complete set of CRUD endpoints.
                                     </p>
 
@@ -156,12 +158,12 @@ export function DocumentationPage() {
                                                 color: 'text-red-400'
                                             }
                                         ].map((endpoint, idx) => (
-                                            <div key={idx} className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
+                                            <div key={idx} className="bg-tertiary border border-border rounded-lg p-4">
                                                 <div className="flex items-start justify-between mb-2">
                                                     <span className={`font-mono font-semibold text-sm ${endpoint.color}`}>{endpoint.method}</span>
-                                                    <span className="text-slate-400 text-sm">{endpoint.description}</span>
+                                                    <span className="text-secondary text-sm">{endpoint.description}</span>
                                                 </div>
-                                                <code className="text-slate-300 font-mono text-sm">{endpoint.path}</code>
+                                                <code className="text-secondary font-mono text-sm">{endpoint.path}</code>
                                             </div>
                                         ))}
                                     </div>
@@ -173,15 +175,15 @@ export function DocumentationPage() {
                         {expandedSection === 'authentication' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-3xl font-bold mb-4 text-white">Authentication</h2>
-                                    <p className="text-slate-400 mb-6">
+                                    <h2 className="text-3xl font-bold mb-4 text-primary">Authentication</h2>
+                                    <p className="text-secondary mb-6">
                                         MockForge API endpoints are currently accessible without authentication. Project IDs are treated as public API keys.
                                     </p>
 
-                                    <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-                                        <h3 className="font-semibold text-white mb-4">Making Authenticated Requests</h3>
-                                        <div className="bg-slate-950 rounded p-4 overflow-x-auto mb-4">
-                                            <pre className="font-mono text-sm text-slate-300">
+                                    <div className="bg-tertiary border border-border rounded-lg p-6">
+                                        <h3 className="font-semibold text-primary mb-4">Making Authenticated Requests</h3>
+                                        <div className="bg-secondary rounded p-4 overflow-x-auto mb-4">
+                                            <pre className="font-mono text-sm text-secondary">
                                                 {`// JavaScript with fetch
 const projectId = 'your-project-id';
 const response = await fetch(\`/api/mock/\${projectId}/user\`, {
@@ -204,8 +206,8 @@ const response = await fetch(\`/api/mock/\${projectId}/user\`, {
                         {expandedSection === 'fields' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-3xl font-bold mb-4 text-white">Field Types</h2>
-                                    <p className="text-slate-400 mb-6">
+                                    <h2 className="text-3xl font-bold mb-4 text-primary">Field Types</h2>
+                                    <p className="text-secondary mb-6">
                                         MockForge supports various field types for your schemas. Each type can be paired with faker generators for realistic test data.
                                     </p>
 
@@ -218,9 +220,9 @@ const response = await fetch(\`/api/mock/\${projectId}/user\`, {
                                             { type: 'date', description: 'Date values in ISO 8601 format' },
                                             { type: 'uuid', description: 'Universally unique identifiers' }
                                         ].map((field, idx) => (
-                                            <div key={idx} className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
+                                            <div key={idx} className="bg-tertiary border border-border rounded-lg p-4">
                                                 <h4 className="font-mono font-semibold text-blue-400 mb-1">{field.type}</h4>
-                                                <p className="text-slate-400 text-sm">{field.description}</p>
+                                                <p className="text-secondary text-sm">{field.description}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -232,8 +234,8 @@ const response = await fetch(\`/api/mock/\${projectId}/user\`, {
                         {expandedSection === 'errors' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-3xl font-bold mb-4 text-white">Error Handling</h2>
-                                    <p className="text-slate-400 mb-6">
+                                    <h2 className="text-3xl font-bold mb-4 text-primary">Error Handling</h2>
+                                    <p className="text-secondary mb-6">
                                         MockForge returns standard HTTP status codes to indicate the success or failure of requests.
                                     </p>
 
@@ -245,20 +247,20 @@ const response = await fetch(\`/api/mock/\${projectId}/user\`, {
                                             { code: '404', message: 'Not Found', description: 'Resource not found' },
                                             { code: '500', message: 'Internal Server Error', description: 'Server error occurred' }
                                         ].map((error, idx) => (
-                                            <div key={idx} className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
+                                            <div key={idx} className="bg-tertiary border border-border rounded-lg p-4">
                                                 <div className="flex items-start justify-between mb-2">
                                                     <span className="font-mono font-semibold text-yellow-400">{error.code}</span>
-                                                    <span className="font-semibold text-white">{error.message}</span>
+                                                    <span className="font-semibold text-secondary">{error.message}</span>
                                                 </div>
-                                                <p className="text-slate-400 text-sm">{error.description}</p>
+                                                <p className="text-secondary text-sm">{error.description}</p>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 mt-6">
-                                        <h3 className="font-semibold text-white mb-4">Error Response Format</h3>
-                                        <div className="bg-slate-950 rounded p-4 overflow-x-auto">
-                                            <pre className="font-mono text-sm text-slate-300">
+                                    <div className="bg-tertiary border border-border rounded-lg p-6 mt-6">
+                                        <h3 className="font-semibold text-primary mb-4">Error Response Format</h3>
+                                        <div className="bg-secondary rounded p-4 overflow-x-auto">
+                                            <pre className="font-mono text-sm text-secondary">
                                                 {`{
   "error": true,
   "message": "Invalid request parameters",

@@ -70,29 +70,39 @@ export default function APIPlaygroundPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <div className="min-h-screen bg-primary text-primary">
+
             {/* Header */}
-            <div className="border-b border-slate-800 px-8 py-6">
+            <div className="border-b border-default px-8 py-6 bg-secondary">
                 <h1 className="text-3xl font-bold mb-2">API Playground</h1>
-                <p className="text-slate-400">Test and debug your API endpoints</p>
+                <p className="text-secondary">
+                    Test and debug your API endpoints
+                </p>
             </div>
 
             {/* Content */}
             <div className="p-8">
                 <div className="grid grid-cols-2 gap-6">
+
                     {/* Request Panel */}
                     <div className="flex flex-col">
-                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <Code className="w-5 h-5" />
+                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-primary">
+                            <Code className="w-5 h-5 text-accent" />
                             Request
                         </h2>
-                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 flex-1 flex flex-col">
+
+                        <div className="bg-secondary border border-default rounded-lg p-6 flex-1 flex flex-col">
+
+                            {/* Method */}
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-slate-300 mb-2">Method</label>
+                                <label className="block text-sm font-medium text-secondary mb-2">
+                                    Method
+                                </label>
                                 <select
                                     value={method}
                                     onChange={(e) => setMethod(e.target.value)}
-                                    className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm">
+                                    className="w-full bg-primary border border-default rounded px-3 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+                                >
                                     <option>GET</option>
                                     <option>POST</option>
                                     <option>PATCH</option>
@@ -100,43 +110,54 @@ export default function APIPlaygroundPage() {
                                 </select>
                             </div>
 
+                            {/* URL */}
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-slate-300 mb-2">URL</label>
+                                <label className="block text-sm font-medium text-secondary mb-2">
+                                    URL
+                                </label>
                                 <input
                                     type="text"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
                                     placeholder="/api/mock/..."
-                                    className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm placeholder-slate-500"
+                                    className="w-full bg-primary border border-default rounded px-3 py-2 text-primary text-sm placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                                 />
                             </div>
 
+                            {/* Headers */}
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-slate-300 mb-2">Headers</label>
+                                <label className="block text-sm font-medium text-secondary mb-2">
+                                    Headers
+                                </label>
                                 <textarea
                                     value={headersText}
                                     onChange={(e) => setHeadersText(e.target.value)}
                                     placeholder="Content-Type: application/json"
-                                    className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm placeholder-slate-500 font-mono text-xs"
+                                    className="w-full bg-primary border border-default rounded px-3 py-2 text-primary text-sm placeholder:text-tertiary font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                                     rows={4}
                                 />
                             </div>
 
+                            {/* Body */}
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-slate-300 mb-2">Body</label>
+                                <label className="block text-sm font-medium text-secondary mb-2">
+                                    Body
+                                </label>
                                 <textarea
                                     value={bodyText}
                                     onChange={(e) => setBodyText(e.target.value)}
                                     placeholder={'{\n  "email": "test@example.com"\n}'}
-                                    className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm placeholder-slate-500 font-mono text-xs flex-1"
+                                    className="w-full bg-primary border border-default rounded px-3 py-2 text-primary text-sm placeholder:text-tertiary font-mono text-xs flex-1 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                                     rows={6}
                                 />
                             </div>
 
+                            {/* Button */}
                             <Button
                                 onClick={handleSendRequest}
                                 disabled={loading}
-                                className="w-full bg-blue-600 hover:bg-blue-700 flex gap-2">
+                                className="w-full bg-[rgb(var(--accent))] hover:opacity-90 text-white flex gap-2"
+                            >
                                 <Play className="w-4 h-4" />
                                 Send Request
                             </Button>
@@ -145,24 +166,31 @@ export default function APIPlaygroundPage() {
 
                     {/* Response Panel */}
                     <div className="flex flex-col">
-                        <h2 className="text-lg font-semibold mb-4">Response</h2>
-                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 flex-1">
-                            <div className="mb-4 pb-4 border-b border-slate-700">
-                                <p className="text-sm text-slate-400">
+                        <h2 className="text-lg font-semibold mb-4 text-primary">
+                            Response
+                        </h2>
+
+                        <div className="bg-secondary border border-default rounded-lg p-6 flex-1">
+
+                            {/* Meta Info */}
+                            <div className="mb-4 pb-4 border-b border-default">
+                                <p className="text-sm text-secondary">
                                     Status:
-                                    <span className="text-green-400 font-semibold ml-2">
+                                    <span className="text-accent font-semibold ml-2">
                                         {status || "-"}
                                     </span>
                                 </p>
-                                <p className="text-sm text-slate-400">
+
+                                <p className="text-sm text-secondary">
                                     Time:
-                                    <span className="text-slate-300 ml-2">
+                                    <span className="text-primary ml-2">
                                         {time ? `${time}ms` : "-"}
                                     </span>
                                 </p>
                             </div>
 
-                            <div className="bg-slate-900/50 rounded p-4 font-mono text-xs text-slate-200 overflow-auto max-h-96">
+                            {/* Response Body */}
+                            <div className="bg-tertiary rounded p-4 font-mono text-xs text-primary overflow-auto max-h-96">
                                 <pre>
                                     {response
                                         ? JSON.stringify(response, null, 2)
@@ -171,6 +199,7 @@ export default function APIPlaygroundPage() {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

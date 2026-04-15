@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/lib/userProvider";
+import { ThemeProvider } from "@/lib/theme-provider";
+// import ThemeProvider
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -24,14 +26,54 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          (function() {
+            const theme = localStorage.getItem('theme');
+            if (theme) {
+              document.documentElement.setAttribute('data-theme', theme);
+            } else {
+              document.documentElement.setAttribute('data-theme', 'dark');
+            }
+          })();
+        `,
+          }}
+        />
+      </head>
+
+      {/* This script runs before React hydration to set the initial theme based on localStorage */}
+      {/* <script
+        dangerouslySetInnerHTML={{
+          __html: `
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme) {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      })();
+    `,
+        }}
+      /> */}
+
       <body
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className="font-serif antialiased"
       >
-        <UserProvider>
-          {children}
-        </UserProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          themes={["light", "dark", "theme-blue", "theme-green", "theme-red"]}
+          storageKey="theme"
+          enableSystem={true}
+        >
+          <UserProvider>
+            {children}
+          </UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

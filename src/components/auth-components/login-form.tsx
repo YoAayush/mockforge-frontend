@@ -124,40 +124,55 @@ export function LoginForm() {
     // }, [errors])
 
     return (
-        <form onSubmit={(e) => handleEmailPassLogin(e)} className="min-w-md space-y-6">
+        <form onSubmit={(e) => handleEmailPassLogin(e)} className="min-w-md space-y-6 text-primary">
+
+            {/* Header */}
             <div className="text-center">
-                <div className="text-2xl font-semibold text-white mb-2 cursor-pointer" onClick={() => {
-                    router.replace("/");
-                }}>
-                    <span className="text-blue-400">&lt;/&gt;</span> MockForge
+                <div
+                    className="text-2xl font-semibold text-primary mb-2 cursor-pointer"
+                    onClick={() => router.replace("/")}
+                >
+                    <span className="text-accent">&lt;/&gt;</span> MockForge
                 </div>
-                <h1 className="text-xl font-semibold text-white mb-1">Welcome back</h1>
-                <p className="text-sm text-slate-400">Sign in to your account</p>
+
+                <h1 className="text-xl font-semibold text-primary mb-1">
+                    Welcome back
+                </h1>
+
+                <p className="text-sm text-secondary">
+                    Sign in to your account
+                </p>
             </div>
 
+            {/* GitHub Button */}
             <Button
                 type="button"
                 onClick={handleGithubLogin}
-                className="w-full bg-slate-800 text-white hover:bg-slate-700 border border-slate-700 font-semibold flex items-center justify-center gap-2"
+                className="w-full bg-secondary text-primary hover:bg-tertiary border border-default font-semibold flex items-center justify-center gap-2"
             >
                 <Github size={18} />
                 Continue with GitHub
             </Button>
 
+            {/* Divider */}
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-700"></div>
+                    <div className="w-full border-t border-default"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-slate-900 text-slate-400">Or</span>
+                    <span className="px-2 bg-primary text-tertiary">Or</span>
                 </div>
             </div>
 
+            {/* Form Fields */}
             <div className="space-y-4">
+
+                {/* Email */}
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white text-sm font-medium">
+                    <Label htmlFor="email" className="text-primary text-sm font-medium">
                         Email
                     </Label>
+
                     <Input
                         id="email"
                         name="email"
@@ -165,25 +180,29 @@ export function LoginForm() {
                         placeholder="you@example.com"
                         value={formData.email}
                         onChange={handleChange}
-                        className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                        className="bg-primary border border-default text-primary placeholder:text-tertiary focus:ring-2 focus:ring-[rgb(var(--accent))]"
                     />
+
                     {errors.email && (
-                        <p className="text-xs text-red-400">{errors.email}</p>
+                        <p className="text-xs text-red-500">{errors.email}</p>
                     )}
                 </div>
 
+                {/* Password */}
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <Label htmlFor="password" className="text-white text-sm font-medium">
+                        <Label htmlFor="password" className="text-primary text-sm font-medium">
                             Password
                         </Label>
+
                         <Link
                             href="/auth/forgot-password"
-                            className="text-xs text-blue-400 hover:text-blue-300 font-medium"
+                            className="text-xs text-accent hover:opacity-80 font-medium"
                         >
                             Forgot password?
                         </Link>
                     </div>
+
                     <Input
                         id="password"
                         name="password"
@@ -191,41 +210,40 @@ export function LoginForm() {
                         placeholder="••••••••"
                         value={formData.password}
                         onChange={handleChange}
-                        className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                        className="bg-primary border border-default text-primary placeholder:text-tertiary focus:ring-2 focus:ring-[rgb(var(--accent))]"
                     />
+
                     {errors.password && (
-                        <p className="text-xs text-red-400">{errors.password}</p>
+                        <p className="text-xs text-red-500">{errors.password}</p>
                     )}
                 </div>
             </div>
 
+            {/* Submit Button */}
             <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-white text-slate-900 hover:bg-slate-100 font-semibold"
+                className="w-full bg-[rgb(var(--accent))] text-white hover:opacity-90 font-semibold"
             >
                 {loading ? 'Signing in...' : 'Sign in'}
             </Button>
 
-            <p className="text-center text-sm text-slate-400">
+            {/* Footer */}
+            <p className="text-center text-sm text-secondary">
                 Don't have an account?{' '}
                 <Link
                     href="/auth/signup"
-                    className="text-blue-400 hover:text-blue-300 font-medium"
+                    className="text-accent hover:opacity-80 font-medium"
                 >
                     Sign up
                 </Link>
             </p>
 
-            {
-                loading && (
-                    <p>Logging In please wait...</p>
-                )
-            }
-
-            {/* <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-700">
-                Made with Vercel
-            </div> */}
+            {loading && (
+                <p className="text-center text-secondary text-sm">
+                    Logging in, please wait...
+                </p>
+            )}
         </form>
     )
 }

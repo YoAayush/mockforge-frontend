@@ -72,7 +72,7 @@ export default function Dashboard() {
     };
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <main className="min-h-screen bg-background">
             <Header
                 title="My Projects"
                 subtitle="Create and manage your mock API projects"
@@ -88,13 +88,19 @@ export default function Dashboard() {
                 {
                     !projectsList ? (
                         <div className="flex flex-col items-center justify-center gap-6 text-center">
+
+                            {/* Spinner */}
                             <div className="relative h-12 w-12 sm:h-14 sm:w-14">
-                                <div className="absolute inset-0 animate-spin rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-transparent"></div>
-                                <div className="absolute inset-1 rounded-full bg-gradient-to-br from-[#0a192f] via-[#020617] to-[#000]"></div>
+
+                                {/* Outer rotating ring */}
+                                <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-[rgb(var(--accent))] border-r-[rgb(var(--accent))]" />
+
+                                {/* Inner subtle circle */}
+                                <div className="absolute inset-2 rounded-full bg-secondary" />
                             </div>
                         </div>
                     ) : projects.length === 0 ? (
-                        <div className="max-w-md text-white">
+                        <div className="max-w-md text-primary">
 
                             No Projects Available
                         </div>

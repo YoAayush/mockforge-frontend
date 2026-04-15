@@ -27,7 +27,7 @@ export default function AuthLayout({
   // if (loading) return <p>Loading !!!</p>
 
   return (
-    <div className="min-h-screen w-full bg-slate-900 flex items-center justify-center">
+    <div className="min-h-screen w-full bg-primary flex items-center justify-center">
       {children}
     </div>
   )

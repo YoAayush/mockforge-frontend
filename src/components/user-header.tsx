@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MouseEventHandler } from "react";
-import { Code2, Plus, User } from "lucide-react";
+import { BookOpen, Code2, HelpCircle, Moon, Plus, Sun, User } from "lucide-react";
+import { useTheme } from 'next-themes'
 
 interface HeaderProps {
     title?: string;
@@ -17,23 +18,41 @@ interface HeaderProps {
 }
 
 export function Header({ title, subtitle, action, userName, logout }: HeaderProps) {
+    const { theme, setTheme } = useTheme();
     return (
         <div>
-            <header className="border-b border-slate-800/50 bg-slate-950/80 backdrop-blur-sm sticky top-0 z-50">
+            <header className="border-b border-border backdrop-blur-sm sticky top-0 z-50">
                 <div className="w-full mx-auto px-12 py-4 flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 font-semibold text-white text-lg">
+                    <Link href="/" className="flex items-center gap-2 font-semibold text-primary text-lg">
                         <span className="text-blue-400">&lt;/&gt;</span>
                         MockForge
                     </Link>
 
                     {/* User Menu */}
                     <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors cursor-pointer">
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            className="p-2 rounded-lg border border-default text-secondary hover:text-primary hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
+                            aria-label="Toggle theme"
+                        >
+                            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                        </button>
+                        <Link href="/usage" className="text-secondary hover:text-slate-200 transition-colors text-sm flex items-center gap-1.5">
+                            <BookOpen className="h-4 w-4" />
+                            Usage
+                        </Link>
+                        <Link href="/documentation" className="text-secondary hover:text-slate-200 transition-colors text-sm flex items-center gap-1.5">
+                            <HelpCircle className="h-4 w-4" />
+                            Documentation
+                        </Link>
+                        <div className="w-px h-4 bg-slate-400"></div>
+                        <div className="flex items-center gap-2 text-sm text-secondary hover:text-white transition-colors cursor-pointer">
                             <User className="w-4 h-4" />
                             <span>Aayush Chopra</span>
                         </div>
-                        <button className="text-sm text-slate-400 hover:text-red-400 transition-colors font-medium cursor-pointer" onClick={logout}>
+                        <button className="text-sm text-[rgb(var(--text-secondary))] hover:text-red-500 transition-colors font-medium cursor-pointer" onClick={logout}>
                             Logout
                         </button>
                     </div>
@@ -44,12 +63,12 @@ export function Header({ title, subtitle, action, userName, logout }: HeaderProp
                 {/* Page Header */}
                 <div className="mb-12 flex items-start justify-between">
                     <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">My Projects</h1>
-                        <p className="text-slate-400 text-lg">Create and manage your mock API projects</p>
+                        <h1 className="text-4xl font-bold text-primary mb-2">My Projects</h1>
+                        <p className="text-secondary text-lg">Create and manage your mock API projects</p>
                     </div>
                     {
                         action && (
-                            <Button className="gap-2 bg-white hover:bg-slate-100 text-slate-900 font-semibold px-6 py-2 rounded-lg" onClick={action.onClick}>
+                            <Button className="gap-2 bg-secondary hover:bg-slate-100 text-secondary font-semibold px-6 py-2 rounded-lg" onClick={action.onClick}>
                                 <Plus className="w-5 h-5" />
                                 New Project
                             </Button>

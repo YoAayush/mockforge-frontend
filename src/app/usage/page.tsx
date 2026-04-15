@@ -3,6 +3,7 @@
 import { Copy, Check, Code, Zap, BookOpen, Layers } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
+import { Header } from '@/components/landing-page-components/header'
 
 export default function UsagePage() {
     const [copiedCode, setCopiedCode] = useState<string | null>(null)
@@ -88,21 +89,23 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <div className="min-h-screen bg-background">
+            <Header />
+            
             {/* Hero Section */}
-            <div className="px-8 py-20 border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950">
+            <div className="px-8 py-20 border-b border-slate-800 ">
                 <div className="max-w-4xl mx-auto">
                     <div className="inline-block mb-4 px-3 py-1 bg-blue-500/10 border border-blue-500/30 rounded-full text-sm text-blue-400">
                         Getting Started
                     </div>
-                    <h1 className="text-5xl font-bold mb-4 text-white text-pretty">
+                    <h1 className="text-5xl font-bold mb-4 text-primary text-pretty">
                         Build with MockForge
                     </h1>
-                    <p className="text-xl text-slate-400 mb-8 max-w-2xl">
+                    <p className="text-xl text-secondary mb-8 max-w-2xl">
                         Create realistic mock APIs in minutes. No backend needed. Generate test data, define schemas, and test your applications with auto-generated REST endpoints.
                     </p>
                     <div className="flex gap-4">
-                        <Link href="/documentation" className="border border-slate-600 text-slate-300 hover:bg-slate-800 px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2">
+                        <Link href="/documentation" className="border-2 border-border text-secondary hover:bg-slate-800 px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2">
                             <BookOpen className="w-5 h-5" />
                             View Documentation
                         </Link>
@@ -113,7 +116,7 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
             {/* Features Grid */}
             <div className="px-8 py-16 border-b border-slate-800">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-12 text-white">Why Choose MockForge</h2>
+                    <h2 className="text-3xl font-bold mb-12 text-primary">Why Choose MockForge</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[
                             {
@@ -149,10 +152,10 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
                         ].map((feature) => {
                             const Icon = feature.icon
                             return (
-                                <div key={feature.title} className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 hover:border-blue-500/50 transition-colors">
+                                <div key={feature.title} className="bg-secondary border border-slate-700 rounded-lg p-6 hover:border-blue-500/50 transition-colors">
                                     <Icon className="w-8 h-8 text-blue-400 mb-3" />
-                                    <h3 className="font-semibold text-white mb-2">{feature.title}</h3>
-                                    <p className="text-slate-400 text-sm">{feature.description}</p>
+                                    <h3 className="font-semibold text-primary mb-2">{feature.title}</h3>
+                                    <p className="text-secondary text-sm">{feature.description}</p>
                                 </div>
                             )
                         })}
@@ -163,7 +166,7 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
             {/* Quick Start Section */}
             <div className="px-8 py-16 border-b border-slate-800">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-12 text-white">Quick Start in 3 Steps</h2>
+                    <h2 className="text-3xl font-bold mb-12 text-primary">Quick Start in 3 Steps</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
                             {
@@ -187,8 +190,8 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
                                     {item.step}
                                 </div>
                                 <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 pl-8">
-                                    <h3 className="font-semibold text-white mb-2">{item.title}</h3>
-                                    <p className="text-slate-400 text-sm">{item.description}</p>
+                                    <h3 className="font-semibold text-primary mb-2">{item.title}</h3>
+                                    <p className="text-secondary text-sm">{item.description}</p>
                                 </div>
                             </div>
                         ))}
@@ -199,15 +202,15 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
             {/* Code Examples Section */}
             <div className="px-8 py-16 border-b border-slate-800">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-12 text-white">Usage Examples</h2>
+                    <h2 className="text-3xl font-bold mb-12 text-primary">Usage Examples</h2>
                     <div className="space-y-6">
                         {codeExamples.map((example) => (
                             <div key={example.id} className="bg-slate-800/30 border border-slate-700 rounded-lg overflow-hidden">
-                                <div className="bg-slate-900/50 px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-                                    <h3 className="font-semibold text-white">{example.title}</h3>
+                                <div className="bg-secondary px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                                    <h3 className="font-semibold text-secondary">{example.title}</h3>
                                     <button
                                         onClick={() => copyToClipboard(example.code, example.id)}
-                                        className="flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors"
+                                        className="flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-border text-secondary hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
                                     >
                                         {copiedCode === example.id ? (
                                             <><Check className="w-3 h-3" /> Copied</>
@@ -216,8 +219,8 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
                                         )}
                                     </button>
                                 </div>
-                                <div className="bg-slate-950 p-6 overflow-x-auto">
-                                    <pre className="font-mono text-sm text-slate-300 whitespace-pre-wrap break-words">
+                                <div className="bg-tertiary p-6 overflow-x-auto">
+                                    <pre className="font-mono text-sm text-secondary whitespace-pre-wrap break-words">
                                         <code>{example.code}</code>
                                     </pre>
                                 </div>
@@ -230,20 +233,20 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
             {/* API Response Example */}
             <div className="px-8 py-16 border-b border-slate-800">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-8 text-white">Sample API Response</h2>
+                    <h2 className="text-3xl font-bold mb-8 text-primary">Sample API Response</h2>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                            <h3 className="font-semibold text-white mb-4">Request</h3>
-                            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-                                <pre className="font-mono text-sm text-slate-300">
+                            <h3 className="font-semibold text-primary mb-4">Request</h3>
+                            <div className="bg-tertiary border border-slate-700 rounded-lg p-6">
+                                <pre className="font-mono text-sm text-secondary">
                                     <span className="text-green-400">GET</span> /api/mock/your-project-id/user
                                 </pre>
                             </div>
                         </div>
                         <div>
-                            <h3 className="font-semibold text-white mb-4">Response</h3>
-                            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 overflow-x-auto">
-                                <pre className="font-mono text-sm text-slate-300">
+                            <h3 className="font-semibold text-primary mb-4">Response</h3>
+                            <div className="bg-tertiary border border-slate-700 rounded-lg p-6 overflow-x-auto">
+                                <pre className="font-mono text-sm text-secondary">
                                     {`[
   {
     "id": 1,
@@ -266,7 +269,7 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
             {/* Best Practices */}
             <div className="px-8 py-16">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-8 text-white">Best Practices</h2>
+                    <h2 className="text-3xl font-bold mb-8 text-primary">Best Practices</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
                             {
@@ -294,9 +297,9 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
                                 description: 'Add descriptions to your schemas and fields to help your team understand the API structure.'
                             }
                         ].map((practice) => (
-                            <div key={practice.title} className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-                                <h3 className="font-semibold text-white mb-2">{practice.title}</h3>
-                                <p className="text-slate-400 text-sm">{practice.description}</p>
+                            <div key={practice.title} className="bg-tertiary border border-slate-700 rounded-lg p-6">
+                                <h3 className="font-semibold text-primary mb-2">{practice.title}</h3>
+                                <p className="text-secondary text-sm">{practice.description}</p>
                             </div>
                         ))}
                     </div>

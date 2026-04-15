@@ -69,40 +69,51 @@ export default function SettingsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+        <div className="min-h-screen bg-primary text-primary">
+
             {/* Header */}
-            <div className="border-b border-slate-800 px-8 py-6">
+            <div className="border-b border-default px-8 py-6 bg-secondary">
                 <h1 className="text-3xl font-bold mb-2">Settings</h1>
-                <p className="text-slate-400">Manage your project settings and preferences</p>
+                <p className="text-secondary">
+                    Manage your project settings and preferences
+                </p>
             </div>
 
             {/* Content */}
             <div className="p-8 max-w-2xl">
+
                 {/* General Settings */}
-                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
-                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <Shield className="w-5 h-5" />
+                <div className="bg-secondary border border-default rounded-lg p-6 mb-6">
+                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-primary">
+                        <Shield className="w-5 h-5 text-accent" />
                         General Settings
                     </h2>
+
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-2">Project Name</label>
+                            <label className="block text-sm font-medium text-secondary mb-2">
+                                Project Name
+                            </label>
                             <input
                                 type="text"
                                 defaultValue={`${projectName}`}
                                 onChange={(e) => setProjectName(e.target.value)}
-                                className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm"
+                                className="w-full bg-primary border border-default rounded px-3 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                             />
                         </div>
+
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-2">Project ID</label>
-                            <div className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-400 text-sm font-mono flex items-center justify-between gap-4">
+                            <label className="block text-sm font-medium text-secondary mb-2">
+                                Project ID
+                            </label>
+
+                            <div className="bg-tertiary border border-border rounded px-3 py-2 text-secondary text-sm font-mono flex items-center justify-between gap-4">
                                 {`${projectData?.id}`}
 
                                 <Button
-                                    variant="outline"
+                                    variant="secondary"
                                     size="sm"
-                                    className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white flex gap-2 shrink-0"
+                                    className="text-secondary hover:bg-tertiary hover:text-primary flex gap-2"
                                     onClick={() => copyToClipboard(projectData?.id)}
                                 >
                                     <Copy className="w-4 h-4" />
@@ -110,76 +121,57 @@ export default function SettingsPage() {
                                 </Button>
                             </div>
                         </div>
+
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                            <label className="block text-sm font-medium text-secondary mb-2">
+                                Description
+                            </label>
                             <textarea
                                 defaultValue={`${projectDescription}`}
-                                className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-slate-200 text-sm"
-                                rows={3}
                                 onChange={(e) => setProjectDescription(e.target.value)}
+                                rows={3}
+                                className="w-full bg-primary border border-default rounded px-3 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* API Keys */}
-                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
-                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <Key className="w-5 h-5" />
+                <div className="bg-secondary border border-default rounded-lg p-6 mb-6">
+                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-primary">
+                        <Key className="w-5 h-5 text-accent" />
                         API Keys
                     </h2>
+
                     <div className="space-y-3">
-                        <div className="bg-slate-900/50 p-4 rounded border border-slate-700 flex items-center justify-between">
+                        <div className="bg-tertiary p-4 rounded border border-default flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-slate-200">Authorization Bearer Key</p>
-                                <p className="text-xs text-slate-500 font-mono">{maskApiKey(session?.access_token)}</p>
+                                <p className="text-sm font-medium text-primary">
+                                    Authorization Bearer Key
+                                </p>
+                                <p className="text-xs text-tertiary font-mono">
+                                    {maskApiKey(session?.access_token)}
+                                </p>
                             </div>
+
                             <Button
-                                variant="outline"
+                                variant="secondary"
                                 size="sm"
-                                className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white flex gap-2 shrink-0"
+                                className="text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2"
                                 onClick={() => copyToClipboard(session?.access_token)}
                             >
                                 <Copy className="w-4 h-4" />
                                 Copy Key
                             </Button>
                         </div>
-                        {/* <div className="bg-slate-900/50 p-4 rounded border border-slate-700 flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-slate-200">Development Key</p>
-                                <p className="text-xs text-slate-500 font-mono">sk_test_••••••••••••••••</p>
-                            </div>
-                            <Button variant="outline" className="border-slate-600 text-slate-600 hover:bg-slate-700 hover:text-white">
-                                Regenerate
-                            </Button>
-                        </div> */}
                     </div>
                 </div>
 
-                {/* Notifications - later implementation */}
-                {/* <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
-                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <Bell className="w-5 h-5" />
-                        Notifications
-                    </h2>
-                    <div className="space-y-3">
-                        <label className="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" defaultChecked className="w-4 h-4 rounded" />
-                            <span className="text-sm text-slate-300">Email on API errors</span>
-                        </label>
-                        <label className="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" defaultChecked className="w-4 h-4 rounded" />
-                            <span className="text-sm text-slate-300">Weekly usage report</span>
-                        </label>
-                        <label className="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" className="w-4 h-4 rounded" />
-                            <span className="text-sm text-slate-300">New feature announcements</span>
-                        </label>
-                    </div>
-                </div> */}
-
                 {/* Save Button */}
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 flex gap-2 justify-center" onClick={UpdateSettings}>
+                <Button
+                    className="w-full bg-[rgb(var(--accent))] hover:opacity-90 text-white flex gap-2 justify-center"
+                    onClick={UpdateSettings}
+                >
                     <Save className="w-4 h-4" />
                     Save Settings
                 </Button>

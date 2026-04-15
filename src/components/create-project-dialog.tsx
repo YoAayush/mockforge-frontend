@@ -55,37 +55,37 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-neutral-900 border-neutral-800">
+            <DialogContent className="bg-secondary border-border">
                 <DialogHeader>
-                    <DialogTitle className="text-white">Create New Project</DialogTitle>
+                    <DialogTitle className="text-primary">Create New Project</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                     <div>
-                        <label className="text-sm font-medium text-neutral-200">Project Name</label>
+                        <label className="text-sm font-medium text-secondary">Project Name</label>
                         <Input
                             placeholder="My API Project"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="mt-1 bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500"
+                            className="mt-1 bg-tertiary border-neutral-700 text-secondary placeholder:text-neutral-500"
                         />
                     </div>
                     <div>
-                        <label className="text-sm font-medium text-neutral-200">Description</label>
+                        <label className="text-sm font-medium text-secondary">Description</label>
                         <Textarea
                             placeholder="Project description..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="mt-1 bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500"
+                            className="mt-1 bg-tertiary border-neutral-700 text-secondary placeholder:text-neutral-500"
                             rows={3}
                         />
                     </div>
-                    <div className="flex items-center gap-2 p-3 bg-neutral-800 rounded-lg">
+                    <div className="flex items-center gap-2 p-3 bg-tertiary rounded-lg">
                         <input
                             type="checkbox"
                             id="public"
                             className="cursor-pointer"
                         />
-                        <label htmlFor="public" className="text-sm text-neutral-200 cursor-pointer flex-1">
+                        <label htmlFor="public" className="text-sm text-secondary cursor-pointer flex-1">
                             Public Project
                         </label>
                     </div>
@@ -94,14 +94,14 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
                     <Button
                         variant="ghost"
                         onClick={() => onOpenChange(false)}
-                        className="text-neutral-400"
+                        className="text-secondary hover:bg-[rgb(var(--bg-tertiary))]"
                     >
                         Cancel
                     </Button>
                     <Button
                         onClick={handleSubmit}
                         disabled={!name.trim() || isLoading}
-                        className="bg-white text-black hover:bg-neutral-100"
+                        className="text-secondary bg-secondary hover:bg-[rgb(var(--bg-tertiary))]"
                     >
                         {isLoading ? "Creating..." : "Create Project"}
                     </Button>

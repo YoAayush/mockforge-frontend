@@ -2,15 +2,18 @@ export function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="bg-slate-950 border-t border-slate-800 py-8 px-6">
+        <footer className="border-t border-default py-8 px-6">
             <div className="max-w-6xl mx-auto flex sm:flex-row items-center justify-center">
-                <p className="text-slate-400 text-sm">
+
+                <p className="text-secondary text-sm">
                     © {year} MockForge. Built for developers.
                 </p>
 
-                {/* <div className="text-slate-500 text-sm mt-4 sm:mt-0">
+                {/* 
+                <div className="text-tertiary text-sm mt-4 sm:mt-0">
                     Made with Emergent
-                </div> */}
+                </div> 
+                */}
             </div>
         </footer>
     )
