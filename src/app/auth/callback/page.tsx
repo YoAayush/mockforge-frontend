@@ -1,19 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
 import Loader from "@/components/Loader";
 
 export default function Callback() {
     const router = useRouter();
+    const hasRun = useRef(false); // prevents double execution
 
     useEffect(() => {
+        if (hasRun.current) return;
+        hasRun.current = true;
+
         const getSession = async () => {
             try {
                 const { data, error } = await supabase.auth.getSession();
-                // console.log(data);
+                console.log(data);
 
                 // if (error) {
                 //     router.replace("/");
@@ -43,7 +47,7 @@ export default function Callback() {
                         {
                             // now i can use {session.access_token} directly in my backend api request as a bearer token ...
                             headers: {
-                                Authorization: `Bearer ${session.access_token}`
+                                Authorization: `Bearer ${session?.access_token}`
                             }
                         }
                     );

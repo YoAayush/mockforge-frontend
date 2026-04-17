@@ -99,7 +99,7 @@ export default function Dashboard() {
                                 <div className="absolute inset-2 rounded-full bg-secondary" />
                             </div>
                         </div>
-                    ) : projects.length === 0 ? (
+                    ) : projects?.length === 0 ? (
                         <div className="max-w-md text-primary">
 
                             No Projects Available

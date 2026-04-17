@@ -52,7 +52,7 @@ export function SignupForm() {
         await supabase.auth.signInWithOAuth({
             provider: "github",
             options: {
-                redirectTo: "http://localhost:4000/auth/callback"
+                redirectTo: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/auth/callback`
             }
         });
     }

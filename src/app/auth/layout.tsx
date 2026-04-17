@@ -2,7 +2,8 @@
 
 import { useUser } from "@/lib/userProvider"
 import { usePathname, useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+// import { useSearchParams } from "next/navigation";
 
 export default function AuthLayout({
   children,
@@ -11,18 +12,30 @@ export default function AuthLayout({
 }) {
 
   const { user, session, loading } = useUser();
-  // console.log(user,loading)
+  // console.log(user, session, loading)
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (loading) return; // or a loading spinner
-    // if (!pathname.startsWith("/auth")) return;
+  // const searchParams = useSearchParams();
+  // const isError = searchParams.get("error") === "true";
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || loading) return;
+
+    // if (pathname.startsWith("/auth") && session && user && !isError ) {
     if (pathname.startsWith("/auth") && session && user) {
       router.replace(`/${user?.id}`);
     }
-  }, [loading, session, user, pathname]);
+  }, [mounted, loading, session, user, pathname]);
+
+  // 🚨 Hydration fix: render nothing until mounted
+  if (!mounted) return null;
 
   // if (loading) return <p>Loading !!!</p>
 

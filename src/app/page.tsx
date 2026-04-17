@@ -14,7 +14,7 @@ import { Footer } from "@/components/landing-page-components/footer";
 const Home = () => {
   return (
     <div className="bg-primary">
-    {/* <div className="bg-foreground text-background">
+      {/* <div className="bg-foreground text-background">
       sdgdfgdfgdfgdfg
     </div> */}
       <Header />

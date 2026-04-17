@@ -39,7 +39,7 @@ export default function UserLayout({
                     `${process.env.NEXT_PUBLIC_API_URL}/auth/profile`,
                     {
                         headers: {
-                            Authorization: `Bearer ${session.access_token}`,
+                            Authorization: `Bearer ${session?.access_token}`,
                         },
                     }
                 );
@@ -47,6 +47,7 @@ export default function UserLayout({
                 setLoading(false);
             } catch (error) {
                 router.replace("/auth/login");
+                // router.replace("/auth/login?error=true");
             }
         };
 
