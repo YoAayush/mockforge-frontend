@@ -27,7 +27,7 @@ export default function SchemasPage() {
         async function FetchSchema() {
             try {
                 setLoading(true);
-                // const response = await axios.get(`http://localhost:3000/api/v1/schemas/all/${projectId}`, {
+                // const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/schemas/all/${projectId}`, {
                 //     headers: {
                 //         Authorization: `Bearer ${session?.access_token}`,
                 //     },

@@ -27,7 +27,7 @@ export function Sidebar() {
     //             if (!session?.access_token) return;
 
     //             const res = await axios.get(
-    //                 `http://localhost:3000/api/v1/projects/${projectId}`,
+    //                 `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId}`,
     //                 {
     //                     headers: {
     //                         Authorization: `Bearer ${session?.access_token}`,

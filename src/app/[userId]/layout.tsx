@@ -36,7 +36,7 @@ export default function UserLayout({
                 }
 
                 await axios.get(
-                    "http://localhost:3000/api/v1/auth/profile",
+                    `${process.env.NEXT_PUBLIC_API_URL}/auth/profile`,
                     {
                         headers: {
                             Authorization: `Bearer ${session.access_token}`,

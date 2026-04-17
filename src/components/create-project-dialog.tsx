@@ -34,7 +34,7 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
         setIsLoading(true);
         try {
             // addProject(name, description, false);
-            const response = await axios.post("http://localhost:3000/api/v1/projects/create", {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/projects/create`, {
                 name, description
             },
                 {

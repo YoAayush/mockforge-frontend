@@ -146,7 +146,7 @@ export default function EditSchemaPage() {
 
     const handleSubmitSchema = async () => {
         try {
-            const res = await axios.post('http://localhost:3000/api/v1/schemas/add', {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/schemas/add`, {
                 name: schemaName,
                 projectId,
                 fields: fields.map(field => ({

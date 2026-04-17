@@ -35,7 +35,7 @@ export default function Dashboard() {
                 if (!session?.access_token) return;
 
                 const res = await axios.get(
-                    "http://localhost:3000/api/v1/projects/",
+                    `${process.env.NEXT_PUBLIC_API_URL}/projects/`,
                     {
                         headers: {
                             Authorization: `Bearer ${session.access_token}`,

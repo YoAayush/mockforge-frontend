@@ -23,7 +23,7 @@ export default function APIEndpointsPage() {
     useEffect(() => {
         async function FetchSchema() {
             try {
-                const response = await axios.get(`http://localhost:3000/api/v1/schemas/all/${projectId}`, {
+                const response = await axios.get(`${`${process.env.NEXT_PUBLIC_API_URL}/schemas/all/${projectId}`}`, {
                     headers: {
                         Authorization: `Bearer ${session?.access_token}`,
                     },
@@ -47,35 +47,35 @@ export default function APIEndpointsPage() {
                 {
                     id: `${name}-get-all`,
                     method: "GET",
-                    path: `http://localhost:4000/api/mock/${projectData?.id}/${name}`,
+                    path: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/mock/${projectData?.id}/${name}`,
                     description: 'Get all User records',
                     color: 'bg-blue-500/20 text-blue-400',
                 },
                 {
                     id: `${name}-get-one`,
                     method: "GET",
-                    path: `http://localhost:4000/api/mock/${projectData?.id}/${name}/{id}`,
+                    path: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/mock/${projectData?.id}/${name}/{id}`,
                     description: 'Get a single User record by ID',
                     color: 'bg-blue-500/20 text-blue-400',
                 },
                 {
                     id: `${name}-create`,
                     method: "POST",
-                    path: `http://localhost:4000/api/mock/${projectData?.id}/${name}`,
+                    path: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/mock/${projectData?.id}/${name}`,
                     description: 'Create a new User record',
                     color: 'bg-green-500/20 text-green-400',
                 },
                 {
                     id: `${name}-update`,
                     method: "PATCH",
-                    path: `http://localhost:4000/api/mock/${projectData?.id}/${name}/{id}`,
+                    path: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/mock/${projectData?.id}/${name}/{id}`,
                     description: 'Update an existing User record',
                     color: 'bg-yellow-500/20 text-yellow-400',
                 },
                 {
                     id: `${name}-delete`,
                     method: "DELETE",
-                    path: `http://localhost:4000/api/mock/${projectData?.id}/${name}/{id}`,
+                    path: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/mock/${projectData?.id}/${name}/{id}`,
                     description: 'Delete a User record',
                     color: 'bg-red-500/20 text-red-400',
                 },

@@ -32,7 +32,7 @@ export const ProjectProvider = ({
                 if (!session?.access_token || !projectId) return;
 
                 const res1 = await axios.get(
-                    `http://localhost:3000/api/v1/projects/${projectId}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${session.access_token}`,
@@ -40,7 +40,7 @@ export const ProjectProvider = ({
                     }
                 );
                 const res2 = await axios.get(
-                    `http://localhost:3000/api/v1/schemas/all/${projectId}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/schemas/all/${projectId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${session.access_token}`,

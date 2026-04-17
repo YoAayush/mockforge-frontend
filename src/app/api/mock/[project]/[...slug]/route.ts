@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 // const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-const BASE_URL = "http://localhost:3000/api/v1";
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

@@ -21,7 +21,7 @@ export default function EditSchemaPage() {
     setTimeout(async () => {
         // setSchemaName('User')
         // setFields([])
-        const response = await axios.get(`http://localhost:3000/api/v1/schemas/${schemaId}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/schemas/${schemaId}`, {
             headers: {
                 Authorization: `Bearer ${session?.access_token}`,
             },

@@ -34,7 +34,7 @@ export default function Callback() {
 
                 try {
                     await axios.post(
-                        "http://localhost:3000/api/v1/auth/register",
+                        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
                         {
                             userId: session.user?.id,
                             name: session.user?.user_metadata?.full_name, // saved at the time of signup using optional data

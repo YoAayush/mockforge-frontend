@@ -41,7 +41,7 @@ export default function DashboardPage() {
     //             if (!session?.access_token) return;
 
     //             const res = await axios.get(
-    //                 `http://localhost:3000/api/v1/projects/${projectId as string}`,
+    //                 `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId as string}`,
     //                 {
     //                     headers: {
     //                         Authorization: `Bearer ${session.access_token}`,

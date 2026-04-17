@@ -17,7 +17,7 @@ export default function SettingsPage() {
 
     const UpdateSettings = async () => {
         try {
-            const res = await axios.patch(`http://localhost:3000/api/v1/projects/${projectData?.id}`, {
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/projects/${projectData?.id}`, {
                 name: projectName,
                 description: projectDescription,
                 visibility: projectData?.visibility
