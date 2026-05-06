@@ -10,6 +10,8 @@ import { Hero } from "@/components/landing-page-components/hero";
 import { Features } from "@/components/landing-page-components/features";
 import { CTA } from "@/components/landing-page-components/cta";
 import { Footer } from "@/components/landing-page-components/footer";
+import { UseCases } from "@/components/landing-page-components/use-cases";
+import { Integrations } from "@/components/landing-page-components/integrations";
 
 const Home = () => {
   return (
@@ -20,10 +22,12 @@ const Home = () => {
       <Header />
       <Hero />
       <Features />
+      <UseCases />
+      {/* <Integrations /> */}
       <CTA />
       <Footer />
     </div>
-  )
+  );
 };
 
 export default Home;

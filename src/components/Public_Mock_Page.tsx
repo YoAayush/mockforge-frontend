@@ -127,13 +127,13 @@ function SchemaCard({ schema, isExpanded, onToggle }: SchemaCardProps) {
 
                 {/* Copy Button */}
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   size="sm"
-                  className="border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
+                  className="cursor-pointer border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
                   onClick={() => copyToClipboard(endpoint.path)}
                 >
-                  <Copy className="w-3 h-3 mr-1" />
-                  Copy
+                  <Copy className="w-4 h-4" />
+                  Copy URL
                 </Button>
               </div>
             </div>
@@ -154,8 +154,7 @@ export function PublicMockPage() {
   const [PUBLIC_SCHEMAS, setPublicSchemas] = useState<Schema[]>([]);
 
   useEffect(() => {
-    // Simulate fetching public schemas from an API
-    setTimeout(async () => {
+    const fetchPublicSchemas = async () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/schemas/public-schemas`,
         {
@@ -164,9 +163,10 @@ export function PublicMockPage() {
           },
         },
       );
-    //   console.log("Fetched schemas:", response.data);
       setPublicSchemas(response.data.schemas);
-    }, 1000);
+    };
+
+    fetchPublicSchemas();
   }, [session?.access_token]);
 
   const toggleSchema = (schemaId: string) => {
@@ -185,7 +185,7 @@ export function PublicMockPage() {
       <Header />
 
       {/* Main Content */}
-      <main className="mx-auto py-12">
+      <main className="mx-auto">
         {/* Page Header */}
         <div className="mb-12 border-b border-default bg-secondary/40 px-8 py-12">
           <div className="mx-auto max-w-6xl">
@@ -216,18 +216,18 @@ export function PublicMockPage() {
             </p>
           </div>
 
-          <div className="rounded-xl border border-default bg-secondary p-6 shadow-sm">
+          {/* <div className="rounded-xl border border-default bg-secondary p-6 shadow-sm">
             <p className="mb-2 text-sm font-medium text-secondary">
               Total Downloads
             </p>
 
-            {/* <p className="text-3xl font-bold text-primary">
+            <p className="text-3xl font-bold text-primary">
               {PUBLIC_SCHEMAS.reduce(
                 (sum, s) => sum + s.downloads,
                 0,
               ).toLocaleString()}
-            </p> */}
-          </div>
+            </p>
+          </div> */}
 
           <div className="rounded-xl border border-default bg-secondary p-6 shadow-sm">
             <p className="mb-2 text-sm font-medium text-secondary">
@@ -253,9 +253,9 @@ export function PublicMockPage() {
         </div>
 
         {/* Footer */}
-        <div className="mx-auto mt-16 max-w-6xl border-t border-default px-8 pt-8">
-          <p className="text-center text-sm text-tertiary">
-            Built with MockForge • Share your schemas with the community
+        <div className="mx-auto text-center border-t border-default px-8 py-8">
+          <p className="text-secondary text-sm">
+            © {new Date().getFullYear()} MockForge. Built for developers.
           </p>
         </div>
       </main>
