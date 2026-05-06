@@ -20,7 +20,6 @@ export default function SettingsPage() {
             const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/projects/${projectData?.id}`, {
                 name: projectName,
                 description: projectDescription,
-                visibility: projectData?.visibility
             }, {
                 headers: {
                     Authorization: `Bearer ${session?.access_token}`
