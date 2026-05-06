@@ -65,8 +65,8 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          themes={["light", "dark", "theme-blue", "theme-green", "theme-red"]}
+          defaultTheme="system"
+          themes={["light", "dark", "system"]}
           storageKey="theme"
           enableSystem={true}
         >

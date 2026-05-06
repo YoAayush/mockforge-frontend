@@ -131,7 +131,7 @@ export default function APIEndpointsPage() {
                                 <div className="flex items-start gap-8 flex-1">
 
                                     {/* Method Badge */}
-                                    <span className="w-22 py-1 rounded font-mono text-xs text-center font-semibold text-accent">
+                                    <span className={`w-22 py-1 rounded font-mono text-xs text-center font-semibold ${endpoint.color}`}>
                                         {endpoint.method}
                                     </span>
 

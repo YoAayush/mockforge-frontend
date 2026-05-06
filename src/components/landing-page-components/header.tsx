@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { BookOpen, HelpCircle, Moon, Sun } from 'lucide-react'
+import { BookOpen, HelpCircle, Laptop, Moon, Sun } from 'lucide-react'
 // import { useState } from 'react'
 import { UserContext } from '../../lib/userProvider'
 import { useContext } from 'react'
@@ -19,6 +19,12 @@ export function Header() {
     //     setIsDark(!isDark)
     // }
 
+    const cycleTheme = () => {
+        if (theme === "light") setTheme("dark");
+        else if (theme === "dark") setTheme("system");
+        else setTheme("light");
+    };
+
     return (
         <header className="border-b border-default sticky backdrop-blur-sm top-0 z-50">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -32,14 +38,20 @@ export function Header() {
 
                     {/* Theme Toggle */}
                     <button
-                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        onClick={cycleTheme}
                         className="p-2 rounded-lg border border-default text-secondary hover:text-primary hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
                         aria-label="Toggle theme"
                     >
-                        {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                        {theme === "light" && <Sun size={20} />}
+                        {theme === "dark" && <Moon size={20} />}
+                        {theme === "system" && <Laptop size={20} />}
                     </button>
 
                     {/* Links */}
+                    <Link href="/public-mock" className="text-secondary hover:text-primary transition-colors text-sm flex items-center gap-1.5">
+                        Public-Mock APIs
+                    </Link>
+
                     <Link
                         href="/usage"
                         className="text-secondary hover:text-primary transition-colors text-sm flex items-center gap-1.5"

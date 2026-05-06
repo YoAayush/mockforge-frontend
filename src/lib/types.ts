@@ -23,7 +23,7 @@ export interface Field {
 
 // ENUMS
 
-export type ProjectVisibility = "PRIVATE" | "PUBLIC";
+export type SchemaVisibility = "PRIVATE" | "PUBLIC";
 
 export type FieldType =
   | "string"
@@ -44,7 +44,6 @@ export interface Project {
   name: string;
   slug: string;
   description?: string;
-  visibility: ProjectVisibility;
 
   userId: string;
 
@@ -63,8 +62,8 @@ export interface Project {
 export interface Schema {
   id: string;
   name: string;
-
   version: number;
+  visibility: SchemaVisibility;
 
   seed: number;
   defaultCount: number;

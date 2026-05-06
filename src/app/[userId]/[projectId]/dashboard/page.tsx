@@ -2,12 +2,7 @@
 
 import { BarChart3, Code, Zap, Database } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-// import { useParams } from 'next/navigation';
-// import axios from 'axios';
 import { useEffect, useState } from 'react';
-// import { UserContext } from '@/lib/userProvider';
-// import { Project } from '@/lib/types';
-// import { useParams } from 'next/navigation';
 import { useProject } from '@/lib/projectProvider';
 import { useUser } from '@/lib/userProvider';
 import Link from 'next/link';
@@ -28,36 +23,6 @@ export default function DashboardPage() {
         //     console.log(schema._count.records);
         // });
     }, [projectData, projectSchemas]);
-
-    // const [project, setProject] = useState<Project>();
-
-    // const { session } = useContext(UserContext);
-    // const { projectId } = useParams();
-    // console.log(user);
-
-    // useEffect(() => {
-    //     const fetchProject = async () => {
-    //         try {
-    //             if (!session?.access_token) return;
-
-    //             const res = await axios.get(
-    //                 `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId as string}`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${session.access_token}`,
-    //                     },
-    //                 }
-    //             );
-
-    //             console.log(res);
-    //             setProject(res.data.project);
-    //         } catch (error) {
-    //             console.error("Error fetching project:", error);
-    //         }
-    //     };
-
-    //     fetchProject();
-    // }, [session]);
 
     setTimeout(() => {
         setShowProject(true);

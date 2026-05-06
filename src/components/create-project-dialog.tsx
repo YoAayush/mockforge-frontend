@@ -79,7 +79,7 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
                             rows={3}
                         />
                     </div>
-                    <div className="flex items-center gap-2 p-3 bg-tertiary rounded-lg">
+                    {/* <div className="flex items-center gap-2 p-3 bg-tertiary rounded-lg">
                         <input
                             type="checkbox"
                             id="public"
@@ -88,7 +88,7 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
                         <label htmlFor="public" className="text-sm text-secondary cursor-pointer flex-1">
                             Public Project
                         </label>
-                    </div>
+                    </div> */}
                 </div>
                 <DialogFooter>
                     <Button
