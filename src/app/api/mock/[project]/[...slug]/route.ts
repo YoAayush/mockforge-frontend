@@ -16,7 +16,7 @@ export async function mainHandler(
 ) {
   // console.log(req.headers.get("authorization"));
   const { project, slug } = await context.params;
-  console.log("Received request for project:", project, "slug:", slug);
+  // console.log("Received request for project:", project, "slug:", slug);
 
   const BearerToken = req.headers.get("authorization");
 
@@ -25,12 +25,12 @@ export async function mainHandler(
   }
 
   const method = req.method;
-  console.log("HTTP method:", method);
+  // console.log("HTTP method:", method);
 
   const slugArray = Array.isArray(slug) ? slug : [];
   const schemaName = slugArray[0];
   const id = slugArray[1];
-  console.log("Schema name:", schemaName, "ID:", id);
+  // console.log("Schema name:", schemaName, "ID:", id);
 
   if (!project || !schemaName) {
     return { error: "Missing project or schemaName in the URL" };

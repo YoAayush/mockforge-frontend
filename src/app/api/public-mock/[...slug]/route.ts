@@ -15,8 +15,8 @@ export async function mainHandler(
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
   // console.log(req.headers.get("authorization"));
-  const { project, slug } = await context.params;
-  console.log("Received request for project:", project, "slug:", slug);
+  const { slug } = await context.params;
+  // console.log("slug:", slug);
 
   //   const BearerToken = req.headers.get("authorization");
 
@@ -25,20 +25,20 @@ export async function mainHandler(
   //   }
 
   const method = req.method;
-  console.log("HTTP method:", method);
+  // console.log("HTTP method:", method);
 
   const slugArray = Array.isArray(slug) ? slug : [];
   const schemaName = slugArray[0];
   const id = slugArray[1];
-  console.log("Schema name:", schemaName, "ID:", id);
+  // console.log("Schema name:", schemaName, "ID:", id);
 
-  if (!project || !schemaName) {
-    return { error: "Missing project or schemaName in the URL" };
+  if (!schemaName) {
+    return { error: "Missing schemaName in the URL" };
   }
 
   const url = id
-    ? `${BASE_URL}/mock/${project}/${schemaName}/${id}`
-    : `${BASE_URL}/mock/${project}/${schemaName}`;
+    ? `${BASE_URL}/public-mock/${schemaName}/${id}`
+    : `${BASE_URL}/public-mock/${schemaName}`;
 
   try {
     switch (method) {
