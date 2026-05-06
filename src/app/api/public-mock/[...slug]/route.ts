@@ -12,7 +12,7 @@ const corsHeaders = {
 
 export async function mainHandler(
   req: Request,
-  context: { params: Promise<{ project: string; slug: string[] }> },
+  context: { params: Promise<{ slug: string[] }> },
 ) {
   // console.log(req.headers.get("authorization"));
   const { slug } = await context.params;
@@ -85,7 +85,7 @@ export async function OPTIONS() {
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ project: string; slug: string[] }> },
+  context: { params: Promise<{ slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
   return NextResponse.json({ data }, { headers: corsHeaders });
@@ -93,7 +93,7 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  context: { params: Promise<{ project: string; slug: string[] }> },
+  context: { params: Promise<{ slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
   return NextResponse.json({ data }, { headers: corsHeaders });
@@ -101,7 +101,7 @@ export async function POST(
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: Promise<{ project: string; slug: string[] }> },
+  context: { params: Promise<{ slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
   return NextResponse.json({ data }, { headers: corsHeaders });
@@ -109,7 +109,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: Promise<{ project: string; slug: string[] }> },
+  context: { params: Promise<{ slug: string[] }> },
 ) {
   const data = await mainHandler(req, context);
   return NextResponse.json({ data }, { headers: corsHeaders });
