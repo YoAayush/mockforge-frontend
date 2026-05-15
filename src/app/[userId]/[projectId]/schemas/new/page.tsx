@@ -34,17 +34,13 @@ export default function EditSchemaPage() {
       {
         name: schema.name,
         visibility: schema.visibility,
-        fields: fields.reduce(
-          (acc, field) => {
-            acc[field.name] = {
-              type: field.type,
-              faker_type: field.faker === "None" ? null : field.faker,
-              // enum_values: null
-            };
-            return acc;
-          },
-          {} as Record<string, any>,
-        ),
+        defaultCount: schema.defaultCount,
+        fields: fields.map((field) => ({
+          name: field.name,
+          type: field.type,
+          faker: field.faker === "None" ? null : field.faker,
+          format: field.format || null,
+        })),
       },
       null,
       2,
@@ -70,17 +66,12 @@ export default function EditSchemaPage() {
       {
         name: schema.name,
         visibility: schema.visibility,
-        fields: updatedFields.reduce(
-          (acc, field) => {
-            acc[field.name] = {
-              type: field.type,
-              faker_type: field.faker === "None" ? null : field.faker,
-              // enum_values: null
-            };
-            return acc;
-          },
-          {} as Record<string, any>,
-        ),
+        fields: fields.map((field) => ({
+          name: field.name,
+          type: field.type,
+          faker: field.faker === "None" ? null : field.faker,
+          format: field.format || null,
+        })),
       },
       null,
       2,
@@ -96,17 +87,12 @@ export default function EditSchemaPage() {
       {
         name: schema.name,
         visibility: schema.visibility,
-        fields: updatedFields.reduce(
-          (acc, field) => {
-            acc[field.name] = {
-              type: field.type,
-              faker_type: field.faker === "None" ? null : field.faker,
-              // enum_values: null
-            };
-            return acc;
-          },
-          {} as Record<string, any>,
-        ),
+        fields: fields.map((field) => ({
+          name: field.name,
+          type: field.type,
+          faker: field.faker === "None" ? null : field.faker,
+          format: field.format || null,
+        })),
       },
       null,
       2,
