@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { UserContext } from "../lib/userProvider";
 import { useContext } from "react";
+import { ProjectContext } from "@/lib/projectProvider";
 
 interface CreateProjectDialogProps {
     open: boolean;
@@ -28,8 +29,10 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
     const [description, setDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const { session } = useContext(UserContext);
+    const projectContext = useContext(ProjectContext);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         if (!name.trim()) return;
         setIsLoading(true);
         try {
@@ -48,6 +51,7 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
             setDescription("");
             onOpenChange(false);
             onSuccess?.();
+            projectContext?.refetchProject?.(); // Refresh the project list
         } finally {
             setIsLoading(false);
         }
@@ -99,7 +103,7 @@ export function CreateProjectDialog({ open, onOpenChange, onSuccess }: CreatePro
                         Cancel
                     </Button>
                     <Button
-                        onClick={handleSubmit}
+                        onClick={(e) => handleSubmit(e)}
                         disabled={!name.trim() || isLoading}
                         className="text-secondary bg-secondary hover:bg-[rgb(var(--bg-tertiary))]"
                     >

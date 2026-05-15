@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/lib/userProvider";
+import { useUser } from "@/lib/userProvider";
 // import { Button } from "@/components/ui/button";
 // import Link from "next/link";
 import { CreateProjectDialog } from "@/components/create-project-dialog";
@@ -26,7 +26,7 @@ export default function Dashboard() {
     // const { data: {user} } = await supabase.auth.getUser();
     // console.log(user)
 
-    const { user, session } = useContext(UserContext); // userContext
+    const { user, session } = useUser(); // userContext
     // console.log(user);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function Dashboard() {
                     }
                 );
 
-                // console.log(res);
+                console.log(res);
                 setProjects(res.data.projects);
             } catch (error) {
                 console.error("Error fetching project:", error);
@@ -55,7 +55,7 @@ export default function Dashboard() {
 
     setTimeout(() => {
         setprojectsList(true);
-    }, 2000);
+    }, 1000);
 
     const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

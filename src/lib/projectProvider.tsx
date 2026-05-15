@@ -15,6 +15,7 @@ type ProjectContextType = {
   projectData: Project | null;
   notFound?: boolean;
   projectSchemas?: Schema[] | null;
+  refetchProject: () => Promise<void>;
   refetchSchemas: () => Promise<void>;
 };
 
@@ -34,6 +35,27 @@ export const ProjectProvider = ({
   const [notFound, setNotFound] = useState(false);
   const { session } = useContext(UserContext);
 
+  const fetchProject = async () => {
+    try {
+      if (!session?.access_token || !projectId) return;
+
+      const res1 = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        },
+      );
+      setProject(res1.data.project);
+      await fetchSchemas(); // Fetch schemas after setting the project data
+    } catch (error) {
+      console.error("Error fetching project:", error);
+      if (axios.isAxiosError(error) && error.response?.status === 404)
+        setNotFound(true);
+    }
+  };
+
   const fetchSchemas = async () => {
     if (!session?.access_token || !projectId) return;
 
@@ -50,27 +72,6 @@ export const ProjectProvider = ({
   };
 
   useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        if (!session?.access_token || !projectId) return;
-
-        const res1 = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${session.access_token}`,
-            },
-          },
-        );
-        setProject(res1.data.project);
-        await fetchSchemas(); // Fetch schemas after setting the project data
-      } catch (error) {
-        console.error("Error fetching project:", error);
-        if (axios.isAxiosError(error) && error.response?.status === 404)
-          setNotFound(true);
-      }
-    };
-
     fetchProject();
   }, [session, projectId]);
 
@@ -81,6 +82,7 @@ export const ProjectProvider = ({
         notFound,
         projectSchemas: ProjectSchemas,
         refetchSchemas: fetchSchemas,
+        refetchProject: fetchProject,
       }}
     >
       {children}
@@ -95,5 +97,5 @@ export const useProject = () => {
     throw new Error("useProject must be used within ProjectProvider");
   }
 
-  return context; // { projectData, notFound, projectSchemas, refetchSchemas }
+  return context; // { projectData, notFound, projectSchemas, refetchSchemas, refetchProject }
 };

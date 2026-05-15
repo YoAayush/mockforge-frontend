@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "@/lib/userProvider";
+import { useUser } from "@/lib/userProvider";
 import { useContext } from "react";
 // import { useParams } from "next/navigation";
 import axios from "axios";
@@ -15,7 +15,7 @@ export default function UserLayout({
 }) {
 
     const router = useRouter();
-    const { session } = useContext(UserContext);
+    const { session } = useUser();
     const [loading, setLoading] = useState(true);
 
     // useEffect(() => {
