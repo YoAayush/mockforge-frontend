@@ -10,8 +10,9 @@ export function DocumentationPage() {
     const [expandedSection, setExpandedSection] = useState<string | null>('schemas')
 
     const copyToClipboard = (code: string, id: string) => {
-        navigator.clipboard.writeText(code)
+        navigator.clipboard.writeText(code);
         setCopiedCode(id)
+        alert("Copied to clipboard!");
         setTimeout(() => setCopiedCode(null), 2000)
     }
 

@@ -25,6 +25,7 @@ function getMethodColor(method: string): string {
 
 function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text);
+  alert("Copied to clipboard!");
 }
 
 interface SchemaCardProps {

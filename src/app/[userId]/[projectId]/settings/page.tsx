@@ -38,7 +38,8 @@ export default function SettingsPage() {
 
     function copyToClipboard(text: string | undefined) {
         if (text) {
-            navigator.clipboard.writeText(text)
+            navigator.clipboard.writeText(text);
+            alert("Copied to clipboard!");
         }
     }
 

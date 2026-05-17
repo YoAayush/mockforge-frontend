@@ -83,7 +83,8 @@ export default function APIEndpointsPage() {
         });
 
     function copyToClipboard(text: string) {
-        navigator.clipboard.writeText(text)
+        navigator.clipboard.writeText(text);
+        alert("Copied to clipboard!");
     }
 
     return (

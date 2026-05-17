@@ -54,11 +54,12 @@ export default function APIPlaygroundPage() {
                 headers,
                 data: parsedBody,
             });
+            // console.log(res);
 
             const end = Date.now();
 
-            setStatus(res.status);
-            setResponse(res.data);
+            setStatus(res.data.data.status);
+            setResponse(res.data.data);
             setTime(end - start);
         } catch (error: any) {
             setStatus(error.response?.status || 500);

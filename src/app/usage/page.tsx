@@ -9,8 +9,9 @@ export default function UsagePage() {
     const [copiedCode, setCopiedCode] = useState<string | null>(null)
 
     const copyToClipboard = (code: string, id: string) => {
-        navigator.clipboard.writeText(code)
+        navigator.clipboard.writeText(code);
         setCopiedCode(id)
+        alert("Copied to clipboard!");
         setTimeout(() => setCopiedCode(null), 2000)
     }
 

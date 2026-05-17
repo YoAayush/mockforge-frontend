@@ -43,7 +43,7 @@ export default function Dashboard() {
                     }
                 );
 
-                console.log(res);
+                // console.log(res);
                 setProjects(res.data.projects);
             } catch (error) {
                 console.error("Error fetching project:", error);

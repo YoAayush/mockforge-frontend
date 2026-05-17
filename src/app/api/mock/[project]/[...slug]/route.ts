@@ -48,7 +48,7 @@ export async function mainHandler(
             Authorization: BearerToken,
           },
         });
-        return res.data;
+        return { data: res.data, status: res.status };
       }
 
       case "POST": {
@@ -58,7 +58,7 @@ export async function mainHandler(
             Authorization: BearerToken,
           },
         });
-        return res.data;
+        return { data: res.data, status: res.status };
       }
 
       case "PATCH": {
@@ -68,7 +68,7 @@ export async function mainHandler(
             Authorization: BearerToken,
           },
         });
-        return res.data;
+        return { data: res.data, status: res.status };
       }
 
       case "DELETE": {
@@ -77,7 +77,7 @@ export async function mainHandler(
             Authorization: BearerToken,
           },
         });
-        return res.data;
+        return { data: res.data, status: res.status };
       }
 
       default:

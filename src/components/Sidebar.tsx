@@ -104,10 +104,10 @@ export function Sidebar() {
             </nav>
 
             {/* Footer */}
-            <div className="p-4 border-t border-border">
+            <div className="border-t border-border">
                 <Link
                     href={`/${userId}`}
-                    className="w-full flex items-center content-center justify-center gap-2 text-secondary hover:text-[rgb(var(--text-tertiary))]  hover:bg-[rgb(var(--bg-tertiary))] transition-colors text-sm"
+                    className="p-4 w-full flex items-center content-center justify-center gap-2 text-secondary hover:text-[rgb(var(--text-tertiary))]  hover:bg-[rgb(var(--bg-tertiary))] transition-colors text-sm"
                 >
                     <ChevronLeft className="w-4 h-4" />
                     <span>Back to Projects List</span>
