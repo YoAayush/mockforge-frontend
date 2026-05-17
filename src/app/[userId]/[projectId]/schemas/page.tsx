@@ -11,6 +11,7 @@ import axios from "axios";
 import { UserContext } from "@/lib/userProvider";
 import Loader from "@/components/Loader";
 import { useProject } from "@/lib/projectProvider";
+import { toast } from "sonner";
 
 export default function SchemasPage() {
   const { userId, projectId }: { userId: string; projectId: string } =
@@ -18,7 +19,7 @@ export default function SchemasPage() {
   const [schemas, setSchemas] = useState<Schema[]>([]);
   const router = useRouter();
   const { session } = useContext(UserContext);
-  const { projectSchemas } = useProject();
+  const { projectSchemas, refetchSchemas } = useProject();
   // const [editingId, setEditingId] = useState<string | null>(null);
   // const [editName, setEditName] = useState('');
   // const [editFields, setEditFields] = useState(0);
@@ -49,6 +50,7 @@ export default function SchemasPage() {
   };
 
   const handleDeleteSchema = async (id: string) => {
+    const toastId = toast.loading("Deleting schema...");
     setSchemas(schemas.filter((s) => Number(s.id) !== Number(id)));
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/schemas/${id}`, {
@@ -56,10 +58,15 @@ export default function SchemasPage() {
           Authorization: `Bearer ${session?.access_token}`,
         },
       });
-      alert("Schema deleted successfully");
+      toast.success("Schema deleted successfully");
+      refetchSchemas();
+      // alert("Schema deleted successfully");
     } catch (error) {
       console.error("Error deleting schema:", error);
-      alert("Failed to delete schema. Please try again.");
+      toast.error("Failed to delete schema. Please try again.");
+      // alert("Failed to delete schema. Please try again.");
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 

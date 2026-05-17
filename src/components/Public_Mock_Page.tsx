@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import { Code2, Copy, ChevronDown, ExternalLink } from "lucide-react";
+import { Copy, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "./landing-page-components/header";
 import axios from "axios";
 import { UserContext } from "@/lib/userProvider";
 import { Schema } from "@/lib/types";
+import { toast } from "sonner";
 
 function getMethodColor(method: string): string {
   switch (method) {
@@ -23,18 +24,19 @@ function getMethodColor(method: string): string {
   }
 }
 
-function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text);
-  alert("Copied to clipboard!");
-}
-
 interface SchemaCardProps {
   schema: Schema;
   isExpanded: boolean;
   onToggle: () => void;
+  // setAlert: (show: boolean) => void;
 }
 
-function SchemaCard({ schema, isExpanded, onToggle }: SchemaCardProps) {
+function SchemaCard({
+  schema,
+  isExpanded,
+  onToggle,
+  // setAlert,
+}: SchemaCardProps) {
   const endpoints = [
     {
       id: `${schema.name}-get-all`,
@@ -72,6 +74,19 @@ function SchemaCard({ schema, isExpanded, onToggle }: SchemaCardProps) {
       color: "bg-red-500/20 text-red-400",
     },
   ];
+
+  function copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied Successfully", {
+      description: "The endpoint URL has been copied to your clipboard.",
+      action: {
+        label: "Close",
+        onClick: () => console.log("Close toast"),
+      },
+    });
+    // setAlert(true);
+    // setTimeout(() => setAlert(false), 3000);
+  }
 
   return (
     <div className="border border-slate-700/50 rounded-xl overflow-hidden bg-tertiary hover:border-slate-600 transition-all duration-300">
@@ -131,7 +146,10 @@ function SchemaCard({ schema, isExpanded, onToggle }: SchemaCardProps) {
                   variant="secondary"
                   size="sm"
                   className="cursor-pointer border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
-                  onClick={() => copyToClipboard(endpoint.path)}
+                  onClick={() => {
+                    copyToClipboard(endpoint.path);
+                    // setAlert(true);
+                  }}
                 >
                   <Copy className="w-4 h-4" />
                   Copy URL
@@ -150,6 +168,7 @@ export function PublicMockPage() {
     new Set(["user-service"]),
   );
   const { session } = useContext(UserContext);
+  // const [showAlert, setShowAlert] = useState(false);
 
   // Public schemas that are shared
   const [PUBLIC_SCHEMAS, setPublicSchemas] = useState<Schema[]>([]);
@@ -249,6 +268,7 @@ export function PublicMockPage() {
               schema={schema}
               isExpanded={expandedSchemas.has(schema.id)}
               onToggle={() => toggleSchema(schema.id)}
+              // setAlert={setShowAlert}
             />
           ))}
         </div>

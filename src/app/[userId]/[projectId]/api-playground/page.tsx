@@ -4,6 +4,7 @@ import { Play, Code } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import axios from 'axios';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function APIPlaygroundPage() {
 
@@ -29,6 +30,7 @@ export default function APIPlaygroundPage() {
     }
 
     async function handleSendRequest() {
+        const toastId = toast.loading("Sending request...");
         setLoading(true);
 
         try {
@@ -58,15 +60,22 @@ export default function APIPlaygroundPage() {
 
             const end = Date.now();
 
+            toast.success("Request successful!", {
+                description: `Received ${res.status} in ${end - start}ms`,
+            });
             setStatus(res.data.data.status);
             setResponse(res.data.data);
             setTime(end - start);
         } catch (error: any) {
+            toast.error("Request failed!", {
+                description: error.response?.data?.message || error.message,
+            });
             setStatus(error.response?.status || 500);
             setResponse(error.response?.data || error.message);
             setTime(null);
         } finally {
             setLoading(false);
+            toast.dismiss(toastId);
         }
     }
 

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
 import Loader from "@/components/Loader";
+import { toast } from "sonner";
 
 export default function Callback() {
     const router = useRouter();
@@ -52,11 +53,20 @@ export default function Callback() {
                         }
                     );
                 } catch (err) {
+                    toast.error("Failed to register user.");
                     console.log("Register skipped:", err);
                 }
 
                 // CRITICAL: Clean URL (removes #access_token)
                 window.history.replaceState(null, "", "/");
+
+                toast.success("Logged in successfully!", {
+                    description: "Welcome back to MockForge.",
+                    // action: {
+                    //     label: "Go to Dashboard",
+                    //     onClick: () => router.replace(`/${session.user.id}`)
+                    // }
+                });
 
                 // Redirect instantly (no timeout)
                 router.replace(`/${session.user.id}`);

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { UserProvider } from "@/lib/userProvider";
 import { ThemeProvider } from "@/lib/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 // import ThemeProvider
 
 // const geistSans = Geist({
@@ -63,6 +64,19 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className="font-serif antialiased"
       >
+        <Toaster
+          position="top-right"
+          theme="system"
+          toastOptions={{
+            classNames: {
+              toast: "!bg-black !text-white !border-neutral-800 !shadow-lg",
+              title: "!text-white",
+              description: "!text-neutral-400",
+              actionButton: "!bg-white !text-black",
+              cancelButton: "!bg-neutral-800 !text-white",
+            },
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

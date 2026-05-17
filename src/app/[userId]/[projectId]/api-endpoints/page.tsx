@@ -9,6 +9,7 @@ import axios from 'axios'
 import { UserContext } from '@/lib/userProvider'
 import { useProject } from '@/lib/projectProvider'
 import { Schema } from '@/lib/types'
+import { toast } from 'sonner'
 // import { usePathname } from 'next/navigation'
 
 export default function APIEndpointsPage() {
@@ -84,7 +85,14 @@ export default function APIEndpointsPage() {
 
     function copyToClipboard(text: string) {
         navigator.clipboard.writeText(text);
-        alert("Copied to clipboard!");
+        toast.success("Copied to clipboard!", {
+            description: "The endpoint URL has been copied to your clipboard.",
+            action: {
+                label: "Close",
+                onClick: () => console.log("Close toast"),
+            },
+        });
+        // alert("Copied to clipboard!");
     }
 
     return (

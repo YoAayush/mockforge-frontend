@@ -110,7 +110,7 @@ export function LoginForm() {
       return;
     }
 
-    console.log("Logged in user:", data.user);
+    // console.log("Logged in user:", data.user);
     // router.push(`/${data.user.id}`);
   };
 

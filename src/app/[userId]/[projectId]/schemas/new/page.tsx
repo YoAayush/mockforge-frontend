@@ -11,6 +11,8 @@ import { UserContext } from "@/lib/userProvider";
 // import { usePathname } from 'next/navigation'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { useProject } from "@/lib/projectProvider";
 
 export default function EditSchemaPage() {
   const [activeTab, setActiveTab] = useState<"form" | "json">("form");
@@ -26,6 +28,7 @@ export default function EditSchemaPage() {
   };
   const router = useRouter();
   const { session } = useContext(UserContext);
+  const { refetchSchemas } = useProject();
   // const pathname = usePathname();
   // console.log('Current path:', pathname);
 
@@ -155,6 +158,7 @@ export default function EditSchemaPage() {
   };
 
   const handleSubmitSchema = async () => {
+    const toastId = toast.loading("Creating schema...");
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/schemas/add`,
@@ -175,12 +179,17 @@ export default function EditSchemaPage() {
           },
         },
       );
-      console.log("Schema created:", res.data);
+      // console.log("Schema created:", res.data);
+      toast.success("Schema created successfully!");
+      refetchSchemas();
       setTimeout(() => {
         router.push(`/${userId}/${projectId}/schemas`);
       }, 500);
     } catch (error) {
+      toast.error("Failed to create schema. Please try again.");
       return console.error("Error creating schema:", error);
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 

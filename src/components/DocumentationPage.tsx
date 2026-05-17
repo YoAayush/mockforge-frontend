@@ -6,15 +6,15 @@ import Link from 'next/link'
 import { Header } from './landing-page-components/header'
 
 export function DocumentationPage() {
-    const [copiedCode, setCopiedCode] = useState<string | null>(null)
+    // const [copiedCode, setCopiedCode] = useState<string | null>(null)
     const [expandedSection, setExpandedSection] = useState<string | null>('schemas')
 
-    const copyToClipboard = (code: string, id: string) => {
-        navigator.clipboard.writeText(code);
-        setCopiedCode(id)
-        alert("Copied to clipboard!");
-        setTimeout(() => setCopiedCode(null), 2000)
-    }
+    // const copyToClipboard = (code: string, id: string) => {
+    //     navigator.clipboard.writeText(code);
+    //     setCopiedCode(id)
+    //     alert("Copied to clipboard!");
+    //     setTimeout(() => setCopiedCode(null), 2000)
+    // }
 
     return (
         <div className="min-h-screen bg-background">

@@ -11,6 +11,7 @@ import Loader from "@/components/Loader";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useProject } from "@/lib/projectProvider";
+import { toast } from "sonner";
 
 export default function EditSchemaPage() {
   const [activeTab, setActiveTab] = useState<"form" | "json">("form");
@@ -205,6 +206,7 @@ export default function EditSchemaPage() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
+    const toastId = toast.loading("Updating schema...");
     try {
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/schemas/${schemaId}`,
@@ -227,13 +229,16 @@ export default function EditSchemaPage() {
         },
       );
 
-      console.log("Update response:", response.data);
-      alert("Schema updated successfully!");
+      // console.log("Update response:", response.data);
+      toast.success("Schema updated successfully!");
       await refetchSchemas();
       router.push(`/${userId}/${projectId}/schemas`);
     } catch (error) {
       console.error("Error updating schema:", error);
-      alert("Failed to update schema. Please try again.");
+      toast.error("Failed to update schema. Please try again.")
+      // alert("Failed to update schema. Please try again.");
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
