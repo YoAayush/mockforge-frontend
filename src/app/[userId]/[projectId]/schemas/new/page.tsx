@@ -342,7 +342,7 @@ export default function EditSchemaPage() {
                     }}
                     className="w-100 bg-primary border border-default rounded px-4 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                   />
-                  (max record limit is 20)
+                  You can generate up to 50 records (default is 20)
                 </span>
               </div>
             </div>

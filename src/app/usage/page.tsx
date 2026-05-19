@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/landing-page-components/header";
 import { toast } from "sonner";
+import { Footer } from "@/components/landing-page-components/footer";
 
 export default function UsagePage() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -276,45 +277,6 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
         </div>
       </div>
 
-      {/* API Response Example */}
-      <div className="px-8 py-16 border-b border-slate-800">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 text-primary">
-            Sample API Response
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-semibold text-primary mb-4">Request</h3>
-              <div className="bg-tertiary border border-slate-700 rounded-lg p-6">
-                <pre className="font-mono text-sm text-secondary">
-                  <span className="text-green-400">GET</span>{" "}
-                  /api/mock/your-project-id/user
-                </pre>
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold text-primary mb-4">Response</h3>
-              <div className="bg-tertiary border border-slate-700 rounded-lg p-6 overflow-x-auto">
-                <pre className="font-mono text-sm text-secondary">
-                  {`[
-  {
-    "id": 1,
-    "email": "john@example.com",
-    "name": "John Doe"
-  },
-  {
-    "id": 2,
-    "email": "jane@example.com",
-    "name": "Jane Smith"
-  }
-]`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Best Practices */}
       <div className="px-8 py-16">
         <div className="max-w-6xl mx-auto">
@@ -367,6 +329,8 @@ curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

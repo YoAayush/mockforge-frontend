@@ -7,9 +7,10 @@ import { Card } from "@/components/ui/card";
 interface ProjectCardProps {
     project: Project;
     userId: string;
+    deleteProject?: (projectId: string) => void;
 }
 
-export function ProjectCard({ project, userId }: ProjectCardProps) {
+export function ProjectCard({ project, userId, deleteProject }: ProjectCardProps) {
 
     // if (!userId) return new Error("Project ID is missing !!!");
 
@@ -30,8 +31,19 @@ export function ProjectCard({ project, userId }: ProjectCardProps) {
                         </div>
                     </div>
 
-                    <div className="pt-4 border-t border-border">
+                    <div className="pt-4 border-t border-border flex items-center justify-between">
                         <p className="text-xs text-secondary">Created {new Date(project.createdAt).getDate()}/{new Date(project.createdAt).getMonth()}/{new Date(project.createdAt).getFullYear()}</p>
+                        {deleteProject && (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    deleteProject(project.id);
+                                }}
+                                className="mt-2 text-sm text-white bg-red-700 hover:bg-red-400 px-2 py-1 rounded transition-colors duration-300 cursor-pointer"
+                            >
+                                Delete Project
+                            </button>
+                        )}
                     </div>
                 </div>
             </Card>

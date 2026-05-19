@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/userProvider";
-import { useContext } from "react";
+// import { useContext } from "react";
 // import { useParams } from "next/navigation";
 import axios from "axios";
 import Loader from "@/components/Loader";

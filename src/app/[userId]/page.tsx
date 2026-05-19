@@ -12,6 +12,7 @@ import { Header } from "@/components/user-header";
 import { ProjectCard } from "@/components/project-card";
 import { Project } from "@/lib/types";
 import axios from "axios";
+import { toast } from "sonner";
 // import { Empty } from "@/components/ui/empty";
 
 export default function Dashboard() {
@@ -47,6 +48,7 @@ export default function Dashboard() {
         setProjects(res.data.projects);
       } catch (error) {
         console.error("Error fetching project:", error);
+        toast.error("Failed to fetch projects");
       }
     };
 
@@ -69,6 +71,32 @@ export default function Dashboard() {
 
     // router.push("/auth/callback");
     router.replace("/");
+  };
+
+  const ProjectDeletionHandler = async (projectId: string) => {
+    const toastId = toast.loading("Deleting project...");
+    try {
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+        },
+      );
+
+      if (res.status === 200) {
+        setProjects((prevProjects) =>
+          prevProjects.filter((project) => project.id !== projectId),
+        );
+        toast.success("Project deleted successfully", { id: projectId });
+      }
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast.error("Failed to delete project", { id: projectId });
+    } finally {
+      toast.dismiss(toastId);
+    }
   };
 
   return (
@@ -105,6 +133,7 @@ export default function Dashboard() {
                 key={project.id}
                 project={project}
                 userId={userId as string}
+                deleteProject={ProjectDeletionHandler}
               />
             ))}
           </div>

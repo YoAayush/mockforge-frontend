@@ -6,15 +6,11 @@ import { ThemeProvider } from "@/lib/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 // import ThemeProvider
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
+import { Plus_Jakarta_Sans } from "next/font/google";
 
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "MockForge - API Schema & Mock Server Platform",
@@ -61,8 +57,8 @@ export default function RootLayout({
       /> */}
 
       <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        className="font-serif antialiased"
+        className={`${jakarta.className} antialiased`}
+        // className="font-serif antialiased"
       >
         <Toaster
           position="top-right"

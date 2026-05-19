@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/Sidebar";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { ProjectProvider, useProject } from "@/lib/projectProvider";

@@ -4,6 +4,7 @@ import { Copy, Check, ChevronRight, Code2, Database, Zap, Shield, Layers } from 
 import { useState } from 'react'
 import Link from 'next/link'
 import { Header } from './landing-page-components/header'
+import { Footer } from './landing-page-components/footer'
 
 export function DocumentationPage() {
     // const [copiedCode, setCopiedCode] = useState<string | null>(null)
@@ -280,6 +281,8 @@ const response = await fetch(\`/api/mock/\${projectId}/user\`, {
                     </div>
                 </div>
             </div>
+
+            <Footer />
         </div>
     )
 }
