@@ -8,6 +8,7 @@ import { UserContext } from '../../lib/userProvider'
 import { useContext } from 'react'
 // import { useTheme } from '@/lib/theme-provider'
 import { useTheme } from 'next-themes'
+import Image from 'next/image'
 
 export function Header() {
     // const [isDark, setIsDark] = useState(true);
@@ -30,8 +31,16 @@ export function Header() {
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
                 <Link href="/" className="flex items-center gap-2 font-semibold text-primary text-lg">
-                    <span className="text-accent">&lt;/&gt;</span>
-                    MockForge
+                    {
+                        theme === "light" && (
+                            <Image src="/mockforge-for-light-theme.svg" alt="MockForge Logo" width={180} height={180} className="rounded-sm" />
+                        )
+                    }
+                    {
+                        (theme === "dark" || theme === "system") && (
+                            <Image src="/mockforge-for-dark-theme.svg" alt="MockForge Logo" width={180} height={180} className="rounded-sm" />
+                        )
+                    }
                 </Link>
 
                 <div className="flex items-center gap-4">

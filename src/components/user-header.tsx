@@ -14,6 +14,7 @@ import {
   User,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 interface HeaderProps {
   title?: string;
@@ -49,8 +50,24 @@ export function Header({
             href="/"
             className="flex items-center gap-2 font-semibold text-primary text-lg"
           >
-            <span className="text-blue-400">&lt;/&gt;</span>
-            MockForge
+            {theme === "light" && (
+              <Image
+                src="/mockforge-for-light-theme.svg"
+                alt="MockForge Logo"
+                width={180}
+                height={180}
+                className="bg-transparent rounded-sm"
+              />
+            )}
+            {(theme === "dark" || theme === "system") && (
+              <Image
+                src="/mockforge-for-dark-theme.svg"
+                alt="MockForge Logo"
+                width={180}
+                height={180}
+                className="bg-transparent rounded-sm"
+              />
+            )}
           </Link>
 
           {/* User Menu */}
