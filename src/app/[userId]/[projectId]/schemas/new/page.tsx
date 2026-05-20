@@ -160,10 +160,11 @@ export default function EditSchemaPage() {
   const handleSubmitSchema = async () => {
     const toastId = toast.loading("Creating schema...");
     try {
+      const slug_name = schema.name.toLowerCase().trim().replace(/\s+/g, "-"); // convert to snake_case
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/schemas/add`,
         {
-          name: schema.name,
+          name: slug_name,
           visibility: schema.visibility,
           defaultCount: schema.defaultCount,
           projectId,
@@ -180,11 +181,14 @@ export default function EditSchemaPage() {
         },
       );
       // console.log("Schema created:", res.data);
-      toast.success("Schema created successfully!");
-      refetchSchemas();
-      setTimeout(() => {
-        router.push(`/${userId}/${projectId}/schemas`);
-      }, 500);
+
+      if (res.data.status === 201) {
+        toast.success("Schema created successfully!");
+        refetchSchemas();
+        setTimeout(() => {
+          router.push(`/${userId}/${projectId}/schemas`);
+        }, 500);
+      }
     } catch (error) {
       toast.error("Failed to create schema. Please try again.");
       return console.error("Error creating schema:", error);
@@ -390,6 +394,7 @@ export default function EditSchemaPage() {
                         }
                         className="w-full bg-primary border border-default rounded px-4 py-2 text-primary text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
                       >
+                        <option>uuid</option>
                         <option>string</option>
                         <option>email</option>
                         <option>number</option>

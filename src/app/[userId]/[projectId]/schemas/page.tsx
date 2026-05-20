@@ -12,6 +12,17 @@ import { UserContext } from "@/lib/userProvider";
 import Loader from "@/components/Loader";
 import { useProject } from "@/lib/projectProvider";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function SchemasPage() {
   const { userId, projectId }: { userId: string; projectId: string } =
@@ -51,7 +62,6 @@ export default function SchemasPage() {
 
   const handleDeleteSchema = async (id: string) => {
     const toastId = toast.loading("Deleting schema...");
-    setSchemas(schemas.filter((s) => Number(s.id) !== Number(id)));
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/schemas/${id}`, {
         headers: {
@@ -59,7 +69,8 @@ export default function SchemasPage() {
         },
       });
       toast.success("Schema deleted successfully");
-      refetchSchemas();
+      setSchemas(schemas.filter((s) => s.id !== id));
+      await refetchSchemas();
       // alert("Schema deleted successfully");
     } catch (error) {
       console.error("Error deleting schema:", error);
@@ -159,19 +170,54 @@ export default function SchemasPage() {
                   </td>
                   <td className="px-6 py-4 text-sm">
                     <div className="flex gap-2">
-                      <Link
-                        href={`/${userId}/${projectId}/schemas/${schema.id}`}
-                        className="p-2 rounded text-accent hover:bg-tertiary hover:text-primary transition-colors"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </Link>
+                      <Button variant="outline" className="p-2 rounded" asChild>
+                        <Link
+                          href={`/${userId}/${projectId}/schemas/${schema.id}`}
+                          className="p-2 rounded text-accent hover:bg-tertiary hover:text-primary transition-colors"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </Link>
+                      </Button>
 
-                      <button
+                      {/* <button
                         onClick={() => handleDeleteSchema(schema.id)}
                         className="p-2 rounded text-[rgb(var(--text-secondary))] hover:text-red-500 hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
                       >
                         <Trash2 className="w-4 h-4 " color="red" />
-                      </button>
+                      </button> */}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="p-2 rounded text-[rgb(var(--text-secondary))] hover:text-red-500 hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4 " color="red" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="bg-slate-800 border border-slate-700 rounded-lg">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this schema?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. All associated mock
+                              API endpoints using this schema will also be
+                              deleted.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel className="bg-slate-700 text-slate-300 hover:bg-slate-600">
+                              Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteSchema(schema.id)}
+                              className="!bg-red-500 text-white hover:!bg-red-600"
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </td>
                 </tr>

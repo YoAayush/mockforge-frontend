@@ -30,7 +30,7 @@ export function Header() {
         <header className="border-b border-default sticky backdrop-blur-sm top-0 z-50">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-                <Link href="/" className="flex items-center gap-2 font-semibold text-primary text-lg">
+                <Link href="/">
                     {
                         theme === "light" && (
                             <Image src="/mockforge-for-light-theme.svg" alt="MockForge Logo" width={180} height={180} className="rounded-sm" />

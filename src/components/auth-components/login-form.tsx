@@ -5,9 +5,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github } from "lucide-react";
+import { Github, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { toast } from "sonner";
 // import { UserContext } from '../userProvider'
 
 export function LoginForm() {
@@ -17,7 +19,9 @@ export function LoginForm() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
+  const theme = window.localStorage.getItem("theme") || "light";
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -95,18 +99,18 @@ export function LoginForm() {
       // setErrors(error.message)
 
       if (error.message.includes("Email not confirmed")) {
-        alert("Please confirm your email before logging in.");
+        toast.error("Please confirm your email before logging in.");
         return;
       }
 
-      alert(error.message);
+      toast.error(error.message);
       setErrors({ general: error.message });
       return;
     }
 
     if (data.weakPassword) {
       console.log(data.weakPassword);
-      alert(data.weakPassword.message);
+      toast.error(data.weakPassword.message);
       return;
     }
 
@@ -118,12 +122,32 @@ export function LoginForm() {
   // console.log(formData.email, formData.password);
 
   const handlePasswordReset = async () => {
-    const { error } = await supabase.auth.resetPasswordForEmail(
-      formData.email,
-      {
-        redirectTo: "http://localhost:4000/auth/login",
-      },
-    );
+    if (!formData.email.trim()) {
+      toast.error("Please enter your email to reset password.");
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        formData.email,
+        {
+          redirectTo: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/auth/reset-password`,
+        },
+      );
+
+      if (error) {
+        console.error(error);
+        toast.error(error.message || "Failed to send reset email.");
+        return;
+      }
+
+      toast.success(
+        "If an account exists with this email, a reset link has been sent.",
+      );
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   // useEffect(() => {
@@ -138,15 +162,29 @@ export function LoginForm() {
       className="min-w-md space-y-6 text-primary"
     >
       {/* Header */}
-      <div className="text-center">
-        <div
-          className="text-2xl font-semibold text-primary mb-2 cursor-pointer"
-          onClick={() => router.replace("/")}
-        >
-          <span className="text-accent">&lt;/&gt;</span> MockForge
-        </div>
+      <div className="flex-col justify-center items-center text-center">
+        <Link href="/">
+          {theme === "light" && (
+            <Image
+              src="/mockforge-for-light-theme.svg"
+              alt="MockForge Logo"
+              width={180}
+              height={180}
+              className="rounded-sm m-auto"
+            />
+          )}
+          {(theme === "dark" || theme === "system") && (
+            <Image
+              src="/mockforge-for-dark-theme.svg"
+              alt="MockForge Logo"
+              width={180}
+              height={180}
+              className="rounded-sm m-auto"
+            />
+          )}
+        </Link>
 
-        <h1 className="text-xl font-semibold text-primary mb-1">
+        <h1 className="text-xl font-semibold text-primary my-1">
           Welcome back
         </h1>
 
@@ -205,29 +243,41 @@ export function LoginForm() {
             >
               Password
             </Label>
-
-            {/* <Button
-              onClick={handlePasswordReset}
-              className="text-xs text-accent hover:opacity-80 font-medium"
-            >
-              Forgot password?
-            </Button> */}
           </div>
 
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            className="bg-primary border border-default text-primary placeholder:text-tertiary focus:ring-2 focus:ring-[rgb(var(--accent))]"
-          />
+          <div className="relative">
+            <Input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              className="bg-primary border border-default text-primary placeholder:text-tertiary focus:ring-2 focus:ring-[rgb(var(--accent))] pr-10"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-tertiary hover:text-primary"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
 
           {errors.password && (
             <p className="text-xs text-red-500">{errors.password}</p>
           )}
         </div>
+        <p className="text-sm text-right">
+          <button
+            type="button"
+            onClick={handlePasswordReset}
+            className="text-sm text-red-500 hover:opacity-80 font-medium cursor-pointer"
+          >
+            Forgot password?
+          </button>
+        </p>
       </div>
 
       {/* Submit Button */}

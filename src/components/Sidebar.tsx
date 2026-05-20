@@ -11,6 +11,7 @@ import { useParams, usePathname } from 'next/navigation'
 import { useProject } from '@/lib/projectProvider'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export function Sidebar() {
     const pathname = usePathname()
@@ -64,6 +65,7 @@ export function Sidebar() {
             return;
         }
 
+        toast.success("Logged out successfully!");
         // router.push("/auth/callback");
         router.replace("/");
     };

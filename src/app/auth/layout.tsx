@@ -1,16 +1,15 @@
 "use client";
 
-import { useUser } from "@/lib/userProvider"
-import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useUser } from "@/lib/userProvider";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 // import { useSearchParams } from "next/navigation";
 
 export default function AuthLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
   const { user, session, loading } = useUser();
   // console.log(user, session, loading)
   const router = useRouter();
@@ -28,9 +27,14 @@ export default function AuthLayout({
   useEffect(() => {
     if (!mounted || loading) return;
 
-    // if (pathname.startsWith("/auth") && session && user && !isError ) {
-    if (pathname.startsWith("/auth") && session && user) {
-      router.replace(`/${user?.id}`);
+    // routes that should NOT auto redirect
+    const allowedAuthRoutes = ["/auth/reset-password", "/auth/forgot-password"];
+
+    const isAllowedRoute = allowedAuthRoutes.includes(pathname);
+
+    // redirect authenticated users away from auth pages
+    if (pathname.startsWith("/auth") && session && user && !isAllowedRoute) {
+      router.replace(`/${user.id}`);
     }
   }, [mounted, loading, session, user, pathname]);
 
@@ -43,5 +47,5 @@ export default function AuthLayout({
     <div className="min-h-screen w-full bg-primary flex items-center justify-center">
       {children}
     </div>
-  )
+  );
 }

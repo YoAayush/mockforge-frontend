@@ -31,6 +31,7 @@ export default function Callback() {
                 // if (!data.session?.user) return;
 
                 if (error || !data.session?.user) {
+                    toast.error("Authentication failed. Please log in again.");
                     router.replace("/auth/login");
                     return;
                 }
@@ -60,14 +61,7 @@ export default function Callback() {
                 // CRITICAL: Clean URL (removes #access_token)
                 window.history.replaceState(null, "", "/");
 
-                toast.success("Logged in successfully!", {
-                    description: "Welcome back to MockForge.",
-                    // action: {
-                    //     label: "Go to Dashboard",
-                    //     onClick: () => router.replace(`/${session.user.id}`)
-                    // }
-                });
-
+                toast.success("Authentication successful!");
                 // Redirect instantly (no timeout)
                 router.replace(`/${session.user.id}`);
 
