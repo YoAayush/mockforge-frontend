@@ -99,7 +99,7 @@ export function Header({
             <div className="w-px h-4 bg-slate-400"></div>
             <div className="flex items-center gap-2 text-sm text-secondary hover:text-white transition-colors cursor-pointer">
               <User className="w-4 h-4" />
-              <span>Aayush Chopra</span>
+              <span>{userName}</span>
             </div>
             <button
               className="text-sm text-[rgb(var(--text-secondary))] hover:text-red-500 transition-colors font-medium cursor-pointer"
@@ -116,10 +116,10 @@ export function Header({
         <div className="mb-12 flex items-start justify-between">
           <div>
             <h1 className="text-4xl font-bold text-primary mb-2">
-              My Projects
+              {title || "My Projects"}
             </h1>
             <p className="text-secondary text-lg">
-              Create and manage your mock API projects
+              {subtitle || "Create and manage your mock API projects"}
             </p>
           </div>
           {action && (
