@@ -124,7 +124,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Recent Activity */}
-                <div className="bg-secondary border border-border rounded-lg p-6">
+                {/* <div className="bg-secondary border border-border rounded-lg p-6">
                     <h2 className="text-lg font-semibold mb-4 text-primary">Recent Activity</h2>
                     <div className="space-y-3">
                         <div className="flex items-center justify-between p-3 bg-tertiary rounded border border-border/50">
@@ -149,7 +149,7 @@ export default function DashboardPage() {
                             <p className="text-xs text-tertiary">1 day ago</p>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )
