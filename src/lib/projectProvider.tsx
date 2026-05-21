@@ -15,6 +15,7 @@ type ProjectContextType = {
   projectData: Project | null;
   notFound?: boolean;
   projectSchemas?: Schema[] | null;
+  setProjectSchemas?: React.Dispatch<React.SetStateAction<Schema[] | null>>;
   refetchProject: () => Promise<void>;
   refetchSchemas: () => Promise<void>;
 };
@@ -81,6 +82,7 @@ export const ProjectProvider = ({
         projectData: project,
         notFound,
         projectSchemas: ProjectSchemas,
+        setProjectSchemas,
         refetchSchemas: fetchSchemas,
         refetchProject: fetchProject,
       }}
@@ -97,5 +99,5 @@ export const useProject = () => {
     throw new Error("useProject must be used within ProjectProvider");
   }
 
-  return context; // { projectData, notFound, projectSchemas, refetchSchemas, refetchProject }
+  return context; // { projectData, notFound, projectSchemas, setProjectSchemas, refetchSchemas, refetchProject }
 };

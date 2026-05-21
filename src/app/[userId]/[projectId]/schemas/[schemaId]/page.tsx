@@ -21,18 +21,23 @@ export default function EditSchemaPage() {
     defaultCount: 0,
   });
   const [fields, setFields] = useState<SchemaField[]>([]);
-  const { userId, projectId } = useParams() as {
+  const { userId, projectId, schemaId } = useParams() as {
     userId: string;
     projectId: string;
+    schemaId: string;
   };
-  const { schemaId } = useParams() as { schemaId: string };
   const { session } = useContext(UserContext);
   const router = useRouter();
   const { refetchSchemas } = useProject();
 
   // fetch existing schema data and populate state here (omitted for brevity)
   useEffect(() => {
-    if (!schemaId || !session?.access_token) return;
+    if (!schemaId || !session?.access_token) {
+      toast.error(
+        "Missing schema ID or user session. Cannot fetch schema data.",
+      );
+      return;
+    }
 
     const fetchSchema = async () => {
       try {
@@ -174,17 +179,15 @@ export default function EditSchemaPage() {
         visibility: parsed.visibility,
         defaultCount: parsed.defaultCount,
       });
-      const newFields: SchemaField[] = parsed.fields.map(
-        (field: any) => ({
-          id: Date.now().toString() + Math.random(),
-          name: field.name,
-          type: field.type || "string",
-          faker: field.faker || "None",
-          format: field.format || null,
-          schemaId: schemaId,
-          createdAt: new Date().toISOString(),
-        }),
-      );
+      const newFields: SchemaField[] = parsed.fields.map((field: any) => ({
+        id: Date.now().toString() + Math.random(),
+        name: field.name,
+        type: field.type || "string",
+        faker: field.faker || "None",
+        format: field.format || null,
+        schemaId: schemaId,
+        createdAt: new Date().toISOString(),
+      }));
       setFields(newFields);
       setActiveTab("form");
     } catch (error) {
@@ -235,7 +238,7 @@ export default function EditSchemaPage() {
       router.push(`/${userId}/${projectId}/schemas`);
     } catch (error) {
       console.error("Error updating schema:", error);
-      toast.error("Failed to update schema. Please try again.")
+      toast.error("Failed to update schema. Please try again.");
       // alert("Failed to update schema. Please try again.");
     } finally {
       toast.dismiss(toastId);

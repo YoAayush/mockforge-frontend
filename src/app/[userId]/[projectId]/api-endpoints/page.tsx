@@ -1,47 +1,26 @@
 'use client'
 
-import { Copy, ChevronDown } from 'lucide-react'
+import { Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useParams } from 'next/navigation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
-import { UserContext } from '@/lib/userProvider'
+import { useEffect, useState } from 'react'
 import { useProject } from '@/lib/projectProvider'
 import { Schema } from '@/lib/types'
 import { toast } from 'sonner'
-// import { usePathname } from 'next/navigation'
 
 export default function APIEndpointsPage() {
-    // const pathname = usePathname();
-    // console.log(pathname);
-    const { projectId } = useParams();
-    const { session } = useContext(UserContext);
-    const { projectData } = useProject();
-    const [schemas, setSchemas] = useState<Schema[]>([]);
+    const { projectData, projectSchemas } = useProject();
     const [selectedSchemaId, setSelectedSchemaId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        async function FetchSchema() {
-            try {
-                const response = await axios.get(`${`${process.env.NEXT_PUBLIC_API_URL}/schemas/all/${projectId}`}`, {
-                    headers: {
-                        Authorization: `Bearer ${session?.access_token}`,
-                    },
-                });
-                // console.log('Fetched schemas:', response.data);
-                setSchemas(response.data.schemas);
-                setSelectedSchemaId(response.data.schemas[0]?.id); // Select the first schema by default
-            } catch (error) {
-                console.error('Error fetching schemas:', error);
-            }
+        if (projectSchemas && projectSchemas.length > 0) {
+            setSelectedSchemaId(projectSchemas[0].id);
         }
-        FetchSchema();
-    }, [projectId, session?.access_token]);
+    }, [projectSchemas]);
 
-    const endpoints = schemas
-        .filter((schema) => schema.id === selectedSchemaId)
-        .flatMap((schema) => {
+    const endpoints = projectSchemas
+        ?.filter((schema: Schema) => schema.id === selectedSchemaId)
+        .flatMap((schema: Schema) => {
             const name = schema.name;
 
             return [
@@ -81,7 +60,7 @@ export default function APIEndpointsPage() {
                     color: 'bg-red-500/20 text-red-400',
                 },
             ];
-        });
+        }) ?? [];
 
     function copyToClipboard(text: string) {
         navigator.clipboard.writeText(text);
@@ -118,7 +97,7 @@ export default function APIEndpointsPage() {
                     </SelectTrigger>
 
                     <SelectContent className="bg-secondary border border-default">
-                        {schemas.map((schema) => (
+                        {projectSchemas?.map((schema) => (
                             <SelectItem key={schema.id} value={schema.id}>
                                 {schema.name}
                             </SelectItem>

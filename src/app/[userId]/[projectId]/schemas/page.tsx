@@ -27,34 +27,17 @@ import {
 export default function SchemasPage() {
   const { userId, projectId }: { userId: string; projectId: string } =
     useParams();
-  const [schemas, setSchemas] = useState<Schema[]>([]);
+  // const [schemas, setSchemas] = useState<Schema[]>([]);
   const router = useRouter();
   const { session } = useContext(UserContext);
-  const { projectSchemas, refetchSchemas } = useProject();
-  // const [editingId, setEditingId] = useState<string | null>(null);
-  // const [editName, setEditName] = useState('');
-  // const [editFields, setEditFields] = useState(0);
+  const { projectSchemas, refetchSchemas, setProjectSchemas } = useProject();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function FetchSchema() {
-      try {
-        setLoading(true);
-        // const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/schemas/all/${projectId}`, {
-        //     headers: {
-        //         Authorization: `Bearer ${session?.access_token}`,
-        //     },
-        // });
-        // console.log('Fetched schemas:', response.data);
-        setSchemas(projectSchemas || []);
-      } catch (error) {
-        console.error("Error fetching schemas:", error);
-      } finally {
-        setLoading(false);
-      }
+    if (projectSchemas) {
+      setLoading(false);
     }
-    FetchSchema();
-  }, [projectId, session?.access_token]);
+  }, [projectSchemas]);
 
   const handleNewSchema = () => {
     router.push(`/${userId}/${projectId}/schemas/new`);
@@ -69,7 +52,7 @@ export default function SchemasPage() {
         },
       });
       toast.success("Schema deleted successfully");
-      setSchemas(schemas.filter((s) => s.id !== id));
+      setProjectSchemas?.(projectSchemas?.filter((s) => s.id !== id) || []);
       await refetchSchemas();
       // alert("Schema deleted successfully");
     } catch (error) {
@@ -80,26 +63,6 @@ export default function SchemasPage() {
       toast.dismiss(toastId);
     }
   };
-
-  // const handleEditSchema = (schema: typeof schemas[0]) => {
-  //     setEditingId(schema.id)
-  //     setEditName(schema.name)
-  //     // setEditFields(schema.fields)
-  // }
-
-  // const handleSaveEdit = () => {
-  //     setSchemas(schemas.map(s =>
-  //         s.id === editingId
-  //             ? { ...s, name: editName, fields: s.fields.slice(0, editFields) }
-  //             : s
-  //     ))
-  //     setEditingId(null)
-  // }
-
-  // const handleCancelEdit = () => {
-  //     setEditingId(null)
-  //     window.alert("Note: Field edits are not saved in this demo. Only the name change is reflected in the table.") // Remove this line when field editing is implemented
-  // }
 
   if (loading) return <Loader />;
 
@@ -146,7 +109,7 @@ export default function SchemasPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-700">
-              {schemas?.map((schema) => (
+              {projectSchemas?.map((schema: Schema) => (
                 <tr
                   key={schema.id}
                   className="bg-secondary hover:bg-[rgb(var(--bg-tertiary))] transition-colors"
