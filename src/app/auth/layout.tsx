@@ -28,7 +28,7 @@ export default function AuthLayout({
     if (!mounted || loading) return;
 
     // routes that should NOT auto redirect
-    const allowedAuthRoutes = ["/auth/reset-password", "/auth/forgot-password"];
+    const allowedAuthRoutes = ["/auth/reset-password"];
 
     const isAllowedRoute = allowedAuthRoutes.includes(pathname);
 

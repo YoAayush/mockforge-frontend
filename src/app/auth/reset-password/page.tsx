@@ -48,6 +48,9 @@ export default function ResetPasswordPage() {
 
     toast.success("Password updated successfully.");
 
+    // After password reset, user is still logged in, so we log them out to force re-login with new password
+    await supabase.auth.signOut();
+
     router.replace("/auth/login");
   };
 
@@ -96,7 +99,7 @@ export default function ResetPasswordPage() {
       <button
         onClick={handleUpdatePassword}
         disabled={loading}
-        className="bg-black text-white p-2 rounded disabled:opacity-50"
+        className="bg-blue-500 text-white p-2 rounded disabled:opacity-50 hover:bg-blue-800 transition"
       >
         {loading ? "Updating..." : "Update Password"}
       </button>
