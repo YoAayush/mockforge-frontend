@@ -56,13 +56,20 @@ export default function APIPlaygroundPage() {
                 headers,
                 data: parsedBody,
             });
-            // console.log(res);
+            console.log(res);
 
             const end = Date.now();
 
-            toast.success("Request successful!", {
-                description: `Received ${res.status} in ${end - start}ms`,
-            });
+            if (res.data.data.status >= 200 && res.data.data.status < 300) {
+                toast.success("Request successful!", {
+                    description: `Status code: ${res.data.data.status}`,
+                });
+            } else {
+                toast.error("Request failed!", {
+                    description: `Status code: ${res.data.data.status}`,
+                });
+            }
+
             setStatus(res.data.data.status);
             setResponse(res.data.data);
             setTime(end - start);
@@ -70,6 +77,7 @@ export default function APIPlaygroundPage() {
             toast.error("Request failed!", {
                 description: error.response?.data?.message || error.message,
             });
+            console.error(error);
             setStatus(error.response?.status || 500);
             setResponse(error.response?.data || error.message);
             setTime(null);
