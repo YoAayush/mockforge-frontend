@@ -85,13 +85,13 @@ console.log('User deleted:', result);`,
       title: "Using cURL",
       language: "bash",
       code: `# Get all users
-curl https://api.mockforge.com/api/mock/your-project-id/user
+curl https://mockforge-frontend.vercel.app/api/mock/your-project-id/user
 
 # Get single user
-curl https://api.mockforge.com/api/mock/your-project-id/user/1
+curl https://mockforge-frontend.vercel.app/api/mock/your-project-id/user/1
 
 # Create user
-curl -X POST https://api.mockforge.com/api/mock/your-project-id/user \\
+curl -X POST https://mockforge-frontend.vercel.app/api/mock/your-project-id/user \\
   -H "Content-Type: application/json" \\
   -d '{"email":"user@example.com","name":"John Doe"}'`,
     },
