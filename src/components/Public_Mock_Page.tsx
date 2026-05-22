@@ -274,7 +274,7 @@ export function PublicMockPage() {
         </div>
 
         {/* Footer */}
-        <div className="mx-auto text-center border-t border-default px-8 py-8">
+        <div className="mx-auto mt-10 text-center border-t border-default px-8 py-8">
           <p className="text-secondary text-sm">
             © {new Date().getFullYear()} MockForge. Built for developers.
           </p>

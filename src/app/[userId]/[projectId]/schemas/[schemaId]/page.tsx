@@ -16,7 +16,7 @@ import { toast } from "sonner";
 export default function EditSchemaPage() {
   const [activeTab, setActiveTab] = useState<"form" | "json">("form");
   const [schema, setSchema] = useState({
-    name: "Enter schema name",
+    name: "",
     visibility: "",
     defaultCount: 0,
   });
@@ -93,7 +93,7 @@ export default function EditSchemaPage() {
   const handleAddField = () => {
     const newField: SchemaField = {
       id: Date.now().toString(),
-      name: "new_field",
+      name: "",
       type: "string",
       faker: "None",
       format: null,
@@ -306,6 +306,7 @@ export default function EditSchemaPage() {
                     </label>
                     <input
                       type="text"
+                      placeholder="Enter schema name"
                       value={schema.name}
                       onChange={(e) => {
                         setSchema({ ...schema, name: e.target.value });
@@ -422,6 +423,7 @@ export default function EditSchemaPage() {
                           </label>
                           <input
                             type="text"
+                            placeholder="Enter field name"
                             value={field.name}
                             onChange={(e) =>
                               handleFieldChange(

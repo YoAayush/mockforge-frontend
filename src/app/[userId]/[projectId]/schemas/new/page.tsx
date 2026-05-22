@@ -17,8 +17,8 @@ import { useProject } from "@/lib/projectProvider";
 export default function EditSchemaPage() {
   const [activeTab, setActiveTab] = useState<"form" | "json">("form");
   const [schema, setSchema] = useState({
-    name: "Enter Schema Name",
-    visibility: "public",
+    name: "" ,
+    visibility: "",
     defaultCount: 0,
   });
   const [fields, setFields] = useState<SchemaField[]>([]);
@@ -55,7 +55,7 @@ export default function EditSchemaPage() {
   const handleAddField = () => {
     const newField: SchemaField = {
       id: Date.now().toString(),
-      name: "new_field",
+      name: "",
       type: "string",
       faker: "None",
       format: null,
@@ -260,6 +260,7 @@ export default function EditSchemaPage() {
                 </label>
                 <input
                   type="text"
+                  placeholder="Enter schema name"
                   value={schema.name}
                   onChange={(e) => {
                     setSchema({ ...schema, name: e.target.value });
@@ -302,7 +303,7 @@ export default function EditSchemaPage() {
                     key={schema.visibility} // force re-render when visibility changes
                     value={schema.visibility}
                     onValueChange={(value: "PUBLIC" | "PRIVATE") => {
-                      console.log("Visibility changed to:", value);
+                      // console.log("Visibility changed to:", value);
                       setSchema((prev) => ({
                         ...prev,
                         visibility: value,
@@ -376,6 +377,7 @@ export default function EditSchemaPage() {
                       </label>
                       <input
                         type="text"
+                        placeholder="Enter field name"
                         value={field.name}
                         onChange={(e) =>
                           handleFieldChange(field.id, "name", e.target.value)
