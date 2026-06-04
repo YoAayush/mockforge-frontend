@@ -113,50 +113,69 @@ function SchemaCard({
         </div>
       </button>
 
-      {/* Endpoints List */}
       {isExpanded && (
-        <div className="border-t border-slate-700/30 bg-secondary p-6 space-y-3">
-          {endpoints.map((endpoint, idx) => (
-            <div
-              key={idx}
-              className="group bg-tertiary border border-slate-700/50 hover:border-slate-600 rounded-lg p-4 transition-all duration-200"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 flex items-start gap-3">
-                  {/* Method Badge */}
-                  <div
-                    className={`w-22 inline-flex items-center justify-center px-2.5 py-1 rounded text-xs font-bold border ${getMethodColor(endpoint.method)} flex-shrink-0`}
+        <div className="flex flex-row gap-2 p-2">
+          {/* Endpoints List */}
+          <div className="w-full border-t border-slate-700/30 bg-secondary p-4 space-y-3 rounded-2xl">
+            {endpoints.map((endpoint, idx) => (
+              <div
+                key={idx}
+                className="group bg-tertiary border border-slate-700/50 hover:border-slate-600 rounded-lg p-4 transition-all duration-200"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 flex items-start gap-8">
+                    {/* Method Badge */}
+                    <div
+                      className={`w-20 inline-flex items-center justify-center px-2.5 py-1 rounded text-xs font-bold border ${getMethodColor(endpoint.method)} flex-shrink-0`}
+                    >
+                      {endpoint.method}
+                    </div>
+
+                    {/* Endpoint Details */}
+                    <div className="flex-col min-w-0">
+                      <p className="font-mono text-sm text-primary break-all mb-1">
+                        {endpoint.path}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {endpoint.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Copy Button */}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="cursor-pointer border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
+                    onClick={() => {
+                      copyToClipboard(endpoint.path);
+                      // setAlert(true);
+                    }}
                   >
-                    {endpoint.method}
-                  </div>
-
-                  {/* Endpoint Details */}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-mono text-sm text-primary break-all mb-1">
-                      {endpoint.path}
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      {endpoint.description}
-                    </p>
-                  </div>
+                    <Copy className="w-4 h-4" />
+                    Copy URL
+                  </Button>
                 </div>
-
-                {/* Copy Button */}
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="cursor-pointer border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
-                  onClick={() => {
-                    copyToClipboard(endpoint.path);
-                    // setAlert(true);
-                  }}
-                >
-                  <Copy className="w-4 h-4" />
-                  Copy URL
-                </Button>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* schema fields json */}
+          <div className="w-100 border-t border-slate-700/30 bg-secondary p-4 rounded-2xl">
+            <p>
+              <span className="font-bold text-primary">Schema Fields:</span>
+            </p>
+            <pre className="text-xs text-slate-300 overflow-x-auto">
+              {JSON.stringify(
+                schema.fields.map((field: { name: string; type: string }) => ({
+                  name: field.name,
+                  type: field.type,
+                })),
+                null,
+                2,
+              )}
+            </pre>
+          </div>
         </div>
       )}
     </div>
@@ -165,13 +184,14 @@ function SchemaCard({
 
 export function PublicMockPage() {
   const [expandedSchemas, setExpandedSchemas] = useState<Set<string>>(
-    new Set(["user-service"]),
+    new Set(),
   );
   const { session } = useContext(UserContext);
   // const [showAlert, setShowAlert] = useState(false);
 
   // Public schemas that are shared
   const [PUBLIC_SCHEMAS, setPublicSchemas] = useState<Schema[]>([]);
+  // console.log("Public Schemas:", PUBLIC_SCHEMAS);
 
   useEffect(() => {
     const fetchPublicSchemas = async () => {
