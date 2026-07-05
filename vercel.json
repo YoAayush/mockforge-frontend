@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/v1/:path*",
+            "destination": "https://api.mockforge.indevs.in/api/v1/:path*"
+        }
+    ]
+}
