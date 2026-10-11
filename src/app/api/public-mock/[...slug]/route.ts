@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,6 +9,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
   "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120"
 };
+
+function resolveBackendUrl(req: Request, pathname: string) {
+  if (/^https?:\/\//.test(BASE_URL)) {
+    return `${BASE_URL}${pathname}`;
+  }
+  // Relative BASE_URL (e.g. "/api/v1") is proxied on the same origin.
+  const origin = new URL(req.url).origin;
+  return `${origin}${BASE_URL}${pathname}`;
+}
 
 export async function mainHandler(
   req: Request,
@@ -36,9 +45,12 @@ export async function mainHandler(
     return { error: "Missing schemaName in the URL" };
   }
 
-  const url = id
-    ? `${BASE_URL}/public-mock/${schemaName}/${id}`
-    : `${BASE_URL}/public-mock/${schemaName}`;
+  const url = resolveBackendUrl(
+    req,
+    id
+      ? `/public-mock/${schemaName}/${id}`
+      : `/public-mock/${schemaName}`,
+  );
 
   try {
     switch (method) {
