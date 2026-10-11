@@ -182,11 +182,25 @@ function SchemaCard({
   );
 }
 
+function SchemaCardSkeleton() {
+  return (
+    <div className="border border-slate-700/50 rounded-xl overflow-hidden bg-tertiary animate-pulse">
+      <div className="w-full p-6 flex items-start justify-between">
+        <div className="flex-1">
+          <div className="h-5 w-40 rounded bg-slate-700/50" />
+        </div>
+        <div className="ml-4 h-5 w-5 rounded bg-slate-700/50" />
+      </div>
+    </div>
+  );
+}
+
 export function PublicMockPage() {
   const [expandedSchemas, setExpandedSchemas] = useState<Set<string>>(
     new Set(),
   );
   const { session } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   // const [showAlert, setShowAlert] = useState(false);
 
   // Public schemas that are shared
@@ -195,15 +209,24 @@ export function PublicMockPage() {
 
   useEffect(() => {
     const fetchPublicSchemas = async () => {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/schemas/public-schemas`,
-        {
-          headers: {
-            Authorization: `Bearer ${session?.access_token}`,
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/schemas/public-schemas`,
+          {
+            headers: {
+              Authorization: `Bearer ${session?.access_token}`,
+            },
           },
-        },
-      );
-      setPublicSchemas(response.data.schemas);
+        );
+        setPublicSchemas(response.data.schemas);
+      } catch {
+        toast.error("Failed to load public schemas", {
+          description: "Please try again later.",
+        });
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPublicSchemas();
@@ -252,7 +275,11 @@ export function PublicMockPage() {
             </p>
 
             <p className="text-3xl font-bold text-primary">
-              {PUBLIC_SCHEMAS.length}
+              {loading ? (
+                <span className="inline-block h-8 w-12 animate-pulse rounded bg-slate-700/50 align-middle" />
+              ) : (
+                PUBLIC_SCHEMAS.length
+              )}
             </p>
           </div>
 
@@ -275,22 +302,43 @@ export function PublicMockPage() {
             </p>
 
             <p className="text-3xl font-bold text-primary">
-              {Number(PUBLIC_SCHEMAS?.length) * 5}
+              {loading ? (
+                <span className="inline-block h-8 w-12 animate-pulse rounded bg-slate-700/50 align-middle" />
+              ) : (
+                Number(PUBLIC_SCHEMAS?.length) * 5
+              )}
             </p>
           </div>
         </div>
 
         {/* Schemas Grid */}
         <div className="mx-auto max-w-6xl space-y-4 px-8 min-h-[300px]">
-          {PUBLIC_SCHEMAS.map((schema) => (
-            <SchemaCard
-              key={schema.id}
-              schema={schema}
-              isExpanded={expandedSchemas.has(schema.id)}
-              onToggle={() => toggleSchema(schema.id)}
-              // setAlert={setShowAlert}
-            />
-          ))}
+          {loading ? (
+            <>
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <SchemaCardSkeleton key={idx} />
+              ))}
+            </>
+          ) : PUBLIC_SCHEMAS.length === 0 ? (
+            <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
+              <p className="text-lg font-medium text-secondary">
+                No public schemas available yet
+              </p>
+              <p className="text-sm text-slate-500">
+                Check back later for community-shared mock APIs
+              </p>
+            </div>
+          ) : (
+            PUBLIC_SCHEMAS.map((schema) => (
+              <SchemaCard
+                key={schema.id}
+                schema={schema}
+                isExpanded={expandedSchemas.has(schema.id)}
+                onToggle={() => toggleSchema(schema.id)}
+                // setAlert={setShowAlert}
+              />
+            ))
+          )}
         </div>
 
         {/* Footer */}

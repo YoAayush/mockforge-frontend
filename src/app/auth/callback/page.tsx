@@ -54,7 +54,14 @@ export default function Callback() {
                         }
                     );
                 } catch (err) {
-                    toast.error("Failed to register user.");
+                    // A 400 means the user already exists, which is expected on subsequent logins. Only surface genuinely unexpected errors.
+                    const alreadyRegistered =
+                        axios.isAxiosError(err) &&
+                        err.response?.status === 400;
+
+                    if (!alreadyRegistered) {
+                        toast.error("Failed to register user.");
+                    }
                     console.log("Register skipped:", err);
                 }
 

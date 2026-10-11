@@ -1,9 +1,11 @@
 'use client'
 
-import { Copy } from 'lucide-react'
+import { Copy, Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 import { useProject } from '@/lib/projectProvider'
 import { Schema } from '@/lib/types'
 import { toast } from 'sonner'
@@ -11,6 +13,7 @@ import { toast } from 'sonner'
 export default function APIEndpointsPage() {
     const { projectData, projectSchemas } = useProject();
     const [selectedSchemaId, setSelectedSchemaId] = useState<string | undefined>(undefined);
+    const { userId, projectId }: { userId: string; projectId: string } = useParams();
 
     useEffect(() => {
         if (projectSchemas && projectSchemas.length > 0) {
@@ -135,16 +138,36 @@ export default function APIEndpointsPage() {
                                     </div>
                                 </div>
 
-                                {/* Copy Button */}
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
-                                    onClick={() => copyToClipboard(endpoint.path)}
-                                >
-                                    <Copy className="w-4 h-4" />
-                                    Copy URL
-                                </Button>
+                                {/* Action Buttons */}
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary flex gap-2 shrink-0"
+                                        onClick={() => copyToClipboard(endpoint.path)}
+                                    >
+                                        <Copy className="w-4 h-4" />
+                                        Copy URL
+                                    </Button>
+
+                                    <Link
+                                        href={`/${userId}/${projectId}/api-playground`}
+                                        className="border border-default text-secondary hover:bg-[rgb(var(--bg-tertiary))] hover:text-primary inline-flex items-center gap-2 shrink-0 px-3 h-9 rounded-md text-sm font-medium transition-colors"
+                                        onClick={() => {
+                                            window.history.pushState(
+                                                {
+                                                    method: endpoint.method,
+                                                    path: endpoint.path,
+                                                },
+                                                "",
+                                                `/${userId}/${projectId}/api-playground`
+                                            );
+                                        }}
+                                    >
+                                        <Play className="w-4 h-4" />
+                                        Open in Playground
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     ))}
