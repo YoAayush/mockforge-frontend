@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 // const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,10 +10,20 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
+function resolveBackendUrl(req: Request, pathname: string) {
+  if (/^https?:\/\//.test(BASE_URL)) {
+    return `${BASE_URL}${pathname}`;
+  }
+  // Relative BASE_URL ("/api/v1") is proxied on the same origin.
+  const origin = new URL(req.url).origin;
+  return `${origin}${BASE_URL}${pathname}`;
+}
+
 export async function mainHandler(
   req: Request,
   context: { params: Promise<{ project: string; slug: string[] }> },
 ) {
+  // console.log("Incoming request:", req.method, req.url);
   // console.log(req.headers.get("authorization"));
   const { project, slug } = await context.params;
   // console.log("Received request for project:", project, "slug:", slug);
@@ -36,9 +46,14 @@ export async function mainHandler(
     return { error: "Missing project or schemaName in the URL" };
   }
 
-  const url = id
-    ? `${BASE_URL}/mock/${project}/${schemaName}/${id}`
-    : `${BASE_URL}/mock/${project}/${schemaName}`;
+  const url = resolveBackendUrl(
+    req,
+    id
+      ? `/mock/${project}/${schemaName}/${id}`
+      : `/mock/${project}/${schemaName}`,
+  );
+
+  console.log("Resolved backend URL:", url);
 
   try {
     switch (method) {
