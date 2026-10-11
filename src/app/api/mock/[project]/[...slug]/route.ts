@@ -53,7 +53,7 @@ export async function mainHandler(
       : `/mock/${project}/${schemaName}`,
   );
 
-  console.log("Resolved backend URL:", url);
+  // console.log("Resolved backend URL:", url);
 
   try {
     switch (method) {
