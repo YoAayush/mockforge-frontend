@@ -3,8 +3,9 @@
 import { Play, Code } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useLocation } from '@/lib/useLocation';
 
 export default function APIPlaygroundPage() {
 
@@ -17,6 +18,20 @@ export default function APIPlaygroundPage() {
     const [status, setStatus] = useState<number | null>(null);
     const [time, setTime] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        const state = location.state;
+
+        if (state?.method) {
+            setMethod(state.method as string);
+        }
+
+        if (state?.path) {
+            setUrl(state.path as string);
+        }
+    }, [location.state]);
 
     function parseHeaders(headerString: string) {
         const headers: Record<string, string> = {};
