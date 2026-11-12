@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronLeft, Database, Zap, Code, Gamepad2, Settings as SettingsIcon, LogOutIcon } from 'lucide-react'
+import { ChevronLeft, Database, Zap, Code, Gamepad2, Settings as SettingsIcon, LogOutIcon, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 // import { useEffect, useState } from 'react'
@@ -48,6 +48,7 @@ export function Sidebar() {
 
     const navItems = [
         { label: 'Dashboard', icon: Database, href: `/${userId}/${projectId}/dashboard` },
+        { label: 'Analytics', icon: BarChart3, href: `/${userId}/${projectId}/analytics` },
         { label: 'Schemas', icon: Database, href: `/${userId}/${projectId}/schemas` },
         { label: 'API Endpoints', icon: Zap, href: `/${userId}/${projectId}/api-endpoints` },
         // { label: 'Mock Data', icon: Code, href: `/${userId}/${projectId}/mock-data` },

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useLocation } from '@/lib/useLocation';
+import { parseJsonLoose } from '@/lib/parseJsonLoose';
 
 export default function APIPlaygroundPage() {
 
@@ -47,19 +48,35 @@ export default function APIPlaygroundPage() {
     async function handleSendRequest() {
         const toastId = toast.loading("Sending request...");
         setLoading(true);
+        // console.log("Sending request", { method, url, headersText, bodyText });
 
         try {
             const headers = parseHeaders(headersText);
 
-            let parsedBody = undefined;
+            const hasBody = method === "POST" || method === "PATCH";
+            let parsedBody: unknown = undefined;
 
-            if (bodyText && method !== "GET") {
+            if (hasBody && bodyText.trim()) {
                 try {
-                    parsedBody = JSON.parse(bodyText);
-                } catch {
-                    alert("Invalid JSON body");
-                    setLoading(false);
+                    parsedBody = parseJsonLoose(bodyText);
+                } catch (error) {
+                    toast.error("Invalid JSON body", {
+                        description:
+                            error instanceof Error
+                                ? error.message
+                                : "Please check your request body and try again.",
+                    });
                     return;
+                }
+            }
+
+            // Make sure the API receives JSON whenever a body is present.
+            if (hasBody && parsedBody !== undefined) {
+                const contentTypeKey = Object.keys(headers).find(
+                    (key) => key.toLowerCase() === "content-type",
+                );
+                if (!contentTypeKey) {
+                    headers["Content-Type"] = "application/json";
                 }
             }
 
@@ -74,19 +91,25 @@ export default function APIPlaygroundPage() {
             console.log(res);
 
             const end = Date.now();
+            const result = res.data?.data ?? res.data;
+            const responseStatus =
+                typeof result?.status === "number" ? result.status : res.status;
 
-            if (res.data.data.status >= 200 && res.data.data.status < 300) {
+            if (responseStatus >= 200 && responseStatus < 300) {
                 toast.success("Request successful!", {
-                    description: `Status code: ${res.data.data.status}`,
+                    description: `Status code: ${responseStatus}`,
                 });
             } else {
                 toast.error("Request failed!", {
-                    description: `Status code: ${res.data.data.status}`,
+                    description:
+                        typeof result?.error === "string"
+                            ? result.error
+                            : `Status code: ${responseStatus}`,
                 });
             }
 
-            setStatus(res.data.data.status);
-            setResponse(res.data.data);
+            setStatus(responseStatus);
+            setResponse(result?.data ?? result);
             setTime(end - start);
         } catch (error: any) {
             toast.error("Request failed!", {
